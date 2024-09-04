@@ -1,0 +1,113 @@
+.footer {
+  background: #669933;
+  min-height: 344px;
+  border-top-right-radius: 100px;
+  border-top-left-radius: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2% 15%;
+  color: white;
+}
+.footer__start {
+}
+.footer__start > img {
+  height: 40px;
+  object-fit: cover;
+}
+.footer__start__socials {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+.footer__start__socials > img {
+  height: 16px;
+  object-fit: cover;
+  margin-right: 25px;
+}
+.footer__start__app {
+  margin-top: 50px;
+}
+.footer__start__app > h1 {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 11.67px;
+  text-align: left;
+}
+.footer__start__app > span {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+.footer__start__app > span > img {
+  width: 123px;
+  height: 40.74px;
+  border-radius: 4.92px 0px 0px 0px;
+}
+.footer__start__app > span > img:last-of-type {
+  margin-left: 10px;
+}
+.footer__end {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  margin-left: auto;
+  width: 70%;
+}
+.footer__end__block {
+  width: 30%;
+}
+.footer__end__block > h1 {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: left;
+}
+.footer__end__block > p {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: left;
+  margin: 10px 0;
+}
+
+@media all and (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+    padding: 5% 5%;
+    color: white;
+  }
+  .footer__start > img {
+    height: 30px;
+  }
+  .footer__start {
+    margin-top: 50px;
+    padding: 5% 0;
+  }
+  .footer__start__socials > img {
+    height: 14px;
+  }
+
+  .footer__end {
+    margin-top: 30px;
+    flex-direction: row;
+    align-items: start;
+    justify-content: start;
+    margin-left: 0;
+    width: 100%;
+    flex-wrap: wrap;
+    padding: 5% 0;
+  }
+  .footer__end__block {
+    width: 50%;
+    margin-bottom: 20px;
+  }
+  .footer__end__block > h1 {
+    font-size: 16px;
+  }
+  .footer__end__block > p {
+    font-size: 14px;
+  }
+}
