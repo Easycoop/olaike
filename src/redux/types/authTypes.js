@@ -1,0 +1,8 @@
+export const INITIALSTATE = "INITIALSTATE";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAILURE = "LOGIN_FAILURE";
+export const LOADING = "LOADING";
+export const LOGOUT = "LOGOUT";
+export const LOGIN_UPDATE_SUCCESS = "LOGIN_UPDATE_SUCCESS";
+export const SET_USER_TYPE = "SET_USER_TYPE";
+export const UPDATE_ACCESS_TOKEN = "UPDATE_ACCESS_TOKEN";

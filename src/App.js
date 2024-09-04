@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./app.css";
+import ScrollToTop from "./utils/ScrollToTop";
+import { ADMIN_ROLES } from "./config/adminRoles";
+import PublicRoute from "./route/publicRoute";
+import PrivateRoute from "./route/privateRoute";
+import Login from "./pages/auth/login/Login";
+import Signup from "./pages/auth/signup/Signup";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Router>
+        <ScrollToTop />
+        <Routes>
+          {/* PUBLIC ROUTES */}
+          <Route path="/" element={<PublicRoute />}>
+            <Route index element={<Login />} />
+            <Route path="signup" element={<Signup />} />
+          </Route>
+
+          {/* PRIVATE ROUTES */}
+          <Route element={<PrivateRoute allowedRoles={ADMIN_ROLES} />}></Route>
+        </Routes>
+      </Router>
     </div>
   );
 }
