@@ -1,183 +1,92 @@
-.ad__novel {
-  min-height: 60vh;
+.account__notifications__section__two {
+  padding: 30px 0;
+  padding-bottom: 25px;
 }
-.ad__novel__sc__one {
-  padding: 20px 0;
+.account__notifications__select__div {
+  border-bottom: 1px solid #eee;
   display: flex;
-  align-items: center;
-  width: 100%;
 }
-.ad__novel__sc__one > input {
-  width: 100%;
-  padding: var(--spacing-medium) var(--spacing-large);
-  border-radius: 50px;
+.account__notifications__select {
+  margin: 0;
+  border-radius: 0;
   border: 0;
-  border: 1px solid #ccc;
-}
-
-.ad__novel__sc__two {
-  padding: 10px 0;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
-}
-.ad__novel__sc__two__button {
-  border: 0;
-  color: black;
-  padding: 7.5px 15px;
-  background: #d9d9d9;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  font-weight: 600;
-  gap: 10px;
+  padding: 15px 0;
+  background: transparent;
+  margin-right: 40px;
+  flex: 1;
+  text-align: start;
   cursor: pointer;
+  font-weight: 400;
+  font-size: var(--font-size-primary);
+  color: #c6c6c9;
 }
-.ad__novel__sc__three {
-  width: 100%;
-}
-.admin-table-container {
-  margin: 30px;
+.account__notifications__select.selected {
+  border-bottom: 2.5px solid var(--color-text-primary);
+  color: var(--color-text-primary);
 }
 
-.admin-table {
+.loan__segment {
+  min-height: 70dvh;
   display: flex;
   flex-direction: column;
-  border: 1px solid #ddd;
-  border-radius: 20px;
 }
-
-.admin-table-header,
-.admin-table-row {
-  width: 100%;
+.loan__segment__foot {
+  margin-top: auto;
   display: flex;
-  padding: 8px;
-  border-bottom: 1px solid #f7f5ff;
 }
-
-.admin-table-header {
-  background-color: #00208a;
-  color: var(--color-text-quaternary);
-  font-weight: bold;
+.loan__button {
+  width: max-content;
+  padding: var(--spacing-medium) var(--spacing-large);
+  border-radius: 30px;
 }
-.admin-table-body {
-  min-height: 60vh;
+.loan__foot__button {
+  margin-left: auto;
+  padding: var(--spacing-medium) var(--spacing-large);
+  border-radius: 30px;
 }
-/* .admin-table-body .admin-table-row:nth-child(even) {
-    background-color: #f7f5ff;
-  } */
-
-/* Custom checkbox styling */
-.admin-table-cell input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 15px;
-  height: 15px;
-  border: 1px solid var(--color-foreground);
-  border-radius: 3px;
-  position: relative;
-  cursor: pointer;
-  outline: none;
-}
-
-.admin-table-cell input[type="checkbox"]:checked {
-  background-color: var(--color-foreground);
-}
-
-.admin-table-cell input[type="checkbox"]:checked:before {
-  content: "";
-  position: absolute;
-  top: 3px;
-  left: 7px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-/* Increase the clickable area */
-.admin-table-cell {
-  position: relative;
-}
-
-.admin-table-cell {
-  flex: 1;
-  border-right: 1px solid #ddd;
-  padding: 8px;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.admin-table-cell:last-child {
-  border-right: none;
-}
-
-.admin-table-header .admin-table-cell {
-  border-right: 1px solid #ddd;
-}
-
-.admin-table-body .admin-table-row:hover {
-  background-color: #f1f1f1;
-}
-
-button {
-  margin-bottom: 10px;
-  padding: 10px 20px;
-  background-color: var(--color-foreground);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  border: 0;
-  border-radius: 20px;
-  font-weight: 600;
-}
-
-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-
-/* Dropdown menu style */
-.admin-action-menu {
-  display: block;
-  position: absolute;
-  right: 0;
-  top: 50px;
-  background-color: #ddd;
-  border-radius: 10px;
-  padding: 20px 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  width: 250px;
-  transition: opacity 0.3s;
-}
-.admin-action-menu li {
-  color: #000;
+.loan__form__set {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 20px 0;
-  border-bottom: 1px solid #eee;
-  cursor: pointer;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+  margin-bottom: var(--spacing-medium);
 }
-
-@media all and (max-width: 767px) {
-  .ad__novel__sc__one > h1 {
-    font-size: 17px;
-    font-weight: 600;
+.loan__input {
+  padding: var(--spacing-medium);
+  border-radius: 30px;
+  border: 1px solid var(--color-text-tertiary);
+  margin-bottom: var(--spacing-large);
+  font-size: var(--font-size-tertiary);
+  color: var(--color-text-secondary);
+  width: 30%;
+}
+.loan__select {
+  padding: var(--spacing-medium);
+  border-radius: 30px;
+  border: 1px solid var(--color-text-tertiary);
+  margin-bottom: var(--spacing-large);
+  font-size: var(--font-size-tertiary);
+  color: var(--color-text-secondary);
+  width: 30%;
+}
+.loan__label {
+  font-weight: 700;
+  font-size: var(--font-size-secondary);
+}
+.loan__label__secondary {
+  font-size: var(--font-size-tertiary);
+  color: var(--font-size-secondary);
+}
+.loan__segment__wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+@media all and (max-width: 768px) {
+  .account__notifications__select {
+    flex: none;
+    width: 200px;
+    width: max-content;
   }
-  .ad__novel__sc__three {
+  .loan__input {
     width: 100%;
-    overflow: scroll;
-  }
-  .admin-table {
-    margin: 30px 0;
-    min-width: 1200px;
   }
 }

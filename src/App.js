@@ -32,7 +32,7 @@ function App() {
               <Route path="payment" element={<Payment />} />
               <Route path="loans" element={<Loan />} />
               <Route path="referrals" element={<Referrals />} />
-              <Route path="fees" element={<Fees />} />
+              <Route path="fees/dues" element={<Fees />} />
               <Route path="withdrawal" element={<Withdrawal />} />
               <Route path="donation" element={<Donation />} />
             </Route>

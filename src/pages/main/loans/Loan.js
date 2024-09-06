@@ -1,138 +1,207 @@
-import { BiPlus } from "react-icons/bi";
-import "./loan.css";
-import { FiFilter } from "react-icons/fi";
-import { TiExportOutline } from "react-icons/ti";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FaArrowRight } from "react-icons/fa";
-
-const DATA = [
-  {
-    id: 1,
-    fee: "N12,000",
-    date: "12th July, 2024",
-    status: "Paid",
-    date: "12th July, 2024",
-  },
-  {
-    id: 2,
-    fee: "N12,000",
-    date: "12t July, 2024",
-    status: "Paid",
-    date: "12th July, 2024",
-  },
-
-  // Add more user records as needed
-];
+import "./loan.css";
 
 function Loan() {
-  const navigate = useNavigate();
-  const [selectedUsers, setSelectedUsers] = useState([]);
-  const [isActionDropdown, setIsActionDropdown] = useState("");
-  const [currentActionId, setCurrentActionId] = useState("");
-
-  const [formData, setFormData] = useState({
-    tag: "",
-    category: "",
+  const [select, setSelect] = useState({
+    select1: true,
+    select2: false,
+    select3: false,
+    select4: false,
+    select5: false,
+    select6: false,
+    select7: false,
+    select8: false,
+    select9: false,
   });
-
-  const [isOpen, setIsOpen] = useState({
-    assign: false,
-    reject: false,
-  });
-
-  const closeModal = () => {
-    setIsOpen({
-      assign: false,
-      reject: false,
+  const closeAll = () => {
+    setSelect({
+      select1: false,
+      select2: false,
+      select3: false,
+      select4: false,
+      select5: false,
+      select6: false,
+      select7: false,
+      select8: false,
+      select9: false,
     });
   };
 
-  const handleModalClick = (option) => {
-    option === "assign"
-      ? setIsOpen((prev) => ({ ...prev, assign: true }))
-      : setIsOpen((prev) => ({ ...prev, reject: true }));
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    console.log(formData);
-  };
-
-  const toggleActionDropdown = (id) => {
-    if (id === currentActionId) {
-      setIsActionDropdown("");
-      setCurrentActionId("");
-      return;
-    }
-    setIsActionDropdown(id);
-    setCurrentActionId(id);
-  };
-
-  const handleMenuClick = (e) => {
-    e.stopPropagation(); // Prevent the click from closing the dropdown
-  };
-
-  const handleSelectUser = (id) => {
-    setSelectedUsers((prevSelectedUsers) =>
-      prevSelectedUsers.includes(id)
-        ? prevSelectedUsers.filter((userId) => userId !== id)
-        : [...prevSelectedUsers, id]
-    );
-  };
-
-  const handleSelectAllUsers = () => {
-    if (selectedUsers.length === DATA.length) {
-      setSelectedUsers([]);
-    } else {
-      setSelectedUsers(DATA.map((user) => user.id));
-    }
-  };
-
-  const handleBulkAction = () => {
-    alert(`Performing bulk action on users: ${selectedUsers.join(", ")}`);
-  };
-
-  const handleApprove = () => {
-    console.log("appprove");
+  const handleSelect = (option) => {
+    closeAll();
+    setSelect((prevState) => ({
+      ...prevState,
+      [option]: true,
+    }));
   };
 
   return (
-    <div className="ad__novel">
-      <section className="ad__novel__sc__one">
-        <input type="text" placeholder="Search" className="" />
-      </section>
-      {/* <section className="ad__novel__sc__two">
-        <button className="ad__novel__sc__two__button">
-          <TiExportOutline /> Export
-        </button>
-        <button
-          onClick={handleBulkAction}
-          disabled={selectedUsers.length === 0}
-        >
-          Bulk action
-        </button>
-      </section> */}
-      <section className="ad__novel__sc__three">
-        <div className="admin-table">
-          <div className="admin-table-header">
-            <div className="admin-table-cell">FEES/DUES</div>
-            <div className="admin-table-cell">DATE</div>
-            <div className="admin-table-cell">STATUS</div>
-            <div className="admin-table-cell">DUE DATE</div>
-          </div>
-          <div className="admin-table-body">
-            {DATA.map((user) => (
-              <div key={user.id} className="admin-table-row">
-                <div className="admin-table-cell">{user.fee}</div>
-                <div className="admin-table-cell">{user.date}</div>
-                <div className="admin-table-cell">{user.status}</div>
-                <div className="admin-table-cell">{user.date}</div>
-              </div>
-            ))}
-          </div>
+    <div className="loans">
+      <section className="account__notifications__section__two">
+        <div className="account__notifications__select__div">
+          <button
+            className={
+              select.select1
+                ? "account__notifications__select selected"
+                : "account__notifications__select"
+            }
+            onClick={() => handleSelect("select1")}
+          >
+            Profile
+          </button>
+          <button
+            className={
+              select.select2
+                ? "account__notifications__select selected"
+                : "account__notifications__select"
+            }
+            onClick={() => handleSelect("select2")}
+          >
+            Employment Details
+          </button>
+          <button
+            className={
+              select.select3
+                ? "account__notifications__select selected"
+                : "account__notifications__select"
+            }
+            onClick={() => handleSelect("select3")}
+          >
+            Next of Kin
+          </button>
+          <button
+            className={
+              select.select4
+                ? "account__notifications__select selected"
+                : "account__notifications__select"
+            }
+            onClick={() => handleSelect("select4")}
+          >
+            Documents
+          </button>
+          <button
+            className={
+              select.select5
+                ? "account__notifications__select selected"
+                : "account__notifications__select"
+            }
+            onClick={() => handleSelect("select5")}
+          >
+            Guarantor
+          </button>
+
+          <button
+            className={
+              select.select6
+                ? "account__notifications__select selected"
+                : "account__notifications__select"
+            }
+            onClick={() => handleSelect("select6")}
+          >
+            Notifications
+          </button>
+          <button
+            className={
+              select.select7
+                ? "account__notifications__select selected"
+                : "account__notifications__select"
+            }
+            onClick={() => handleSelect("select7")}
+          >
+            Security
+          </button>
         </div>
+      </section>
+
+      <section className="">
+        {select.select1 ? <div className="">select 1</div> : <></>}
+        {select.select2 ? (
+          <div className="loan__segment">
+            <span className="loan__segment wrap">
+              <span className="loan__form__set">
+                <label className="loan__label">EMPLOYMENT STATUS</label>
+                <select className="loan__select">
+                  <option value="">Select an option</option>
+                  <option value="1">Type 1</option>
+                  <option value="2">Type 2</option>
+                </select>
+              </span>
+              <span className="loan__form__set">
+                <label className="loan__label">COMPANY/EMPLOYER'S NAME</label>
+                <input
+                  className="loan__input"
+                  type="text"
+                  placeholder="Enter Employer Name"
+                />
+              </span>
+              <span className="loan__form__set">
+                <label className="loan__label">JOB TITLE</label>
+                <select className="loan__select">
+                  <option value="">Select an option</option>
+                  <option value="1">Type 1</option>
+                  <option value="2">Type 2</option>
+                </select>
+              </span>
+              <span className="loan__form__set">
+                <label className="loan__label">JOB TITLE</label>
+                <input
+                  className="loan__input"
+                  type="text"
+                  placeholder="Enter your job title"
+                />
+              </span>
+              <span className="loan__form__set">
+                <label className="loan__label">EMPLOYMENT ADDRESS</label>
+                <input
+                  className="loan__input"
+                  type="text"
+                  placeholder="Enter your address"
+                  style={{ width: "60%" }}
+                />
+              </span>
+            </span>
+            <div className="loan__segment__foot">
+              <button className="loan__foot__button">Save Changes</button>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+        {select.select3 ? <div className="">select 3</div> : <></>}
+        {select.select4 ? (
+          <div className="loan__segment">
+            <span className="loan__form__set">
+              <label className="loan__label">BVN</label>
+              <input
+                className="loan__input"
+                type="text"
+                placeholder="Bank Verification Number"
+              />
+            </span>
+            <span className="loan__form__set">
+              <label className="loan__label">ID VERIFICATION</label>
+              <p className="loan__label__secondary">
+                Please upload a means of identification so we can verify who you
+                are
+              </p>
+              <button
+                className="loan__button"
+                style={{ backgroundColor: "#FDC30B", color: "#000" }}
+              >
+                Verify my identity
+              </button>
+            </span>
+            <div className="loan__segment__foot">
+              <button className="loan__foot__button">Save Changes</button>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+        {select.select5 ? <div className="">select 5</div> : <></>}
+        {select.select6 ? <div className="">select6</div> : <></>}
+        {select.select7 ? <div className="">select 7</div> : <></>}
+        {select.select8 ? <div className="">select8</div> : <></>}
       </section>
     </div>
   );

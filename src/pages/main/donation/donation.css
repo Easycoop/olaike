@@ -1,0 +1,29 @@
+.donation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  gap: var(--spacing-medium);
+  text-align: center;
+}
+.donation > img {
+  object-fit: contain;
+  width: 300px;
+}
+.donation > p {
+  font-size: var(--font-size-secondary);
+  line-height: 30px;
+  font-weight: 500;
+  width: 40%;
+}
+
+@media all and (max-width: 768px) {
+  .donation > img {
+    object-fit: contain;
+    width: 100%;
+  }
+  .donation > p {
+    width: 100%;
+  }
+}

@@ -1,4 +1,5 @@
-import { IoClose } from "react-icons/io5";
+import { FaArrowLeft } from "react-icons/fa6";
+import { TfiClose } from "react-icons/tfi";
 import "./modal.css";
 
 function Modal({ isOpen, onClose, children }) {
@@ -8,7 +9,8 @@ function Modal({ isOpen, onClose, children }) {
     <div className={`modal${isOpen ? "" : " disable"}`}>
       <div className="modal__content">
         <div className="modal__content__span">
-          <IoClose onClick={onClose} className="modal__content__close" />
+          {/* <FaArrowLeft onClick={onClose} className="modal__content__close" /> */}
+          <TfiClose onClick={onClose} className="modal__content__close" />
         </div>
 
         <div className="modal__content__children">{children}</div>

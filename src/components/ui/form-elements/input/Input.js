@@ -6,6 +6,7 @@ const Input = ({
   label,
   value,
   onChange,
+  placeholder,
   className = "",
   ...rest
 }) => {
@@ -18,6 +19,7 @@ const Input = ({
         type={type}
         value={value}
         onChange={onChange}
+        placeholder={placeholder}
         className="input"
         {...rest}
       />

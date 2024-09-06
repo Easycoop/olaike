@@ -9,7 +9,7 @@
 }
 
 .button.primary {
-  background-color: #6750a4;
+  background-color: var(--color-foreground);
   color: white;
 }
 
@@ -27,8 +27,8 @@
 }
 .button.outline {
   background-color: inherit;
-  border: 1px solid #79747e;
-  color: #6750a4;
+  border: 1px solid var(--color-foreground);
+  color: var(--color-foreground);
 }
 
 .button.outline:hover {
@@ -36,14 +36,14 @@
 }
 .button.text {
   background-color: inherit;
-  color: #6750a4;
+  color: var(--color-foreground);
 }
 
 .button.outline:hover {
   opacity: 0.8;
 }
 .button.icon-primary {
-  background-color: #6750a4;
+  background-color: var(--color-foreground);
   color: white;
   display: flex;
   align-items: center;

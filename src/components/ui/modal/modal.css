@@ -28,13 +28,13 @@
   width: 100%;
 }
 .modal__content__close {
-  margin-left: auto;
+  /* margin-left: auto; */
   font-size: 25px;
   transition: all 0.25s ease-in-out;
   cursor: pointer;
 }
 .modal__content__close:hover {
-  color: crimson;
+  color: var(--color-foreground);
 }
 
 @media all and (max-width: 768px) {
