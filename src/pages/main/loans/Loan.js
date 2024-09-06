@@ -1,7 +1,12 @@
 import { useState } from "react";
+import Switch from "react-switch";
 import "./loan.css";
 
 function Loan() {
+  const [checked, setChecked] = useState(false);
+  const [checked2, setChecked2] = useState(true);
+  const [checked3, setChecked3] = useState(false);
+
   const [select, setSelect] = useState({
     select1: true,
     select2: false,
@@ -38,78 +43,80 @@ function Loan() {
   return (
     <div className="loans">
       <section className="account__notifications__section__two">
-        <div className="account__notifications__select__div">
-          <button
-            className={
-              select.select1
-                ? "account__notifications__select selected"
-                : "account__notifications__select"
-            }
-            onClick={() => handleSelect("select1")}
-          >
-            Profile
-          </button>
-          <button
-            className={
-              select.select2
-                ? "account__notifications__select selected"
-                : "account__notifications__select"
-            }
-            onClick={() => handleSelect("select2")}
-          >
-            Employment Details
-          </button>
-          <button
-            className={
-              select.select3
-                ? "account__notifications__select selected"
-                : "account__notifications__select"
-            }
-            onClick={() => handleSelect("select3")}
-          >
-            Next of Kin
-          </button>
-          <button
-            className={
-              select.select4
-                ? "account__notifications__select selected"
-                : "account__notifications__select"
-            }
-            onClick={() => handleSelect("select4")}
-          >
-            Documents
-          </button>
-          <button
-            className={
-              select.select5
-                ? "account__notifications__select selected"
-                : "account__notifications__select"
-            }
-            onClick={() => handleSelect("select5")}
-          >
-            Guarantor
-          </button>
+        <div className="loan__header__wrap">
+          <div className="account__notifications__select__div">
+            <button
+              className={
+                select.select1
+                  ? "account__notifications__select selected"
+                  : "account__notifications__select"
+              }
+              onClick={() => handleSelect("select1")}
+            >
+              Profile
+            </button>
+            <button
+              className={
+                select.select2
+                  ? "account__notifications__select selected"
+                  : "account__notifications__select"
+              }
+              onClick={() => handleSelect("select2")}
+            >
+              Employment Details
+            </button>
+            <button
+              className={
+                select.select3
+                  ? "account__notifications__select selected"
+                  : "account__notifications__select"
+              }
+              onClick={() => handleSelect("select3")}
+            >
+              Next of Kin
+            </button>
+            <button
+              className={
+                select.select4
+                  ? "account__notifications__select selected"
+                  : "account__notifications__select"
+              }
+              onClick={() => handleSelect("select4")}
+            >
+              Documents
+            </button>
+            <button
+              className={
+                select.select5
+                  ? "account__notifications__select selected"
+                  : "account__notifications__select"
+              }
+              onClick={() => handleSelect("select5")}
+            >
+              Guarantor
+            </button>
 
-          <button
-            className={
-              select.select6
-                ? "account__notifications__select selected"
-                : "account__notifications__select"
-            }
-            onClick={() => handleSelect("select6")}
-          >
-            Notifications
-          </button>
-          <button
-            className={
-              select.select7
-                ? "account__notifications__select selected"
-                : "account__notifications__select"
-            }
-            onClick={() => handleSelect("select7")}
-          >
-            Security
-          </button>
+            <button
+              className={
+                select.select6
+                  ? "account__notifications__select selected"
+                  : "account__notifications__select"
+              }
+              onClick={() => handleSelect("select6")}
+            >
+              Notifications
+            </button>
+            {/* <button
+              className={
+                select.select7
+                  ? "account__notifications__select selected"
+                  : "account__notifications__select"
+              }
+              onClick={() => handleSelect("select7")}
+            >
+              Security
+            </button> */}
+          </div>
         </div>
       </section>
 
@@ -117,7 +124,7 @@ function Loan() {
         {select.select1 ? <div className="">select 1</div> : <></>}
         {select.select2 ? (
           <div className="loan__segment">
-            <span className="loan__segment wrap">
+            <span className="loan__segment__wrap">
               <span className="loan__form__set">
                 <label className="loan__label">EMPLOYMENT STATUS</label>
                 <select className="loan__select">
@@ -156,7 +163,7 @@ function Loan() {
                   className="loan__input"
                   type="text"
                   placeholder="Enter your address"
-                  style={{ width: "60%" }}
+                  style={{ width: "100%" }}
                 />
               </span>
             </span>
@@ -167,7 +174,65 @@ function Loan() {
         ) : (
           <></>
         )}
-        {select.select3 ? <div className="">select 3</div> : <></>}
+        {select.select3 ? (
+          <div className="">
+            <div className="loan__segment">
+              <span className="loan__segment__wrap">
+                <span className="loan__form__set">
+                  <label className="loan__label">FIRST NAME</label>
+                  <input
+                    className="loan__input"
+                    type="text"
+                    placeholder=" Name"
+                  />
+                </span>
+                <span className="loan__form__set">
+                  <label className="loan__label">LAST NAME</label>
+                  <input
+                    className="loan__input"
+                    type="text"
+                    placeholder="Last Name"
+                  />
+                </span>
+                <span className="loan__form__set">
+                  <label className="loan__label">EMAIL ADDRESS</label>
+                  <input
+                    className="loan__input"
+                    type="email"
+                    placeholder="Email Address"
+                  />
+                </span>
+                <span className="loan__form__set">
+                  <label className="loan__label">PHONE NUMBER</label>
+                  <input
+                    className="loan__input"
+                    type="number"
+                    placeholder="Phone Number"
+                  />
+                </span>
+                <span className="loan__form__set">
+                  <label className="loan__label">
+                    RELATIONSHIP WITH NEXT OF KIN
+                  </label>
+                  <select className="loan__select">
+                    <option value="">Select an option</option>
+                    <option value="1">Father</option>
+                    <option value="1">Mother</option>
+                    <option value="1">Brother</option>
+                    <option value="2">Sister</option>
+                    <option value="2">Child</option>
+                    <option value="2">Friend</option>
+                  </select>
+                </span>
+              </span>
+              <div className="loan__segment__foot">
+                <button className="loan__foot__button">Save Changes</button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
         {select.select4 ? (
           <div className="loan__segment">
             <span className="loan__form__set">
@@ -199,9 +264,55 @@ function Loan() {
           <></>
         )}
         {select.select5 ? <div className="">select 5</div> : <></>}
-        {select.select6 ? <div className="">select6</div> : <></>}
+        {select.select6 ? (
+          <div className="loan__notification">
+            <section className="loan__notification__block">
+              <h3>Notifications related to you and your space</h3>
+              <p>
+                Space, booking, payment and other notifications related to your
+                space
+              </p>
+              <Switch
+                onChange={() => {
+                  setChecked(!checked);
+                }}
+                checked={checked}
+                className="react-switch"
+              />
+            </section>
+            <section className="loan__notification__block">
+              <h3>Notifications related to you and your space</h3>
+              <p>
+                Space, booking, payment and other notifications related to your
+                space
+              </p>
+              <Switch
+                onChange={() => {
+                  setChecked2(!checked2);
+                }}
+                checked2={checked2}
+                className="react-switch"
+              />
+            </section>
+            <section className="loan__notification__block">
+              <h3>Notifications related to you and your space</h3>
+              <p>
+                Space, booking, payment and other notifications related to your
+                space
+              </p>
+              <Switch
+                onChange={() => {
+                  setChecked3(!checked3);
+                }}
+                checked3={checked3}
+                className="react-switch"
+              />
+            </section>
+          </div>
+        ) : (
+          <></>
+        )}
         {select.select7 ? <div className="">select 7</div> : <></>}
-        {select.select8 ? <div className="">select8</div> : <></>}
       </section>
     </div>
   );

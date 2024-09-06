@@ -26,6 +26,7 @@
 }
 
 .loan__segment {
+  width: 100%;
   min-height: 70dvh;
   display: flex;
   flex-direction: column;
@@ -49,6 +50,7 @@
   flex-direction: column;
   gap: var(--spacing-medium);
   margin-bottom: var(--spacing-medium);
+  width: 30%;
 }
 .loan__input {
   padding: var(--spacing-medium);
@@ -57,7 +59,7 @@
   margin-bottom: var(--spacing-large);
   font-size: var(--font-size-tertiary);
   color: var(--color-text-secondary);
-  width: 30%;
+  width: 100%;
 }
 .loan__select {
   padding: var(--spacing-medium);
@@ -66,7 +68,7 @@
   margin-bottom: var(--spacing-large);
   font-size: var(--font-size-tertiary);
   color: var(--color-text-secondary);
-  width: 30%;
+  width: 100%;
 }
 .loan__label {
   font-weight: 700;
@@ -79,6 +81,10 @@
 .loan__segment__wrap {
   display: flex;
   flex-wrap: wrap;
+  gap: 10%;
+}
+.loan__header__wrap {
+  width: 100%;
 }
 @media all and (max-width: 768px) {
   .account__notifications__select {
@@ -86,7 +92,10 @@
     width: 200px;
     width: max-content;
   }
-  .loan__input {
+  .loan__form__set {
     width: 100%;
+  }
+  .loan__header__wrap {
+    overflow-x: scroll;
   }
 }
