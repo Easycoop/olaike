@@ -103,7 +103,7 @@ function Loan() {
       <section className="ad__novel__sc__one">
         <input type="text" placeholder="Search" className="" />
       </section>
-      <section className="ad__novel__sc__two">
+      {/* <section className="ad__novel__sc__two">
         <button className="ad__novel__sc__two__button">
           <TiExportOutline /> Export
         </button>
@@ -113,17 +113,10 @@ function Loan() {
         >
           Bulk action
         </button>
-      </section>
+      </section> */}
       <section className="ad__novel__sc__three">
         <div className="admin-table">
           <div className="admin-table-header">
-            <div className="admin-table-cell">
-              <input
-                type="checkbox"
-                checked={selectedUsers.length === DATA.length}
-                onChange={handleSelectAllUsers}
-              />
-            </div>
             <div className="admin-table-cell">FEES/DUES</div>
             <div className="admin-table-cell">DATE</div>
             <div className="admin-table-cell">STATUS</div>
@@ -132,13 +125,6 @@ function Loan() {
           <div className="admin-table-body">
             {DATA.map((user) => (
               <div key={user.id} className="admin-table-row">
-                <div className="admin-table-cell">
-                  <input
-                    type="checkbox"
-                    checked={selectedUsers.includes(user.id)}
-                    onChange={() => handleSelectUser(user.id)}
-                  />
-                </div>
                 <div className="admin-table-cell">{user.fee}</div>
                 <div className="admin-table-cell">{user.date}</div>
                 <div className="admin-table-cell">{user.status}</div>
