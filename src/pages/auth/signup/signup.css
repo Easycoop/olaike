@@ -63,9 +63,9 @@
   text-align: center;
   background-color: var(--color-foreground);
 }
-.signup__end > h1 {
-  font-size: var(--font-size-h1);
-  color: #c31313;
+.signup__end > img {
+  object-fit: contain;
+  height: 30px;
 }
 .signup__end > h5 {
   font-weight: 500;

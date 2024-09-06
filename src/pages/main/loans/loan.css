@@ -86,6 +86,32 @@
 .loan__header__wrap {
   width: 100%;
 }
+.loan__notification {
+}
+.loan__notification__block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+  margin-bottom: var(--spacing-large);
+}
+.loan__notification__block > h3 {
+  font-size: 19px;
+  font-weight: 500;
+  color: #3c3c3c;
+}
+.loan__notification__block > p {
+  font-size: var(--font-size-primary);
+  color: var(--color-text-secondary);
+}
+.loan__segment__profile {
+  margin-bottom: var(--spacing-large);
+}
+.loan__segment__profile > img {
+  object-fit: cover;
+  height: 70px;
+  width: 70px;
+  border-radius: 100%;
+}
 @media all and (max-width: 768px) {
   .account__notifications__select {
     flex: none;

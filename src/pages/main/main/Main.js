@@ -9,17 +9,20 @@ import "../../../components/ui/modal/modal-children-styles/modal-withdraw1.css";
 import "../../../components/ui/modal/modal-children-styles/modal-payment2.css";
 import Input from "../../../components/ui/form-elements/input";
 import Button from "../../../components/ui/button/Button";
-import { FaCreditCard } from "react-icons/fa6";
+import { FaCreditCard, FaHeart, FaLink, FaSackDollar } from "react-icons/fa6";
 import { PiBankFill } from "react-icons/pi";
+import { MdDashboard, MdLogout } from "react-icons/md";
+import { GiMoneyStack } from "react-icons/gi";
+import { IoWalletSharp } from "react-icons/io5";
 
 const NAV__ARRAY = [
-  { id: 1, path: "dashboard", name: "My Passbook" },
-  { id: 2, path: "payment", name: "Add Money" },
-  { id: 3, path: "loans", name: "Loan Applications" },
-  { id: 4, path: "referrals", name: "Referrals" },
-  { id: 5, path: "fees/dues", name: "Fees/Dues" },
-  { id: 6, path: "withdrawal", name: "Withdrawal" },
-  { id: 7, path: "donation", name: "Donation" },
+  { id: 1, path: "dashboard", name: "My Passbook", icon: MdDashboard },
+  { id: 2, path: "payment", name: "Add Money", icon: IoWalletSharp },
+  { id: 3, path: "loans", name: "Loan Applications", icon: FaSackDollar },
+  { id: 4, path: "referrals", name: "Referrals", icon: FaLink },
+  { id: 5, path: "fees/dues", name: "Fees/Dues", icon: GiMoneyStack },
+  { id: 6, path: "withdrawal", name: "Withdrawal", icon: FaCreditCard },
+  { id: 7, path: "donation", name: "Donation", icon: FaHeart },
 ];
 
 function Main() {
@@ -61,14 +64,10 @@ function Main() {
     } else return;
   };
 
-  //   const handleLogout = async (e) => {
-  //     e.preventDefault();
-  //     try {
-  //       const response = await logout();
-  //     } catch (error) {
-  //       console.error("Error logging out:", error);
-  //     }
-  //   };
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    navigate("/");
+  };
 
   return (
     <div className="admin">
@@ -89,7 +88,8 @@ function Main() {
                       colorId === item.id ? "admin__navbar__active" : ""
                     }
                   >
-                    <BsAirplane className="admin__navbar__icon" />
+                    <item.icon className="admin__navbar__icon" />
+
                     <h3>{item.name}</h3>
                   </div>
                 );
@@ -105,7 +105,8 @@ function Main() {
                       colorId === item.id ? "admin__navbar__active" : ""
                     }
                   >
-                    <BsAirplane className="admin__navbar__icon" />
+                    <item.icon className="admin__navbar__icon" />
+
                     <h3>{item.name}</h3>
                   </div>
                 );
@@ -121,7 +122,7 @@ function Main() {
                       colorId === item.id ? "admin__navbar__active" : ""
                     }
                   >
-                    <BsAirplane className="admin__navbar__icon" />
+                    <item.icon className="admin__navbar__icon" />
                     <h3>{item.name}</h3>
                   </div>
                 );
@@ -137,8 +138,8 @@ function Main() {
               alt="logo"
               style={{ objectFit: "contain", height: "100px" }}
             />
-            <div>
-              <BsAirplane className="admin__navbar__icon" />
+            <div onClick={handleLogout}>
+              <MdLogout className="admin__navbar__icon" />
               <h3>Logout</h3>
             </div>
           </section>

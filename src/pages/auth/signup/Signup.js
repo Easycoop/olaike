@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./signup.css";
-import logo from "../../../assets/icons/logo.png";
+import logo from "../../../assets/icons/logo-secondary-color1.png";
 import Input from "../../../components/ui/form-elements/input";
 import Button from "../../../components/ui/button/Button";
 import { useNavigate } from "react-router-dom";
@@ -104,7 +104,7 @@ function Signup() {
         </div>
       </div>
       <div className="signup__end">
-        <h1>OLAIKE</h1>
+        <img src={logo} alt="logo" />
         <h5>TRANSFORMING LIVES</h5>
       </div>
     </div>

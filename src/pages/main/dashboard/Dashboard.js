@@ -19,21 +19,21 @@ function Dashboard() {
           </span>
           <span className="dashboard__section__one__block">
             <h5>Savings Wallet</h5>
-            <h3>N50,000</h3>
+            <h3>N20,000</h3>
             <div>
               24.44% <FaArrowTrendUp />
             </div>
           </span>
           <span className="dashboard__section__one__block">
             <h5>Home Savings Wallet</h5>
-            <h3>N50,000</h3>
+            <h3>N35,560</h3>
             <div>
               24.44% <FaArrowTrendUp />
             </div>
           </span>
           <span className="dashboard__section__one__block">
             <h5>Holiday Wallet</h5>
-            <h3>N50,000</h3>
+            <h3>N10,200</h3>
             <div>
               24.44% <FaArrowTrendUp />
             </div>

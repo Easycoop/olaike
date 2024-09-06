@@ -1,6 +1,9 @@
+import { BsPatchMinusFill } from "react-icons/bs";
 import "./referrals.css";
 import { FaLink } from "react-icons/fa";
+import { FaCrown } from "react-icons/fa6";
 import { IoPeopleSharp } from "react-icons/io5";
+import { MdAccountTree, MdInsertLink } from "react-icons/md";
 import { RiArrowRightSLine } from "react-icons/ri";
 
 function Referrals() {
@@ -42,11 +45,11 @@ function Referrals() {
       <div className="referrals__options">
         <div>
           <span>
-            <IoPeopleSharp />
+            <BsPatchMinusFill color="#000000" />
           </span>
           <div>
-            <h6>Referred Users</h6>
-            <p>See all the users you have referred</p>
+            <h6>New Users Promo</h6>
+            <p>The latest promo for the new user you got</p>
           </div>
         </div>
         <RiArrowRightSLine />
@@ -54,11 +57,11 @@ function Referrals() {
       <div className="referrals__options">
         <div>
           <span>
-            <IoPeopleSharp />
+            <FaCrown color="#000000" />
           </span>
           <div>
-            <h6>Referred Users</h6>
-            <p>See all the users you have referred</p>
+            <h6>Leaderboard</h6>
+            <p>Ratings from your referrals and friends</p>
           </div>
         </div>
         <RiArrowRightSLine />
@@ -66,11 +69,23 @@ function Referrals() {
       <div className="referrals__options">
         <div>
           <span>
-            <IoPeopleSharp />
+            <MdAccountTree color="#000000" />
           </span>
           <div>
-            <h6>Referred Users</h6>
-            <p>See all the users you have referred</p>
+            <h6>Referrals Statistics</h6>
+            <p>Detailed satustics of yur referrals</p>
+          </div>
+        </div>
+        <RiArrowRightSLine />
+      </div>
+      <div className="referrals__options">
+        <div>
+          <span>
+            <MdInsertLink color="#000000" />
+          </span>
+          <div>
+            <h6>Referred Code</h6>
+            <p>Your referral code</p>
           </div>
         </div>
         <RiArrowRightSLine />

@@ -5,6 +5,7 @@ import { TiExportOutline } from "react-icons/ti";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
+import { FaCircle } from "react-icons/fa6";
 
 const DATA = [
   {
@@ -117,7 +118,22 @@ function Fees() {
               <div key={user.id} className="admin-table-row">
                 <div className="admin-table-cell">{user.fee}</div>
                 <div className="admin-table-cell">{user.date}</div>
-                <div className="admin-table-cell">{user.status}</div>
+                <div className="admin-table-cell">
+                  <span
+                    style={{
+                      background: "#0BFD152B",
+                      borderRadius: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "15px",
+                      padding: "10px 15px",
+                      width: "max-content",
+                    }}
+                  >
+                    <FaCircle color="#0BFD15" />
+                    {user.status}
+                  </span>
+                </div>
                 <div className="admin-table-cell">{user.date}</div>
               </div>
             ))}

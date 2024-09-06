@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Switch from "react-switch";
+import image1 from "../../../assets/images/main/profile-image.jpg";
 import "./loan.css";
 
 function Loan() {
@@ -121,7 +122,78 @@ function Loan() {
       </section>
 
       <section className="">
-        {select.select1 ? <div className="">select 1</div> : <></>}
+        {select.select1 ? (
+          <div className="">
+            <div className="loan__segment">
+              <div className="loan__segment__profile">
+                <img src={image1} alt="logo" />
+              </div>
+              <span className="loan__segment__wrap">
+                <span className="loan__form__set">
+                  <label className="loan__label">FIRST NAME</label>
+                  <input
+                    className="loan__input"
+                    type="text"
+                    placeholder=" Name"
+                  />
+                </span>
+                <span className="loan__form__set">
+                  <label className="loan__label">LAST NAME</label>
+                  <input
+                    className="loan__input"
+                    type="text"
+                    placeholder="Last Name"
+                  />
+                </span>
+                <span className="loan__form__set">
+                  <label className="loan__label">EMAIL ADDRESS</label>
+                  <input
+                    className="loan__input"
+                    type="email"
+                    placeholder="Email Address"
+                  />
+                </span>
+                <span className="loan__form__set">
+                  <label className="loan__label">PHONE NUMBER</label>
+                  <input
+                    className="loan__input"
+                    type="number"
+                    placeholder="Phone Number"
+                  />
+                </span>
+                <span className="loan__form__set">
+                  <label className="loan__label">GENDER</label>
+                  <select className="loan__select">
+                    <option value="">Select an option</option>
+                    <option value="1">Male</option>
+                    <option value="2">Female</option>
+                  </select>
+                </span>
+                <span className="loan__form__set">
+                  <label className="loan__label">DATE OF BIRTH</label>
+                  <input
+                    className="loan__input"
+                    type="date"
+                    placeholder="DD/MM/YY"
+                  />
+                </span>
+                <span className="loan__form__set">
+                  <label className="loan__label">YOUR ADDRESS</label>
+                  <input
+                    className="loan__input"
+                    type="text"
+                    placeholder="e.g Port Harcourt, Rivers State"
+                  />
+                </span>
+              </span>
+              <div className="loan__segment__foot">
+                <button className="loan__foot__button">Save Changes</button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
         {select.select2 ? (
           <div className="loan__segment">
             <span className="loan__segment__wrap">
@@ -263,7 +335,79 @@ function Loan() {
         ) : (
           <></>
         )}
-        {select.select5 ? <div className="">select 5</div> : <></>}
+        {select.select5 ? (
+          <div className="">
+            <div className="loan__segment">
+              <span className="loan__segment__wrap">
+                <span className="loan__form__set">
+                  <label className="loan__label">FIRST NAME</label>
+                  <input
+                    className="loan__input"
+                    type="text"
+                    placeholder=" Name"
+                  />
+                </span>
+                <span className="loan__form__set">
+                  <label className="loan__label">LAST NAME</label>
+                  <input
+                    className="loan__input"
+                    type="text"
+                    placeholder="Last Name"
+                  />
+                </span>
+                <span className="loan__form__set">
+                  <label className="loan__label">EMAIL ADDRESS</label>
+                  <input
+                    className="loan__input"
+                    type="email"
+                    placeholder="Email Address"
+                  />
+                </span>
+                <span className="loan__form__set">
+                  <label className="loan__label">PHONE NUMBER</label>
+                  <input
+                    className="loan__input"
+                    type="number"
+                    placeholder="Phone Number"
+                  />
+                </span>
+                <span className="loan__form__set">
+                  <label className="loan__label">GUARANTOR'S OCCUPATION</label>
+                  <input
+                    className="loan__input"
+                    type="text"
+                    placeholder="e.g Port Harcourt, Rivers State"
+                  />
+                </span>
+                <span className="loan__form__set">
+                  <label className="loan__label">
+                    GUARANTOR'S OFFICE ADDRESS
+                  </label>
+                  <input
+                    className="loan__input"
+                    type="text"
+                    placeholder="Enter Address"
+                  />
+                </span>
+                <span className="loan__form__set">
+                  <label className="loan__label">
+                    GUARANTOR'S HOME ADDRESS
+                  </label>
+                  <input
+                    className="loan__input"
+                    type="text"
+                    placeholder="Enter Address"
+                  />
+                </span>
+              </span>
+              <div className="loan__segment__foot">
+                <button className="loan__foot__button">Save Changes</button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
         {select.select6 ? (
           <div className="loan__notification">
             <section className="loan__notification__block">
@@ -273,6 +417,7 @@ function Loan() {
                 space
               </p>
               <Switch
+                onColor={"#FDC30B"}
                 onChange={() => {
                   setChecked(!checked);
                 }}
@@ -287,10 +432,11 @@ function Loan() {
                 space
               </p>
               <Switch
+                onColor={"#FDC30B"}
                 onChange={() => {
                   setChecked2(!checked2);
                 }}
-                checked2={checked2}
+                checked={checked2}
                 className="react-switch"
               />
             </section>
@@ -301,10 +447,11 @@ function Loan() {
                 space
               </p>
               <Switch
+                onColor={"#FDC30B"}
                 onChange={() => {
                   setChecked3(!checked3);
                 }}
-                checked3={checked3}
+                checked={checked3}
                 className="react-switch"
               />
             </section>
