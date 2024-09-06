@@ -29,7 +29,8 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    // console.log(formData);
+    navigate("/main/dashboard");
   };
 
   return (
@@ -64,7 +65,7 @@ function Login() {
                   <b>Forgotten password</b>
                 </p>
               </span>
-              <Button type="submit" typeOf="success">
+              <Button type="submit" typeOf="success" style={{ width: "100%" }}>
                 Sign me in
               </Button>
             </form>

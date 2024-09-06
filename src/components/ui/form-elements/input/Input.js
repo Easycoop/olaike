@@ -9,16 +9,16 @@ const Input = ({
   className = "",
   ...rest
 }) => {
-  const inputClass = `input ${className}`;
+  const inputClass = `inputWrapper ${className}`;
 
   return (
-    <div className="inputWrapper">
+    <div className={inputClass}>
       {label && <label className="input__label">{label}</label>}
       <input
         type={type}
         value={value}
         onChange={onChange}
-        className={inputClass}
+        className="input"
         {...rest}
       />
     </div>

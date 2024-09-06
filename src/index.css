@@ -57,7 +57,8 @@ code {
   --color-foreground: #00208a;
   --color-text-primary: #0a0a0a;
   --color-text-secondary: #808080;
-  --color-text-tertiary: #ccc;
+  --color-text-tertiary: #cccccc;
+  --color-text-quaternary: #ffffff;
   --color-border: #f0f0f0;
 
   /* Typography */
@@ -120,6 +121,12 @@ textarea:focus {
 
 .mb-1 {
   margin-bottom: var(--spacing-medium);
+}
+.mr-1 {
+  margin-right: var(--spacing-medium);
+}
+.ml-1 {
+  margin-left: var(--spacing-medium);
 }
 
 /* Container */

@@ -53,6 +53,7 @@
 }
 .login__main__start__switch b {
   color: #13c375;
+  cursor: pointer;
 }
 .login__main__end {
   width: 50%;

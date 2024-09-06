@@ -1,0 +1,134 @@
+.admin {
+  transition: 250ms ease-in-out;
+  height: 100dvh;
+}
+.admin__container {
+  display: flex;
+}
+.admin__outlet {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 80%;
+  height: 90vh;
+  overflow-y: scroll;
+  padding: var(--spacing-medium) var(--spacing-large);
+}
+.admin__outlet.active {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin-left: 0%;
+  height: 90vh;
+  padding-left: 75px;
+}
+.admin__navbar {
+  position: relative;
+  height: 91vh;
+  top: 0;
+  left: 0;
+  width: 20%;
+  background: var(--color-foreground);
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+.admin__navbar.active {
+  display: none;
+}
+.admin__navbar.active > .admin__navbar__section__two > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.admin__navbar.active > .admin__navbar__section__two > div > h3 {
+  display: none;
+}
+.admin__navbar.active > .admin__navbar__section__three > div > h3 {
+  display: none;
+}
+.admin__navbar.active > .admin__navbar__section__one {
+  display: flex;
+  justify-content: center;
+}
+.admin__navbar__section__two {
+}
+.admin__navbar__section__two > div {
+  display: flex;
+  align-items: center;
+  padding: 20px 10px;
+  cursor: pointer;
+  color: black;
+  width: 100%;
+}
+.admin__navbar__icon {
+  font-size: 18px;
+  color: var(--color-text-quaternary);
+}
+.admin__navbar h3 {
+  font-size: var(--font-size-h6);
+  font-weight: 400;
+  margin-left: var(--spacing-small);
+  color: var(--color-text-quaternary);
+}
+.admin__navbar__active > h3 {
+  font-size: var(--font-size-h6);
+  font-weight: 400;
+  margin-left: var(--spacing-small);
+  color: var(--color-text-quaternary);
+}
+.admin__navbar__active {
+  background-color: #1b40c4;
+  border-radius: var(--border-radius-small);
+  color: white;
+}
+.admin__navbar__active > .admin__navbar__icon {
+  color: white;
+}
+.admin__navbar__active > .admin__navbar__icon__submenu {
+  color: white;
+}
+
+.admin__navbar__active > span {
+  color: white;
+}
+.admin__navbar__active > h3 {
+  color: white;
+}
+.admin__navbar__dropdown {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  cursor: pointer;
+  width: 100%;
+}
+.admin__navbar__dropdown > span {
+  margin-left: auto;
+}
+.admin__navbar__dropdown > span > h3 {
+  font-size: 15px;
+  font-weight: 500;
+  margin-left: 5px;
+}
+
+@media all and (max-width: 768px) {
+  .admin__navbar {
+    width: 100%;
+  }
+  .admin__navbar__section__two > div {
+    padding: 20px 10px;
+  }
+
+  .admin__outlet {
+    display: none;
+  }
+  .admin__outlet.active {
+    display: block;
+    padding: 0;
+    padding: var(--spacing-medium) var(--spacing-large);
+  }
+}
