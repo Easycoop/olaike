@@ -1,0 +1,213 @@
+.ad__student__app {
+  min-height: 100vh;
+  background: var(--background-color);
+  color: var(--primary-text-color);
+  padding: 15px 15px;
+}
+.ad__student__app__section__one {
+}
+.ad__student__app__section__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+}
+.ad__student__app__section__header > h1 {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--primarytext-color);
+}
+.ad__student__app__section__header > select {
+  margin-left: auto;
+  width: 200px;
+  padding: 10px 10px;
+  border: 1px solid var(--border-color);
+  background: var(--border-color);
+}
+.ad__student__app__section__article {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+.ad__student__app__section__one__card {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  padding: 10px 20px;
+  width: 24%;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.ad__student__app__section__one__card:hover {
+  background: var(--border-color);
+}
+.ad__student__app__section__one__card__icon {
+  margin-right: 10px;
+  font-size: 20px;
+}
+.ad__student__app__section__one__card__icon.one {
+  margin-right: 10px;
+  font-size: 20px;
+  color: #0530ad;
+}
+.ad__student__app__section__one__card__icon.two {
+  margin-right: 10px;
+  font-size: 20px;
+  color: #1db954;
+}
+.ad__student__app__section__one__card__icon.three {
+  margin-right: 10px;
+  font-size: 20px;
+  color: #ffc72c;
+}
+.ad__student__app__section__one__card__icon.four {
+  margin-right: 10px;
+  font-size: 20px;
+  color: #c8102e;
+}
+.ad__student__app__section__one__card > div {
+}
+.ad__student__app__section__one__card > div > h3 {
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+  color: var(--tertiary-text-color);
+  margin-bottom: 5px;
+}
+.ad__student__app__section__one__card > div > h1 {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary-text-color);
+}
+.ad__student__app__section__two {
+  padding: 15px 15px;
+}
+.ad__student__app__section__two__header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 15px 15px;
+  background: var(--border-color);
+  color: var(--primary-text-color);
+}
+.ad__student__app__section__two__header__date {
+  width: 10%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.ad__student__app__section__two__header__id {
+  width: 20%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.ad__student__app__section__two__header__university {
+  width: 20%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.ad__student__app__section__two__header__universityemail {
+  width: 20%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+
+.ad__student__app__section__two__header__userid {
+  width: 20%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.ad__student__app__section__two__header__status {
+  width: 10%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.ad__student__app__section__two__entry {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 15px 15px;
+  background: var(--background-color);
+  color: var(--primary-text-color);
+  cursor: pointer;
+}
+.ad__student__app__section__two__entry:hover {
+  background: var(--border-color);
+}
+.ad__student__app__section__two__entry__date {
+  width: 10%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.ad__student__app__section__two__entry__id {
+  width: 20%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.ad__student__app__section__two__entry__university {
+  width: 20%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.ad__student__app__section__two__entry__universityemail {
+  width: 20%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+
+.ad__student__app__section__two__entry__userid {
+  width: 20%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.ad__student__app__section__two__entry__status {
+  width: 10%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.ad__student__app__section__two__entry__status__icon {
+  color: #ffc72c;
+  font-size: var(--secondary-font-size);
+  margin-right: 10px;
+}
+.ad__student__app__section__two__entry__status__icon.successful {
+  color: #1db954;
+}
+.ad__student__app__section__two__entry__status__icon.unsuccessful {
+  color: #c8102e;
+}
+
+@media all and (max-width: 768px) {
+  .ad__student__app__section__article {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    margin: 20px 0;
+    width: 100%;
+  }
+  .ad__student__app__section__one__card {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .ad__student__app__section__two {
+    padding: 15px 15px;
+    padding-bottom: 30px;
+    width: 100%;
+    overflow-x: scroll;
+  }
+  .ad__student__app__section__two__header {
+    width: 400%;
+  }
+  .ad__student__app__section__two__entry {
+    width: 400%;
+  }
+  .ad__student__app__section__header > h1 {
+    font-size: var(--secondary-font-size);
+    font-weight: 500;
+  }
+  .ad__student__app__section__header > select {
+    width: max-content;
+  }
+}

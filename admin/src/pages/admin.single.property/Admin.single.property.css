@@ -1,0 +1,183 @@
+.single__property {
+  min-height: 100vh;
+  background: var(--background-color);
+  color: var(--primary-text-color);
+}
+.single__property__section__one {
+  display: flex;
+  justify-content: start;
+  width: 100%;
+  padding: 15px 15px;
+}
+.single__property__section__one > img {
+  width: 24%;
+  height: 250px;
+  object-fit: cover;
+  margin-right: 1%;
+}
+.single__property__section__two {
+  padding: 15px 15px;
+  display: flex;
+  justify-content: space-between;
+}
+.single__property__section__two__seg2 {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+}
+.single__property__section__two__seg2 > div {
+  background: var(--border-color);
+  border-radius: 5px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 50px;
+  padding: 10px 15px;
+}
+.single__property__section__two__seg1 {
+  width: 50%;
+}
+.single__property__section__two__seg1 > h1 {
+  font-size: 35px;
+  font-weight: 600;
+  color: var(--primary-text-color);
+  margin-bottom: 20px;
+}
+.single__property__section__two__seg1 > p {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--primary-text-color);
+}
+
+.single__property__section__two__seg1__article1 {
+  display: flex;
+  flex-direction: column;
+}
+.single__property__section__two__seg1__article1 > h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary-text-color);
+  margin: 20px 0;
+}
+
+.single__property__section__two__seg1__article1 > h4 {
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+  color: var(--tertiary-text-color);
+  margin-bottom: 20px;
+}
+.single__property__section__two__seg1__article1__amenities {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.single__property__section__two__seg1__article1__amenities > span {
+  display: flex;
+  align-items: center;
+  width: 40%;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+.single__property__checkmark {
+  margin-right: 15px;
+  color: var(--foreground-color);
+  color: #ffe4ac;
+}
+.single__property__section__two__seg1__article1__bedrooms {
+  display: flex;
+  flex-direction: column;
+}
+.single__property__section__two__seg1__article1__bedrooms > span {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.single__property__bedrooms__icon {
+  margin-right: 15px;
+  color: var(--primary-text-color);
+}
+
+.single__property__section1 {
+  width: 100%;
+  background: var(--background-color);
+  padding: 20px 20px;
+}
+.single__property__section1 > button {
+  width: max-content;
+  padding: 10px 15px;
+  border: 0;
+  background: var(--primary-tint-color);
+  color: white;
+  border-radius: 2.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.single__property__section1 > h1 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: var(--primary-text-color);
+}
+.single__property__section1 > span {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 30px;
+}
+.single__property__section1 > span > h2 {
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+  color: var(--tertiary-text-color);
+  opacity: 0.9;
+  width: 25%;
+}
+.single__property__section1 > span > h3 {
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+  color: var(--tertiary-text-color);
+  width: 75%;
+}
+
+@media all and (max-width: 768px) {
+  .single__property__section__one {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    overflow-x: scroll;
+  }
+  .single__property__section__one > img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    margin-right: 15px;
+  }
+  .single__property__section__two {
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+  }
+  .single__property__section__two__seg2 {
+    width: 100%;
+  }
+  .single__property__section__two__seg1 {
+    width: 100%;
+  }
+  .single__property__section1 > span {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    width: 100%;
+  }
+  .single__property__section1 > span > h2 {
+    opacity: 0.8;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .single__property__section1 > span > h3 {
+    width: 100%;
+  }
+}

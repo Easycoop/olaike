@@ -1,0 +1,48 @@
+.create__ticket {
+  min-height: 100vh;
+  background: var(--background-color);
+  color: var(--primary-text-color);
+  padding: 15px 15px;
+}
+.create__ticket__section1 {
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--background-color);
+  padding: 15px 15px;
+  margin-bottom: 20px;
+}
+.create__ticket__section1 > h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary-text-color);
+  margin-bottom: 20px;
+}
+.create__ticket__section1 > article {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.create__ticket__section1 > span {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+.create__ticket__section1 > span > button {
+  width: max-content;
+  padding: 10px 15px;
+  border: 0;
+  background: var(--primary-tint-color);
+  color: white;
+  border-radius: 2.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.create__ticket__section1 > span > button:last-of-type {
+  background: var(--background-color);
+  color: var(--primary-text-color);
+  margin-left: 10px;
+}
+
+@media all and (max-width: 768px) {
+}

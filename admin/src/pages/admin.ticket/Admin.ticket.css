@@ -1,0 +1,213 @@
+.admin__ticket {
+  min-height: 100vh;
+  background: var(--background-color);
+  color: var(--primary-text-color);
+  padding: 15px 15px;
+}
+.admin__ticket__section__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+}
+.admin__ticket__section__header > h1 {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--primarytext-color);
+}
+.admin__ticket__section__header > select {
+  margin-left: auto;
+  width: 200px;
+  padding: 10px 10px;
+  border: 1px solid var(--border-color);
+  background: var(--border-color);
+}
+.admin__ticket__section__article {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+.admin__ticket__section__one__card {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  padding: 10px 20px;
+  width: 24%;
+  border-radius: 5px;
+}
+.admin__ticket__section__one__card__icon {
+  margin-right: 10px;
+  font-size: 20px;
+}
+.admin__ticket__section__one__card__icon.one {
+  color: var(--primary-text-color);
+}
+.admin__ticket__section__one__card__icon.two {
+  color: crimson;
+}
+.admin__ticket__section__one__card__icon.three {
+  color: goldenrod;
+}
+.admin__ticket__section__one__card__icon.four {
+  color: darkblue;
+}
+.admin__ticket__section__one__card > div {
+}
+.admin__ticket__section__one__card > div > h3 {
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+  color: var(--tertiary-text-color);
+  margin-bottom: 5px;
+}
+.admin__ticket__section__one__card > div > h1 {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary-text-color);
+}
+.admin__ticket__section__two {
+}
+.admin__ticket__section__two > button {
+  width: max-content;
+  padding: 10px 15px;
+  border: 0;
+  background: var(--primary-tint-color);
+  color: white;
+  border-radius: 2.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.admin__ticket__section__two__button__icon {
+  margin-right: 10px;
+}
+.admin__ticket__section__two__header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 15px 15px;
+  background: var(--border-color);
+  color: var(--primary-text-color);
+}
+.admin__ticket__section__two__header__ticket {
+  width: 15%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.admin__ticket__section__two__header__subject {
+  width: 25%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.admin__ticket__section__two__header__userid {
+  width: 20%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.admin__ticket__section__two__header__date {
+  width: 15%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+
+.admin__ticket__section__two__header__status {
+  width: 15%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.admin__ticket__section__two__header__action {
+  width: 10%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.admin__ticket__section__two__entry {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 15px 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+.admin__ticket__section__two__entry:hover {
+  background: var(--border-color);
+}
+.admin__ticket__section__two__entry__ticket {
+  width: 15%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.admin__ticket__section__two__entry__subject {
+  width: 25%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.admin__ticket__section__two__entry__userid {
+  width: 20%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.admin__ticket__section__two__entry__date {
+  width: 15%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+}
+.admin__ticket__section__two__entry__status {
+  width: 15%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+  color: var(--tertiary-text-color);
+}
+.admin__ticket__section__two__entry__status > span {
+  display: flex;
+  align-items: center;
+}
+.admin__ticket__section__two__entry__status__icon {
+  font-size: var(--secondary-font-size);
+  color: darkblue;
+  margin-right: 10px;
+}
+.admin__ticket__section__two__entry__status__icon.inactive {
+  color: var(--tertiary-text-color);
+}
+.admin__ticket__section__two__entry__created {
+  width: 10%;
+  font-size: var(--secondary-font-size);
+  color: var(--tertiary-text-color);
+  font-weight: 500;
+}
+.admin__ticket__section__two__entry__action {
+  width: 10%;
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+  color: var(--tertiary-text-color);
+}
+.admin__ticket__section__two__entry__action__icon {
+  font-size: 15px;
+  cursor: pointer;
+}
+.admin__ticket__section__two__entry__action__icon:last-of-type {
+  font-size: 15px;
+  color: red;
+  margin-left: 10px;
+}
+
+@media all and (max-width: 768px) {
+  .admin__ticket__section__article {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    margin: 20px 0;
+  }
+  .admin__ticket__section__one__card {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  .admin__ticket__section__two {
+    overflow-x: scroll;
+  }
+  .admin__ticket__section__two__wrapper {
+    width: 400%;
+  }
+}

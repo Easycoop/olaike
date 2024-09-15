@@ -1,0 +1,102 @@
+.admin__settings {
+  min-height: 100vh;
+  background: var(--background-color);
+  color: var(--primary-text-color);
+  padding: 0 15px;
+}
+.admin__settings__section__two__theme {
+}
+.admin__settings__section__two__theme > h1 {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--primary-text-color);
+  margin-bottom: 20px;
+}
+.admin__settings__section__two__theme__alert {
+  display: flex;
+  align-items: center;
+  background: #d1ecf1;
+  margin-bottom: 20px;
+  color: #3884a7;
+  font-size: var(--secondary-font-size);
+  padding: 10px 15px;
+}
+.admin__settings__section__two__theme__alert__icon {
+  color: var(--primary-text-color);
+  font-size: var(--secondary-font-size);
+  margin-right: 10px;
+}
+.admin__settings__section__two__theme__alert__select {
+  display: flex;
+  padding: 20px 0;
+  margin-bottom: 20px;
+}
+.admin__settings__section__two__theme__alert__button {
+  padding: 10px 15px;
+  border: 0;
+  color: white;
+  border-radius: 2.5px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 25px;
+}
+.admin__settings__section__two__theme__alert__button.one {
+  background: #8b0000;
+}
+.admin__settings__section__two__theme__alert__button.two {
+  background: #b8860b;
+}
+.admin__settings__section__two__theme__alert__button.three {
+  background: #228b22;
+}
+.admin__settings__section__two__theme__alert__button.four {
+  background: #000000;
+}
+.admin__settings__section__two__theme__alert__button.five {
+  background: #7a5af5;
+}
+.admin__settings__section__two__theme__alert__chart {
+}
+.admin__settings__section__two__theme__alert__chart > h1 {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--primary-text-color);
+  margin-bottom: 20px;
+}
+.admin__settings__section__two__theme__alert__chart > article {
+  display: flex;
+  align-items: start;
+}
+.admin__settings__section__two__theme__alert__chart > article > div {
+  margin-right: 50px;
+}
+.admin__settings__section__two__theme__alert__chart > article > div > h3 {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--tertiary-text-color);
+  margin-top: 15px;
+}
+
+@media all and (max-width: 768px) {
+  .admin__settings__section__two__theme__alert__select {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .admin__settings__section__two__theme__alert__button {
+    padding: 15px 15px;
+    margin-right: 0;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  .admin__settings__section__two__theme__alert__chart > article {
+    display: flex;
+    flex-direction: column;
+  }
+  .admin__settings__section__two__theme__alert__chart > article > div {
+    margin-right: 0;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+}

@@ -1,0 +1,207 @@
+.dashboard {
+  transition: 250ms ease-in-out;
+  background: var(--background-color);
+}
+.dashboard__outlet {
+  background: var(--background-color);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 87.5%;
+  margin-left: 12.5%;
+  min-height: 100vh;
+}
+.dashboard__outlet.active {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin-left: 0%;
+  min-height: 100vh;
+  padding-left: 75px;
+}
+.dashboard__navbar {
+  position: fixed;
+  height: 100vh;
+  overflow-y: scroll;
+  top: 0;
+  left: 0;
+  width: 12.5%;
+  border-right: 1px solid var(--border-color);
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  background: var(--background-color);
+  color: var(--primary-text-color);
+}
+.dashboard__navbar.active {
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  width: 75px;
+  border-right: 1px solid var(--border-color);
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+.dashboard__navbar.active > .dashboard__navbar__section__two > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.dashboard__navbar.active > .dashboard__navbar__section__two > div > h3 {
+  display: none;
+}
+.dashboard__navbar.active > .dashboard__navbar__section__two > .dashboard__navbar__submenu > h3 {
+  padding: 15px 15px;
+}
+.dashboard__navbar.active > .dashboard__navbar__section__two > .dashboard__navbar__submenu > h3 > span {
+  display: none;
+}
+.dashboard__navbar.active > .dashboard__navbar__section__three > div > h3 {
+  display: none;
+}
+.dashboard__navbar.active > .dashboard__navbar__section__one {
+  display: flex;
+  justify-content: center;
+}
+.dashboard__header__logo {
+  object-fit: cover;
+  height: 35px;
+}
+.dashboard__header__logo.active {
+  display: none;
+}
+.dashboard__menu {
+  margin-left: auto;
+  font-size: 25px;
+  cursor: pointer;
+}
+.dashboard__menu.active {
+  margin-left: 0;
+}
+.dashboard__navbar__section__one {
+  height: 7.5vh;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+}
+.dashboard__navbar__section__two {
+  /* padding-top: 5vh; */
+}
+.dashboard__navbar__section__two > div {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-color);
+  padding: 20px 10px;
+  cursor: pointer;
+  color: var(--tertiary-text-color);
+  width: 100%;
+}
+.dashboard__navbar__icon {
+  font-size: 18px;
+}
+.dashboard__navbar__icon__submenu {
+  font-size: 18px;
+}
+
+.dashboard__navbar__section__two > div > h3 {
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+  margin-left: 10px;
+}
+.dashboard__navbar__active {
+  background: var(--primary-tint-color);
+  border-left: 2px solid var(--primary-tint-border-color);
+}
+.dashboard__navbar__active > .dashboard__navbar__icon {
+  color: white;
+}
+.dashboard__navbar__active > .dashboard__navbar__icon__submenu {
+  color: white;
+}
+
+.dashboard__navbar__active > span {
+  color: white;
+}
+.dashboard__navbar__active > h3 {
+  color: white;
+}
+.dashboard__navbar__dropdown {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  cursor: pointer;
+  width: 100%;
+}
+.dashboard__navbar__dropdown > span {
+  margin-left: auto;
+}
+.dashboard__navbar__dropdown > span > h3 {
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+  margin-left: 5px;
+}
+.dashboard__navbar__submenu {
+  display: none;
+}
+.dashboard__navbar__submenu.active {
+  display: block;
+}
+.dashboard__navbar__submenu > h3 {
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--tertiary-text-color);
+  padding: 15px 15px;
+  padding-left: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.dashboard__navbar__submenu > h3 > span {
+  margin-left: 10px;
+}
+.dashboard__navbar__section__three {
+  margin-top: auto;
+}
+.dashboard__navbar__section__three > div {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-color);
+  padding: 20px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+.dashboard__navbar__section__three > div > h3 {
+  font-size: var(--secondary-font-size);
+  font-weight: 500;
+  margin-left: 10px;
+}
+@media all and (max-width: 768px) {
+  .dashboard__navbar.active {
+    width: 14%;
+    padding: 0;
+  }
+  .dashboard__navbar {
+    width: 80%;
+    padding: 0 10px;
+  }
+  .dashboard__navbar__section__two > div {
+    padding: 20px 10px;
+  }
+  .dashboard__outlet.active {
+    padding-left: 13%;
+  }
+  .dashboard__outlet {
+    width: 20%;
+  }
+}
