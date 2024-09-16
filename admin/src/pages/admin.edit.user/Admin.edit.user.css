@@ -1,13 +1,13 @@
 .edit__user {
   min-height: 100vh;
-  background: var(--border-color);
-  color: var(--primary-text-color);
+  background: var(--color-border);
+  color: var(--color-text-primary);
   padding: 15px 15px;
 }
 .edit__user > h1 {
   font-size: 18px;
   font-weight: 500;
-  color: var(--primary-text-color);
+  color: var(--color-text-primary);
   margin-bottom: 20px;
 }
 .edit__user > span {
@@ -18,7 +18,7 @@
   width: max-content;
   padding: 10px 15px;
   border: 0;
-  background: var(--primary-tint-color);
+  background: var(--color-primary-tint);
   color: white;
   border-radius: 2.5px;
   cursor: pointer;
@@ -26,12 +26,12 @@
   align-items: center;
 }
 .edit__user > span > button:last-of-type {
-  background: var(--background-color);
-  color: var(--primary-text-color);
+  background: var(--color-background);
+  color: var(--color-text-primary);
   margin-left: 10px;
 }
 .edit__user__section1 {
-  background: var(--background-color);
+  background: var(--color-background);
   padding: 15px 15px;
   margin-bottom: 20px;
 }
@@ -55,7 +55,7 @@
   flex-direction: column;
 }
 .edit__user__article__div > label {
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
   color: var(--tertiary-text-color);
   margin-bottom: 10px;
@@ -68,22 +68,22 @@
   font-size: 5px;
 }
 .edit__user__article__div > input {
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
   color: var(--tertiary-text-color);
   margin-bottom: 10px;
   padding: 10px 15px;
-  border: 1px solid var(--border-color);
-  background: var(--border-color);
+  border: 1px solid var(--color-border);
+  background: var(--color-border);
 }
 .edit__user__article__div > select {
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
   color: var(--tertiary-text-color);
   margin-bottom: 10px;
   padding: 10px 15px;
-  border: 1px solid var(--border-color);
-  background: var(--border-color);
+  border: 1px solid var(--color-border);
+  background: var(--color-border);
 }
 .image__upload {
   display: flex;

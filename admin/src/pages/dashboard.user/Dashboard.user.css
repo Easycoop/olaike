@@ -1,7 +1,7 @@
 .dashboard__users {
   min-height: 100vh;
-  background: var(--background-color);
-  color: var(--primary-text-color);
+  background: var(--color-background);
+  color: var(--color-text-primary);
   width: 100%;
 }
 .dashboard__users__section__one {
@@ -11,22 +11,22 @@
   padding: 15px 15px;
 }
 .dashboard__users__section__one > h3 {
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 600;
   margin-left: 20px;
-  color: var(--tertiary-text-color);
+  color: var(--color-text-secondary);
 }
 .dashboard__users__search {
   padding: 10px 10px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--color-border);
   display: flex;
   align-items: center;
 }
 .dashboard__users__search > input {
   padding: 5px 15px;
   border: 0;
-  background: var(--background-color);
-  color: var(--primary-text-color);
+  background: var(--color-background);
+  color: var(--color-text-primary);
 }
 .dashboard__users__search > input:focus {
   outline: none;
@@ -35,7 +35,7 @@
   padding: 5px 15px;
   border: 0;
   background: #ffd000;
-  color: var(--primary-text-color);
+  color: var(--color-text-primary);
   border-radius: 2.5px;
   cursor: pointer;
 } */
@@ -48,17 +48,17 @@
 .dashboard__users__end > button {
   padding: 10px 15px;
   border: 0;
-  background: var(--primary-text-color);
-  color: var(--background-color);
+  background: var(--color-text-primary);
+  color: var(--color-background);
   border-radius: 2.5px;
 }
 .dashboard__users__end > button:last-of-type {
   margin-left: 10px;
-  background: var(--primary-tint-color);
+  background: var(--color-primary-tint);
   color: white;
 }
 .dashboard__users__end__icon {
-  color: var(--primary-tint-color);
+  color: var(--color-primary-tint);
   font-size: 25px;
   margin-right: 20px;
 }
@@ -71,48 +71,48 @@
   display: flex;
   align-items: center;
   padding: 15px 15px;
-  background: var(--dashboard--user--entry--bg);
+  background: var(--color-foreground);
 }
 .dashboard__users__section__two__header__id {
   width: 20%;
-  font-size: var(--secondary-font-size);
-  color: var(--tertiary-text-color);
+  font-size: var(--font-size-secondary);
+  color: var(--color-text-quaternary);
   font-weight: 500;
 }
 .dashboard__users__section__two__header__name {
   width: 20%;
-  font-size: var(--secondary-font-size);
-  color: var(--tertiary-text-color);
+  font-size: var(--font-size-secondary);
+  color: var(--color-text-quaternary);
   font-weight: 500;
 }
 .dashboard__users__section__two__header__email {
   width: 20%;
-  font-size: var(--secondary-font-size);
-  color: var(--tertiary-text-color);
+  font-size: var(--font-size-secondary);
+  color: var(--color-text-quaternary);
   font-weight: 500;
 }
 .dashboard__users__section__two__header__role {
   width: 10%;
-  font-size: var(--secondary-font-size);
-  color: var(--tertiary-text-color);
+  font-size: var(--font-size-secondary);
+  color: var(--color-text-quaternary);
   font-weight: 500;
 }
 .dashboard__users__section__two__header__status {
   width: 10%;
-  font-size: var(--secondary-font-size);
-  color: var(--tertiary-text-color);
+  font-size: var(--font-size-secondary);
+  color: var(--color-text-quaternary);
   font-weight: 500;
 }
 .dashboard__users__section__two__header__created {
   width: 10%;
-  font-size: var(--secondary-font-size);
-  color: var(--tertiary-text-color);
+  font-size: var(--font-size-secondary);
+  color: var(--color-text-quaternary);
   font-weight: 500;
 }
 .dashboard__users__section__two__header__action {
   width: 10%;
-  font-size: var(--secondary-font-size);
-  color: var(--tertiary-text-color);
+  font-size: var(--font-size-secondary);
+  color: var(--color-text-quaternary);
   font-weight: 500;
 }
 .dashboard__users__section__two__entry {
@@ -120,40 +120,35 @@
   display: flex;
   align-items: center;
   padding: 15px 15px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
   cursor: pointer;
 }
 .dashboard__users__section__two__entry:hover {
-  background: var(--border-color);
+  background: var(--color-border);
 }
 .dashboard__users__section__two__entry__id {
   width: 20%;
-  font-size: var(--secondary-font-size);
-  color: var(--tertiary-text-color);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 .dashboard__users__section__two__entry__name {
   width: 20%;
-  font-size: var(--secondary-font-size);
-  color: var(--tertiary-text-color);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 .dashboard__users__section__two__entry__email {
   width: 20%;
-  font-size: var(--secondary-font-size);
-  color: var(--tertiary-text-color);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 .dashboard__users__section__two__entry__role {
   width: 10%;
-  font-size: var(--secondary-font-size);
-  color: var(--tertiary-text-color);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 .dashboard__users__section__two__entry__status {
   width: 10%;
-  font-size: var(--secondary-font-size);
-  color: var(--tertiary-text-color);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 .dashboard__users__section__two__entry__status > span {
@@ -161,23 +156,21 @@
   align-items: center;
 }
 .dashboard__users__section__two__entry__status__icon {
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   color: green;
   margin-right: 10px;
 }
 .dashboard__users__section__two__entry__status__icon.inactive {
-  color: var(--tertiary-text-color);
+  color: var(--color-text-tertiary);
 }
 .dashboard__users__section__two__entry__created {
   width: 10%;
-  font-size: var(--secondary-font-size);
-  color: var(--tertiary-text-color);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 .dashboard__users__section__two__entry__action {
   width: 10%;
-  font-size: var(--secondary-font-size);
-  color: var(--tertiary-text-color);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 .dashboard__users__section__two__entry__action__icon {
@@ -214,7 +207,7 @@
     margin-bottom: 20px;
   }
   .dashboard__users__section__one > h3 {
-    font-size: var(--secondary-font-size);
+    font-size: var(--font-size-secondary);
     font-weight: 600;
     margin-left: 0;
   }

@@ -1,7 +1,7 @@
 .admin__transaction {
   min-height: 100vh;
-  background: var(--background-color);
-  color: var(--primary-text-color);
+  background: var(--color-background);
+  color: var(--color-text-primary);
 }
 .admin__transaction__section__one {
   padding: 15px 15px;
@@ -22,8 +22,8 @@
   margin-left: auto;
   width: 200px;
   padding: 10px 10px;
-  border: 1px solid var(--border-color);
-  background: var(--border-color);
+  border: 1px solid var(--color-border);
+  background: var(--color-border);
 }
 .admin__transaction__section__article {
   display: flex;
@@ -34,7 +34,7 @@
 .admin__transaction__section__one__card {
   display: flex;
   align-items: center;
-  background: var(--border-color);
+  background: var(--color-border);
   padding: 10px 20px;
   width: 30%;
   border-radius: 5px;
@@ -42,12 +42,12 @@
 .admin__transaction__section__one__card__icon {
   margin-right: 10px;
   font-size: 20px;
-  color: var(--primary-text-color);
+  color: var(--color-text-primary);
 }
 .admin__transaction__section__one__card > div {
 }
 .admin__transaction__section__one__card > div > h3 {
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
   color: var(--tertiary-text-color);
   margin-bottom: 5px;
@@ -55,7 +55,7 @@
 .admin__transaction__section__one__card > div > h1 {
   font-size: 14px;
   font-weight: 500;
-  color: var(--primary-text-color);
+  color: var(--color-text-primary);
 }
 .admin__transaction__section__chart {
   display: flex;
@@ -76,38 +76,38 @@
   display: flex;
   align-items: center;
   padding: 15px 15px;
-  background: var(--border-color);
-  color: var(--primary-text-color);
+  background: var(--color-foreground);
+  color: var(--color-text-quaternary);
 }
 .admin__transaction__section__two__header__date {
   width: 15%;
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 .admin__transaction__section__two__header__invoice {
   width: 15%;
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 .admin__transaction__section__two__header__ammount {
   width: 15%;
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 .admin__transaction__section__two__header__property {
   width: 25%;
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 
 .admin__transaction__section__two__header__userid {
   width: 20%;
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 .admin__transaction__section__two__header__status {
   width: 10%;
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 .admin__transaction__section__two__entry {
@@ -115,40 +115,40 @@
   display: flex;
   align-items: center;
   padding: 15px 15px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
 }
 .admin__transaction__section__two__entry:hover {
-  background: var(--border-color);
+  background: var(--color-border);
 }
 .admin__transaction__section__two__entry__date {
   width: 15%;
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 .admin__transaction__section__two__entry__invoice {
   width: 15%;
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 .admin__transaction__section__two__entry__ammount {
   width: 15%;
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 .admin__transaction__section__two__entry__property {
   width: 25%;
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 
 .admin__transaction__section__two__entry__userid {
   width: 20%;
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 .admin__transaction__section__two__entry__status {
   width: 10%;
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
 }
 

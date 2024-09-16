@@ -1,7 +1,7 @@
 .single__user {
   min-height: 100vh;
-  background: var(--border-color);
-  color: var(--primary-text-color);
+  background: var(--color-border);
+  color: var(--color-text-primary);
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -10,14 +10,14 @@
 }
 .single__user__section1 {
   width: 59%;
-  background: var(--background-color);
+  background: var(--color-background);
   padding: 20px 20px;
 }
 .single__user__section1 > button {
   width: max-content;
   padding: 15px 15px;
   border: 0;
-  background: var(--primary-tint-color);
+  background: var(--color-primary-tint);
   color: white;
   border-radius: 2.5px;
   cursor: pointer;
@@ -28,7 +28,7 @@
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 30px;
-  color: var(--primary-text-color);
+  color: var(--color-text-primary);
 }
 .single__user__section1 > span {
   display: flex;
@@ -37,16 +37,16 @@
   margin-bottom: 30px;
 }
 .single__user__section1 > span > h2 {
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
-  color: var(--tertiary-text-color);
+  color: var(--color-text-secondary);
   opacity: 0.9;
   width: 25%;
 }
 .single__user__section1 > span > h3 {
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
-  color: var(--tertiary-text-color);
+  color: var(--color-text-secondary);
   width: 75%;
 }
 .single__user__section2 {
@@ -58,7 +58,7 @@
 .single__user__section2__card {
   display: flex;
   align-items: center;
-  background: var(--background-color);
+  background: var(--color-background);
   padding: 15px 20px;
   width: 45%;
   border-radius: 5px;
@@ -67,18 +67,18 @@
 .single__user__section2__card__icon {
   margin-right: 10px;
   font-size: 20px;
-  color: var(--primary-text-color);
+  color: var(--color-text-primary);
 }
 .single__user__section2__card > div > h3 {
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
-  color: var(--tertiary-text-color);
+  color: var(--color-text-secondary);
   margin-bottom: 5px;
 }
 .single__user__section2__card > div > h1 {
   font-size: 14px;
   font-weight: 500;
-  color: var(--primary-text-color);
+  color: var(--color-text-primary);
 }
 
 @media all and (max-width: 768px) {

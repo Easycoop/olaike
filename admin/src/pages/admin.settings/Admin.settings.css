@@ -1,7 +1,7 @@
 .admin__settings {
   min-height: 100vh;
-  background: var(--background-color);
-  color: var(--primary-text-color);
+  background: var(--color-background);
+  color: var(--color-text-primary);
   padding: 0 15px;
 }
 .admin__settings__section__two__theme {
@@ -9,7 +9,7 @@
 .admin__settings__section__two__theme > h1 {
   font-size: 18px;
   font-weight: 500;
-  color: var(--primary-text-color);
+  color: var(--color-text-primary);
   margin-bottom: 20px;
 }
 .admin__settings__section__two__theme__alert {
@@ -18,12 +18,12 @@
   background: #d1ecf1;
   margin-bottom: 20px;
   color: #3884a7;
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   padding: 10px 15px;
 }
 .admin__settings__section__two__theme__alert__icon {
-  color: var(--primary-text-color);
-  font-size: var(--secondary-font-size);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-secondary);
   margin-right: 10px;
 }
 .admin__settings__section__two__theme__alert__select {
@@ -61,7 +61,7 @@
 .admin__settings__section__two__theme__alert__chart > h1 {
   font-size: 18px;
   font-weight: 500;
-  color: var(--primary-text-color);
+  color: var(--color-text-primary);
   margin-bottom: 20px;
 }
 .admin__settings__section__two__theme__alert__chart > article {

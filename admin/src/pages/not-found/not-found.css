@@ -4,23 +4,23 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: var(--border-color);
+  background: var(--color-border);
 }
 .not__found > h1 {
   font-family: primaryFont, serif;
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   margin-bottom: 30px;
 }
 .not__found > p {
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   color: var(--tertiary-text-color);
   line-height: 30px;
   margin-bottom: 30px;
   text-align: center;
 }
 .not__found > h3 {
-  font-size: var(--secondary-font-size);
-  color: var(--primary-text-color);
+  font-size: var(--font-size-secondary);
+  color: var(--color-text-primary);
   line-height: 30px;
   font-weight: 500;
   cursor: pointer;

@@ -1,14 +1,14 @@
 .dashboard {
   transition: 250ms ease-in-out;
-  background: var(--background-color);
+  background: var(--color-background);
 }
 .dashboard__outlet {
-  background: var(--background-color);
+  background: var(--color-background);
   position: absolute;
   top: 0;
   left: 0;
-  width: 87.5%;
-  margin-left: 12.5%;
+  width: 85%;
+  margin-left: 15%;
   min-height: 100vh;
 }
 .dashboard__outlet.active {
@@ -23,17 +23,16 @@
 .dashboard__navbar {
   position: fixed;
   height: 100vh;
-  overflow-y: scroll;
   top: 0;
   left: 0;
-  width: 12.5%;
-  border-right: 1px solid var(--border-color);
+  width: 15%;
+  border-right: 1px solid var(--color-border);
   padding: 0 10px;
   display: flex;
   flex-direction: column;
   z-index: 10;
-  background: var(--background-color);
-  color: var(--primary-text-color);
+  background: var(--color-background);
+  color: var(--color-text-primary);
 }
 .dashboard__navbar.active {
   position: fixed;
@@ -41,7 +40,7 @@
   top: 0;
   left: 0;
   width: 75px;
-  border-right: 1px solid var(--border-color);
+  border-right: 1px solid var(--color-border);
   padding: 0 10px;
   display: flex;
   flex-direction: column;
@@ -57,10 +56,17 @@
 .dashboard__navbar.active > .dashboard__navbar__section__two > div > h3 {
   display: none;
 }
-.dashboard__navbar.active > .dashboard__navbar__section__two > .dashboard__navbar__submenu > h3 {
+.dashboard__navbar.active
+  > .dashboard__navbar__section__two
+  > .dashboard__navbar__submenu
+  > h3 {
   padding: 15px 15px;
 }
-.dashboard__navbar.active > .dashboard__navbar__section__two > .dashboard__navbar__submenu > h3 > span {
+.dashboard__navbar.active
+  > .dashboard__navbar__section__two
+  > .dashboard__navbar__submenu
+  > h3
+  > span {
   display: none;
 }
 .dashboard__navbar.active > .dashboard__navbar__section__three > div > h3 {
@@ -71,8 +77,8 @@
   justify-content: center;
 }
 .dashboard__header__logo {
-  object-fit: cover;
-  height: 35px;
+  object-fit: contain;
+  height: 20px;
 }
 .dashboard__header__logo.active {
   display: none;
@@ -97,12 +103,13 @@
 .dashboard__navbar__section__two > div {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid var(--border-color);
-  border-top: 1px solid var(--border-color);
-  padding: 20px 10px;
+  border-bottom: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border);
+  padding: 30px 10px;
   cursor: pointer;
-  color: var(--tertiary-text-color);
+  color: var(--color-text-primary);
   width: 100%;
+  border-radius: var(--border-radius-small);
 }
 .dashboard__navbar__icon {
   font-size: 18px;
@@ -112,12 +119,12 @@
 }
 
 .dashboard__navbar__section__two > div > h3 {
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
   margin-left: 10px;
 }
 .dashboard__navbar__active {
-  background: var(--primary-tint-color);
+  background: var(--color-foreground);
   border-left: 2px solid var(--primary-tint-border-color);
 }
 .dashboard__navbar__active > .dashboard__navbar__icon {
@@ -144,7 +151,7 @@
   margin-left: auto;
 }
 .dashboard__navbar__dropdown > span > h3 {
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
   margin-left: 5px;
 }
@@ -155,10 +162,10 @@
   display: block;
 }
 .dashboard__navbar__submenu > h3 {
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--tertiary-text-color);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-tertiary);
   padding: 15px 15px;
   padding-left: 30px;
   cursor: pointer;
@@ -174,15 +181,15 @@
 .dashboard__navbar__section__three > div {
   display: flex;
   align-items: center;
-  border-bottom: 1px solid var(--border-color);
-  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border);
   padding: 20px 10px;
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
 }
 .dashboard__navbar__section__three > div > h3 {
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   font-weight: 500;
   margin-left: 10px;
 }
