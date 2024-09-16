@@ -1,13 +1,8 @@
 import "./Admin.css";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
-import { MdCreateNewFolder, MdOutlinePayment } from "react-icons/md";
-import {
-  IoMdArrowDropdown,
-  IoMdDocument,
-  IoMdPersonAdd,
-  IoMdSettings,
-} from "react-icons/io";
+import { MdOutlinePayment } from "react-icons/md";
+import { IoMdSettings } from "react-icons/io";
 import { BiMenu } from "react-icons/bi";
 import { FaPowerOff, FaUser, FaUserPlus } from "react-icons/fa";
 import { RiDashboardFill } from "react-icons/ri";
@@ -17,7 +12,6 @@ import DashboardHeader from "../../components/layout/header/Dashboard.header";
 import StateContext from "../../context/StateProvider";
 
 function Admin() {
-  const { theme } = useContext(StateContext);
   const [active, SetActive] = useState(false);
   const [dropdown, setDropdown] = useState({
     create: false,
@@ -31,7 +25,7 @@ function Admin() {
   const [colorId, setColorId] = useState(1);
 
   return (
-    <div className="dashboard" theme={theme ? `${theme}` : "#008000"}>
+    <div className="dashboard">
       <div
         className={active ? "dashboard__navbar active" : "dashboard__navbar"}
       >

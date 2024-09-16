@@ -88,7 +88,7 @@
   display: flex;
   align-items: center;
   padding: 15px 15px;
-  background: var(--color-foreground);
+  background: var(--color-primary-tint);
   color: var(--color-text-quaternary);
 }
 .ad__student__app__section__two__header__date {

@@ -71,7 +71,7 @@
   display: flex;
   align-items: center;
   padding: 15px 15px;
-  background: var(--color-foreground);
+  background: var(--color-primary-tint);
 }
 .dashboard__users__section__two__header__id {
   width: 20%;

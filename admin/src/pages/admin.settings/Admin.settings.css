@@ -41,6 +41,9 @@
   cursor: pointer;
   margin-right: 25px;
 }
+.admin__settings__section__two__theme__alert__button.zero {
+  background: #00208a;
+}
 .admin__settings__section__two__theme__alert__button.one {
   background: #8b0000;
 }
@@ -74,8 +77,31 @@
 .admin__settings__section__two__theme__alert__chart > article > div > h3 {
   font-size: 14px;
   font-weight: 500;
-  color: var(--tertiary-text-color);
+  color: var(--color-text-tertiary);
   margin-top: 15px;
+}
+
+.account__notifications__section__two {
+  margin-right: 60%;
+  padding: 30px 0;
+  padding-bottom: 25px;
+}
+.account__notifications__select__div {
+  border-bottom: 1px solid var(--color-border);
+}
+.account__notifications__select {
+  border: 0;
+  padding: 15px 0;
+  background: transparent;
+  margin-right: 25px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 15px;
+  color: var(--color-text-tertiary);
+}
+.account__notifications__select.selected {
+  border-bottom: 2.5px solid var(--color-text-tertiary);
+  color: var(--color-text-primary);
 }
 
 @media all and (max-width: 768px) {

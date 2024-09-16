@@ -215,6 +215,7 @@ function AdminSettings() {
                     >
                       <input
                         type="file"
+                        accept="image/*"
                         className="input__field"
                         hidden
                         onChange={({ target: { files } }) => {
@@ -280,6 +281,12 @@ function AdminSettings() {
                 suite your aesthetics.
               </div>
               <div className="admin__settings__section__two__theme__alert__select">
+                <button
+                  className="admin__settings__section__two__theme__alert__button zero"
+                  onClick={() => setTheme("#00208a")}
+                >
+                  Royal blue
+                </button>
                 <button
                   className="admin__settings__section__two__theme__alert__button one"
                   onClick={() => setTheme("#8b0000")}

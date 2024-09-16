@@ -19,7 +19,7 @@ function AdminTransaction() {
       type: "deposit",
       amount: 500,
       userId: "1349-ff3434-xfd",
-      status: "succesful",
+      status: "successful",
       transactionId: "147197",
       description: "Salary payment",
     },
@@ -29,7 +29,7 @@ function AdminTransaction() {
       type: "withdrawal",
       amount: 200,
       userId: "12g5-ff3434-xfd",
-      status: "succesful",
+      status: "successful",
       transactionId: "411531",
       description: "Emergency fund",
     },
@@ -39,7 +39,7 @@ function AdminTransaction() {
       type: "deposit",
       amount: 1000,
       userId: "jhj14-3434-xfd",
-      status: "unsuccesful",
+      status: "unsuccessful",
       transactionId: "098900",
       description: "Emergency fund",
     },
@@ -187,10 +187,10 @@ function AdminTransaction() {
                   <span>
                     <PiCircleFill
                       className={
-                        transaction[i].status == "successful"
-                          ? "ad__student__app__section__two__entry__status__icon successful"
-                          : transaction[i].status == "unsuccessful"
-                          ? "ad__student__app__section__two__entry__status__icon unsuccessful"
+                        transaction[i].status == "successsful"
+                          ? "ad__student__app__section__two__entry__status__icon successsful"
+                          : transaction[i].status == "unsuccesssful"
+                          ? "ad__student__app__section__two__entry__status__icon unsuccesssful"
                           : "ad__student__app__section__two__entry__status__icon"
                       }
                     />

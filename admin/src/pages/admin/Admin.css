@@ -124,7 +124,7 @@
   margin-left: 10px;
 }
 .dashboard__navbar__active {
-  background: var(--color-foreground);
+  background: var(--color-primary-tint);
   border-left: 2px solid var(--primary-tint-border-color);
 }
 .dashboard__navbar__active > .dashboard__navbar__icon {

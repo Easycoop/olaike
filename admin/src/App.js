@@ -15,10 +15,13 @@ import ScrollToTop from "./utils/ScrollToTop";
 import "./app.css";
 import AdminSingleUser from "./pages/admin.single.user/Admin.single.user";
 import AdminEditUser from "./pages/admin.edit.user/Admin.edit.user";
+import { useContext } from "react";
+import StateContext from "./context/StateProvider";
 
 function App() {
+  const { theme } = useContext(StateContext);
   return (
-    <div>
+    <div theme={theme ? `${theme}` : "#00208a"}>
       <BrowserRouter>
         <ScrollToTop />
         <ErrorBoundary>
