@@ -460,7 +460,7 @@ function Loan() {
             <div className="loan__segment__foot">
               <button
                 className="loan__foot__button"
-                onClick={() => navigate("/loan-completed")}
+                onClick={() => navigate("/main/loan-completed")}
               >
                 Apply
               </button>

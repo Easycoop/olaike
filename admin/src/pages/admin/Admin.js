@@ -97,9 +97,9 @@ function Admin() {
           </div>
           <div
             onClick={() => {
-              setPath("Loan applications");
+              setPath("Registration applications");
               setColorId(23);
-              navigate("/loan-applications");
+              navigate("/registration-applications");
             }}
             className={colorId === 23 ? "dashboard__navbar__active" : ""}
           >

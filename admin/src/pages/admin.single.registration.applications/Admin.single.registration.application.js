@@ -1,4 +1,4 @@
-import "./Admin.single.loan.application.css";
+import "./Admin.single.registration.application.css";
 
 function SingleLoanApplications() {
   const result = {
@@ -8,7 +8,7 @@ function SingleLoanApplications() {
     phone: "+1 1234567890",
     amount: "₦250,000",
     status: "pending",
-    userId: "144f-125f-fdg",
+    role: "End User",
     date: "12th July, 2024",
   };
 
@@ -19,7 +19,7 @@ function SingleLoanApplications() {
       <div className="si__st__app">
         <section className="admin__single__notice__section__one">
           <article className="admin__single__notice__section__one__article1">
-            <h1>{`Loan application from ${result.name}`}</h1>
+            <h1>{`Registration application from ${result.name}`}</h1>
           </article>
           <article className="admin__single__notice__section__one__article2">
             <span>
@@ -35,12 +35,12 @@ function SingleLoanApplications() {
               <h3>{result.id}</h3>
             </span>
             <span>
-              <h1>Amount</h1>
-              <h3>{result.amount}</h3>
+              <h1>Name</h1>
+              <h3>{result.name}</h3>
             </span>
             <span>
-              <h1>User Id</h1>
-              <h3>{result.userId}</h3>
+              <h1>Role</h1>
+              <h3>{result.role}</h3>
             </span>
             <span>
               <h1>Status</h1>

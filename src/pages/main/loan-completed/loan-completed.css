@@ -1,0 +1,27 @@
+.loan-completed {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.loan-completed > img {
+  object-fit: contain;
+  width: 400px;
+}
+.loan-completed > h4 {
+  font-size: var(--font-size-h4);
+  margin-bottom: var(--spacing-small);
+  color: var(--color-foreground);
+}
+.loan-completed > p {
+  font-size: var(--font-size-secondary);
+  color: var(--color-text-secondary);
+}
+
+@media all and (max-width: 768px) {
+  .loan-completed > img {
+    object-fit: contain;
+    width: 80%;
+  }
+}

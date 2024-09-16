@@ -1,10 +1,10 @@
 import { FaFile, FaFileExcel, FaFileImport } from "react-icons/fa";
-import "./Admin.loan.applications.css";
+import "./Admin.registration.applications.css";
 import { PiCircleFill } from "react-icons/pi";
 import { FaFileCircleCheck } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
-function AdminLoanApplication() {
+function AdminRegistrationApplication() {
   const applicationId = 1;
   const navigate = useNavigate();
   const result = [
@@ -13,9 +13,8 @@ function AdminLoanApplication() {
       name: "John Doe",
       email: "john.doe@example.com",
       phone: "+1 1234567890",
-      amount: "₦250,000",
       status: "pending",
-      userId: "144f-125f-fdg",
+      role: "End User",
       date: "12th July, 2024",
     },
     {
@@ -23,9 +22,8 @@ function AdminLoanApplication() {
       name: "Emmanuel Kant",
       email: "jane.doe@example.com",
       phone: "+2 9876543210",
-      amount: "₦300,000",
       status: "successful",
-      userId: "144f-125f-fdg",
+      role: "End User",
       date: "12th July, 2024",
     },
     {
@@ -33,19 +31,8 @@ function AdminLoanApplication() {
       name: "David Smith",
       email: "david.smith@example.com",
       phone: "+3 3333333333",
-      amount: "₦200,000",
       status: "unsuccessful",
-      userId: "144f-125f-fdg",
-      date: "12th July, 2024",
-    },
-    {
-      id: 4,
-      name: "Amara Williams",
-      email: "amara.williams@example.com",
-      phone: "+4 4444444444",
-      amount: "₦250,000",
-      status: "pending",
-      userId: "144f-125f-fdg",
+      role: "End User",
       date: "12th July, 2024",
     },
   ];
@@ -54,7 +41,7 @@ function AdminLoanApplication() {
       <div className="ad__student__app">
         <section className="ad__student__app__section__one">
           <span className="ad__student__app__section__header">
-            <h1>Loan application summary</h1>
+            <h1>Registration application summary</h1>
             <select name="Timeline" id="Timeline">
               <option value={null}>This month</option>
               <option value="1">Last month</option>
@@ -129,11 +116,11 @@ function AdminLoanApplication() {
               Name
             </h1>
             <h1 className="ad__student__app__section__two__header__universityemail">
-              amount
+              Email
             </h1>
 
             <h1 className="ad__student__app__section__two__header__userid">
-              User ID
+              Role
             </h1>
             <h1 className="ad__student__app__section__two__header__status">
               Status
@@ -145,7 +132,7 @@ function AdminLoanApplication() {
               <div
                 className="ad__student__app__section__two__entry"
                 onClick={() => {
-                  navigate(`/loan-application/${applicationId}`);
+                  navigate(`/registration-application/${applicationId}`);
                 }}
               >
                 <h1 className="ad__student__app__section__two__entry__date">
@@ -158,11 +145,11 @@ function AdminLoanApplication() {
                   {result[i].name}
                 </h1>
                 <h1 className="ad__student__app__section__two__entry__universityemail">
-                  {result[i].amount}
+                  {result[i].email}
                 </h1>
 
                 <h1 className="ad__student__app__section__two__entry__userid">
-                  {result[i].userId}
+                  {result[i].role}
                 </h1>
                 <h1 className="ad__student__app__section__two__entry__status">
                   <span>
@@ -187,4 +174,4 @@ function AdminLoanApplication() {
   );
 }
 
-export default AdminLoanApplication;
+export default AdminRegistrationApplication;

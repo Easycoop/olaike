@@ -4,23 +4,6 @@
   color: var(--color-text-primary);
   padding: 40px 40px;
 }
-.si__st__app__cta {
-  display: flex;
-  align-items: center;
-  padding: 20px 20px;
-}
-.si__st__app__cta > button {
-  padding: 10px 15px;
-  border: 0;
-  background: var(--color-primary-tint);
-  color: white;
-  border-radius: 2.5px;
-  cursor: pointer;
-}
-.si__st__app__cta > button:last-of-type {
-  background: var(--color-border);
-  color: red;
-}
 
 .admin__single__notice {
   min-height: 100vh;

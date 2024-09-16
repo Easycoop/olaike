@@ -5,7 +5,9 @@ import AdminSettings from "./pages/admin.settings/Admin.settings";
 import DashboardUser from "./pages/dashboard.user/Dashboard.user";
 import AdminCreateUser from "./pages/admin.create.user/Admin.create.user";
 import AdminLoanApplication from "./pages/admin.loan.applications/Admin.loan.applications";
+import AdminRegistrationApplication from "./pages/admin.registration.applications/Admin.registration.applications";
 import SingleLoanApplications from "./pages/admin.single.loan.applications/Admin.single.loan.application";
+import SingleRegistrationApplications from "./pages/admin.single.registration.applications/Admin.single.registration.application";
 import Admin from "./pages/admin/Admin";
 import NotFound from "./pages/not-found/NotFound";
 import ErrorBoundary from "./pages/error-boundary/ErrorBoundary";
@@ -37,6 +39,14 @@ function App() {
               <Route
                 path="/loan-application/:applicationId"
                 element={<SingleLoanApplications />}
+              />
+              <Route
+                path="/registration-applications"
+                element={<AdminRegistrationApplication />}
+              />
+              <Route
+                path="/registration-application/:applicationId"
+                element={<SingleRegistrationApplications />}
               />
             </Route>
 
