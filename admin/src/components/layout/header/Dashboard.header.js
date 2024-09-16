@@ -5,7 +5,9 @@ import { useNavigate } from "react-router-dom";
 function DashboardHeader({ path }) {
   const navigate = useNavigate();
 
-  const logout = async () => {};
+  const logout = async () => {
+    navigate("/");
+  };
 
   return (
     <div className="dashboard__header">

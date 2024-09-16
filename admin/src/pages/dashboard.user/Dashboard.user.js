@@ -48,7 +48,7 @@ function DashboardUser() {
             </div>
             <button
               onClick={() => {
-                navigate("/create-user");
+                navigate("/main/create-user");
               }}
             >
               Create user
@@ -83,7 +83,7 @@ function DashboardUser() {
                 <h1
                   className="dashboard__users__section__two__entry__id"
                   onClick={() => {
-                    navigate("/user");
+                    navigate("/main/user");
                   }}
                 >
                   {userResult[i].id}
@@ -91,7 +91,7 @@ function DashboardUser() {
                 <h1
                   className="dashboard__users__section__two__entry__name"
                   onClick={() => {
-                    navigate("/user");
+                    navigate("/main/user");
                   }}
                 >
                   {userResult[i].name}
@@ -99,7 +99,7 @@ function DashboardUser() {
                 <h1
                   className="dashboard__users__section__two__entry__email"
                   onClick={() => {
-                    navigate("/user");
+                    navigate("/main/user");
                   }}
                 >
                   {userResult[i].email}
@@ -107,7 +107,7 @@ function DashboardUser() {
                 <h1
                   className="dashboard__users__section__two__entry__role"
                   onClick={() => {
-                    navigate("/user");
+                    navigate("/main/user");
                   }}
                 >
                   {userResult[i].role}
@@ -115,7 +115,7 @@ function DashboardUser() {
                 <h1
                   className="dashboard__users__section__two__entry__status"
                   onClick={() => {
-                    navigate("/user");
+                    navigate("/main/user");
                   }}
                 >
                   <span>
@@ -132,7 +132,7 @@ function DashboardUser() {
                 <h1
                   className="dashboard__users__section__two__entry__created"
                   onClick={() => {
-                    navigate("/user");
+                    navigate("/main/user");
                   }}
                 >
                   {userResult[i].createdAt}
@@ -141,7 +141,7 @@ function DashboardUser() {
                   <span>
                     <BiEdit
                       className="dashboard__users__section__two__entry__action__icon"
-                      onClick={() => navigate("/edit-user")}
+                      onClick={() => navigate("/main/edit-user")}
                     />{" "}
                     <MdDelete
                       className="dashboard__users__section__two__entry__action__icon"

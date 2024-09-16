@@ -9,9 +9,9 @@ import { RiDashboardFill } from "react-icons/ri";
 import logo from "../../assets/icons/logo-secondary-color1.png";
 import DashboardFooter from "../../components/layout/footer/Dashboard.footer";
 import DashboardHeader from "../../components/layout/header/Dashboard.header";
-import StateContext from "../../context/StateProvider";
 
 function Admin() {
+  const navigate = useNavigate();
   const [active, SetActive] = useState(false);
   const [dropdown, setDropdown] = useState({
     create: false,
@@ -19,9 +19,10 @@ function Admin() {
   });
 
   const [path, setPath] = useState("dashboard");
-  const logout = async () => {};
+  const logout = async () => {
+    navigate("/");
+  };
 
-  const navigate = useNavigate();
   const [colorId, setColorId] = useState(1);
 
   return (
@@ -48,7 +49,7 @@ function Admin() {
           <div
             onClick={() => {
               setPath("Dashboard");
-              navigate("/dashboard");
+              navigate("/main/dashboard");
               setColorId(1);
             }}
             className={colorId === 1 ? "dashboard__navbar__active" : ""}
@@ -59,7 +60,7 @@ function Admin() {
           <div
             onClick={() => {
               setPath("User");
-              navigate("/users");
+              navigate("/main/users");
               setColorId(2);
             }}
             className={colorId === 2 ? "dashboard__navbar__active" : ""}
@@ -70,7 +71,7 @@ function Admin() {
           <div
             onClick={() => {
               setPath("Transactions");
-              navigate("/transaction");
+              navigate("/main/transaction");
               setColorId(3);
             }}
             className={colorId === 3 ? "dashboard__navbar__active" : ""}
@@ -82,7 +83,7 @@ function Admin() {
             onClick={() => {
               setPath("Create user");
               setColorId(9);
-              navigate("/create-user");
+              navigate("/main/create-user");
             }}
             className={colorId === 9 ? "dashboard__navbar__active" : ""}
           >
@@ -93,7 +94,7 @@ function Admin() {
             onClick={() => {
               setPath("Registration applications");
               setColorId(23);
-              navigate("/registration-applications");
+              navigate("/main/registration-applications");
             }}
             className={colorId === 23 ? "dashboard__navbar__active" : ""}
           >
@@ -104,7 +105,7 @@ function Admin() {
             onClick={() => {
               setPath("Loan applications");
               setColorId(12);
-              navigate("/loan-applications");
+              navigate("/main/loan-applications");
             }}
             className={colorId === 12 ? "dashboard__navbar__active" : ""}
           >
@@ -115,7 +116,7 @@ function Admin() {
         <section className="dashboard__navbar__section__three">
           <div
             onClick={() => {
-              navigate("/setting");
+              navigate("/main/setting");
               setColorId(16);
             }}
             className={colorId === 16 ? "dashboard__navbar__active" : ""}

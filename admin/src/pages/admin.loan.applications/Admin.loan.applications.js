@@ -49,6 +49,7 @@ function AdminLoanApplication() {
       date: "12th July, 2024",
     },
   ];
+
   return (
     <>
       <div className="ad__student__app">
@@ -129,7 +130,7 @@ function AdminLoanApplication() {
               Name
             </h1>
             <h1 className="ad__student__app__section__two__header__universityemail">
-              amount
+              Amount
             </h1>
 
             <h1 className="ad__student__app__section__two__header__userid">
@@ -145,7 +146,7 @@ function AdminLoanApplication() {
               <div
                 className="ad__student__app__section__two__entry"
                 onClick={() => {
-                  navigate(`/loan-application/${applicationId}`);
+                  navigate(`/main/loan-application/${applicationId}`);
                 }}
               >
                 <h1 className="ad__student__app__section__two__entry__date">

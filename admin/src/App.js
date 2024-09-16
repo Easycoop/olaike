@@ -9,6 +9,7 @@ import AdminRegistrationApplication from "./pages/admin.registration.application
 import SingleLoanApplications from "./pages/admin.single.loan.applications/Admin.single.loan.application";
 import SingleRegistrationApplications from "./pages/admin.single.registration.applications/Admin.single.registration.application";
 import Admin from "./pages/admin/Admin";
+import Login from "./pages/auth/login/Login";
 import NotFound from "./pages/not-found/NotFound";
 import ErrorBoundary from "./pages/error-boundary/ErrorBoundary";
 import ScrollToTop from "./utils/ScrollToTop";
@@ -26,32 +27,34 @@ function App() {
         <ScrollToTop />
         <ErrorBoundary>
           <Routes>
-            <Route path="/" element={<Admin />}>
+            <Route path="/main" element={<Admin />}>
               <Route index element={<AdminDashboard />} />
-              <Route path="/dashboard" element={<AdminDashboard />} />
-              <Route path="/users" element={<DashboardUser />} />
-              <Route path="/transaction" element={<AdminTransaction />} />
-              <Route path="/user" element={<AdminSingleUser />} />
-              <Route path="/edit-user" element={<AdminEditUser />} />
-              <Route path="/setting" element={<AdminSettings />} />
-              <Route path="/create-user" element={<AdminCreateUser />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="users" element={<DashboardUser />} />
+              <Route path="transaction" element={<AdminTransaction />} />
+              <Route path="user" element={<AdminSingleUser />} />
+              <Route path="edit-user" element={<AdminEditUser />} />
+              <Route path="setting" element={<AdminSettings />} />
+              <Route path="create-user" element={<AdminCreateUser />} />
               <Route
-                path="/loan-applications"
+                path="loan-applications"
                 element={<AdminLoanApplication />}
               />
               <Route
-                path="/loan-application/:applicationId"
+                path="loan-application/:applicationId"
                 element={<SingleLoanApplications />}
               />
               <Route
-                path="/registration-applications"
+                path="registration-applications"
                 element={<AdminRegistrationApplication />}
               />
               <Route
-                path="/registration-application/:applicationId"
+                path="registration-application/:applicationId"
                 element={<SingleRegistrationApplications />}
               />
             </Route>
+
+            <Route path="/" element={<Login />} />
 
             {/* Catch all route */}
             <Route path="*" element={<NotFound />} />

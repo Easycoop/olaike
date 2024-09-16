@@ -1,19 +1,60 @@
 import { BiUser } from "react-icons/bi";
 import "./Admin.dashboard.css";
-import { BsHouse } from "react-icons/bs";
-import { MdOutlinePayment } from "react-icons/md";
+import { MdOutlinePayment, MdOutlinePendingActions } from "react-icons/md";
 import { IoMdDocument } from "react-icons/io";
 import { RiAsterisk } from "react-icons/ri";
 import { useContext, useState } from "react";
 import StateContext from "../../context/StateProvider";
 import { useNavigate } from "react-router-dom";
 import Chart from "react-apexcharts";
+import { PiCircleFill } from "react-icons/pi";
 
 function AdminDashboard() {
   const navigate = useNavigate();
   const totalResult = 2;
   const totalUsers = 5;
-  const propertyResult = [];
+  const result = [
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      phone: "+1 1234567890",
+      amount: "₦250,000",
+      status: "successful",
+      userId: "144f-125f-fdg",
+      date: "12th July, 2024",
+    },
+    {
+      id: 2,
+      name: "Emmanuel Kant",
+      email: "jane.doe@example.com",
+      phone: "+2 9876543210",
+      amount: "₦300,000",
+      status: "successful",
+      userId: "144f-125f-fdg",
+      date: "12th July, 2024",
+    },
+    {
+      id: 3,
+      name: "David Smith",
+      email: "david.smith@example.com",
+      phone: "+3 3333333333",
+      amount: "₦200,000",
+      status: "successful",
+      userId: "144f-125f-fdg",
+      date: "12th July, 2024",
+    },
+    {
+      id: 4,
+      name: "Amara Williams",
+      email: "amara.williams@example.com",
+      phone: "+4 4444444444",
+      amount: "₦250,000",
+      status: "successful",
+      userId: "144f-125f-fdg",
+      date: "12th July, 2024",
+    },
+  ];
   const notice = [];
   const { chartTheme, setChartTheme } = useContext(StateContext);
 
@@ -70,7 +111,7 @@ function AdminDashboard() {
           <div className="admin__dashboard__section__one__seg">
             <span>
               Pending registration applications
-              <BsHouse className="admin__dashboard__section__one__seg__icon two" />
+              <MdOutlinePendingActions className="admin__dashboard__section__one__seg__icon two" />
             </span>
             <h1>3</h1>
           </div>
@@ -98,34 +139,14 @@ function AdminDashboard() {
             <p>User ID: 325</p>
             <span>
               <div>
-                <h3>Open tickets</h3>
+                <h3>Successful registrations</h3>
                 <h4>5</h4>
               </div>
               <div>
-                <h3>Student applications</h3>
-                <h4>5</h4>
+                <h3>Successful loans</h3>
+                <h4>3</h4>
               </div>
             </span>
-            <div className="admin__dashboard__section__two__seg1__notice">
-              <h3>
-                Recent notice{" "}
-                <RiAsterisk className="admin__message__conversation__section__two__icons" />
-              </h3>
-              <div>
-                <div>
-                  <h3>Mar</h3>
-                  <h4>15</h4>
-                </div>
-                <p>{notice[0] && notice[0].heading}</p>
-              </div>
-              <div>
-                <div>
-                  <h3>Mar</h3>
-                  <h4>7</h4>
-                </div>
-                <p>{notice[1] && notice[1].heading}</p>
-              </div>
-            </div>
           </div>
           <div className="admin__dashboard__section__two__seg2">
             <Chart
@@ -149,49 +170,60 @@ function AdminDashboard() {
             className="admin__dashboard__section__three__seg2"
             style={{ width: "100%" }}
           >
-            <h1>Trending properties</h1>
+            <h1>Recently approved loans</h1>
             <div className="admin__dashboard__section__three__seg2__header">
               <h1 className="admin__dashboard__section__three__seg2__header__id">
-                Property ID
+                Application date
               </h1>
               <h1 className="admin__dashboard__section__three__seg2__header__title">
-                Title
+                Application number
               </h1>
               <h1 className="admin__dashboard__section__three__seg2__header__views">
-                Views
+                Name
               </h1>
               <h1 className="admin__dashboard__section__three__seg2__header__propertytype">
-                Property type
+                Amount
               </h1>
 
               <h1 className="admin__dashboard__section__three__seg2__header__userid">
                 User ID
               </h1>
               <h1 className="admin__dashboard__section__three__seg2__header__ranking">
-                Rankings
+                Status
               </h1>
             </div>
-            {propertyResult.map((item, i) => {
+            {result.map((item, i) => {
               return (
                 <div className="admin__dashboard__section__three__seg2__entry">
                   <h1 className="admin__dashboard__section__three__seg2__entry__id">
-                    {propertyResult[i].id}
+                    {result[i].date}
                   </h1>
                   <h1 className="admin__dashboard__section__three__seg2__entry__title">
-                    {propertyResult[i].title}
+                    {result[i].id}
                   </h1>
                   <h1 className="admin__dashboard__section__three__seg2__entry__views">
-                    {propertyResult[i].views}
+                    {result[i].name}
                   </h1>
 
                   <h1 className="admin__dashboard__section__three__seg2__entry__propertytype">
-                    {propertyResult[i].property_type}
+                    {result[i].amount}
                   </h1>
                   <h1 className="admin__dashboard__section__three__seg2__entry__userid">
-                    {propertyResult[i].userId}
+                    {result[i].userId}
                   </h1>
                   <h1 className="admin__dashboard__section__three__seg2__entry__ranking">
-                    {i + 1}
+                    <span>
+                      <PiCircleFill
+                        className={
+                          result[i].status == "successful"
+                            ? "ad__student__app__section__two__entry__status__icon successful"
+                            : result[i].status == "unsuccessful"
+                            ? "ad__student__app__section__two__entry__status__icon unsuccessful"
+                            : "ad__student__app__section__two__entry__status__icon"
+                        }
+                      />{" "}
+                      {result[i].status}
+                    </span>
                   </h1>
                 </div>
               );

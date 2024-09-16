@@ -132,7 +132,7 @@ function AdminRegistrationApplication() {
               <div
                 className="ad__student__app__section__two__entry"
                 onClick={() => {
-                  navigate(`/registration-application/${applicationId}`);
+                  navigate(`/main/registration-application/${applicationId}`);
                 }}
               >
                 <h1 className="ad__student__app__section__two__entry__date">
