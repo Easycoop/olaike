@@ -8,12 +8,12 @@
 .toggle + label {
   display: flex;
   align-items: center;
-  font-size: var(--secondary-font-size);
+  font-size: var(--font-size-secondary);
   cursor: pointer;
-  color: var(--primary-text-color);
+  color: var(--color-text-primary);
 }
 .toggle + label::before {
-  content: '';
+  content: "";
   height: 12px;
   width: 24px;
   border-radius: 2.5px;
@@ -22,7 +22,7 @@
   transition: background-color 250ms ease-in-out, transform 250ms ease-in-out;
 }
 .toggle + label::after {
-  content: '';
+  content: "";
   height: 10px;
   width: 10px;
   border-radius: 100%;

@@ -1,9 +1,11 @@
 import { useState } from "react";
 import Switch from "react-switch";
 import image1 from "../../../assets/images/main/profile-image.jpg";
+import { useNavigate } from "react-router-dom";
 import "./loan.css";
 
 function Loan() {
+  const navigate = useNavigate();
   const [checked, setChecked] = useState(false);
   const [checked2, setChecked2] = useState(true);
   const [checked3, setChecked3] = useState(false);
@@ -409,7 +411,7 @@ function Loan() {
           <></>
         )}
         {select.select6 ? (
-          <div className="loan__notification">
+          <div className="loan__notification loan__segment">
             <section className="loan__notification__block">
               <h3>Notifications related to you and your space</h3>
               <p>
@@ -455,6 +457,14 @@ function Loan() {
                 className="react-switch"
               />
             </section>
+            <div className="loan__segment__foot">
+              <button
+                className="loan__foot__button"
+                onClick={() => navigate("/loan-completed")}
+              >
+                Apply
+              </button>
+            </div>
           </div>
         ) : (
           <></>

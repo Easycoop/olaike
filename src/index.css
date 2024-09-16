@@ -98,6 +98,28 @@ code {
   --line-height-tertiary: 1.25rem /* 20px */
 }
 
+/* Theming */
+[theme='#008000'] {
+  --color-primary-tint: #008000;
+}
+[theme='#228b22'] {
+  --color-primary-tint: #228b22;
+}
+[theme='#8b0000'] {
+  --color-primary-tint: #8b0000;
+}
+
+[theme='#b8860b'] {
+  --color-primary-tint: #b8860b;
+}
+[theme='#000000'] {
+  --color-primary-tint: #000000;
+}
+
+[theme='#7a5af5'] {
+  --color-primary-tint: #7a5af5;
+}
+
 /* Accessibility Enhancements */
 a:focus,
 /* button:focus, */
