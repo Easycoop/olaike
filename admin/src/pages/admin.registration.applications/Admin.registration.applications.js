@@ -3,8 +3,13 @@ import "./Admin.registration.applications.css";
 import { PiCircleFill } from "react-icons/pi";
 import { FaFileCircleCheck } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useGetApplications } from "../../redux/actions/applicationAction";
 
 function AdminRegistrationApplication() {
+  const getApplications = useGetApplications();
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const applicationId = 1;
   const navigate = useNavigate();
   const result = [
@@ -36,6 +41,26 @@ function AdminRegistrationApplication() {
       date: "12th July, 2024",
     },
   ];
+
+  const handleGetApplications = async () => {
+    setLoading(true);
+    try {
+      const response = await getApplications();
+
+      if (response?.status === 200 || response?.status === "success") {
+        setErrorMessage("");
+        console.log("yello", response);
+        return;
+      } else {
+        setErrorMessage(response.message);
+      }
+    } catch (error) {
+      setErrorMessage(error.response.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="ad__student__app">
