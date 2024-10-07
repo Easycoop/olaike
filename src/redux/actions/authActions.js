@@ -11,6 +11,7 @@ import {
   logout,
   passwordForget,
   passwordResetComplete,
+  register,
   resetPassword,
   signup,
   verifyOtp,
@@ -82,31 +83,40 @@ export const doLoginAction = (email, password) => async (dispatch) => {
   }
 };
 
-export const doSignUpAction =
-  (email, password, firstName, lastName) => async (dispatch) => {
-    dispatch(loggingIn());
+export const doSignUpAction = (payload) => async (dispatch) => {
+  dispatch(loggingIn());
 
-    try {
-      const response = await signup(email, password, firstName, lastName);
+  try {
+    const response = await signup(payload);
 
-      dispatch(
-        loginSuccess({
-          user: {
-            email,
-            name: `${firstName} ${lastName}`,
-          },
-          tokens: {
-            accessToken: response.token,
-            refreshToken: response.refresh_token,
-          },
-        })
-      );
-      return response;
-    } catch (error) {
-      dispatch(loginFailure(error.message || "Signup failed"));
-      return error;
-    }
-  };
+    dispatch(
+      loginSuccess({
+        user: {
+          email: payload.email,
+          name: `${payload.firstName} ${payload.lastName}`,
+        },
+        tokens: {
+          accessToken: response.token,
+          refreshToken: response.refresh_token,
+        },
+      })
+    );
+    return response;
+  } catch (error) {
+    dispatch(loginFailure(error.message || "Signup failed"));
+    return error;
+  }
+};
+
+export const doRegisterAction = (payload) => async (dispatch) => {
+  try {
+    const response = await register(payload);
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
 
 export const doLogoutAction = () => async (dispatch) => {
   dispatch(loggingIn());
@@ -184,6 +194,7 @@ export const doPasswordResetCompleteAction =
 export const useLogin = () => useDispatcher(doLoginAction);
 export const useLogout = () => useDispatcher(doLogoutAction);
 export const useSignUp = () => useDispatcher(doSignUpAction);
+export const useRegister = () => useDispatcher(doRegisterAction);
 export const useVerifyEmail = () => useDispatcher(doVerifyEmailAction);
 export const usePasswordForget = () => useDispatcher(doPasswordForgetAction);
 export const useResetPassword = () => useDispatcher(doResetPasswordAction);

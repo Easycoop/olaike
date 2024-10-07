@@ -4,9 +4,16 @@ import logo from "../../../assets/icons/logo-secondary-color1.png";
 import Input from "../../../components/ui/form-elements/input";
 import Button from "../../../components/ui/button/Button";
 import { useNavigate } from "react-router-dom";
+import { useRegister } from "../../../redux/actions/authActions";
+import toastManager from "../../../components/ui/toast/ToasterManager";
+import { ClipLoader } from "react-spinners";
 
 function Signup() {
+  const register = useRegister();
   const navigate = useNavigate();
+  const [verified, setVerified] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
@@ -14,7 +21,7 @@ function Signup() {
     email: "",
     password: "",
     confirmPassword: "",
-    phoneNumber: "",
+    phone: "",
   });
 
   const handleChange = (e) => {
@@ -25,11 +32,33 @@ function Signup() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMessage("Passwords do not match");
+      return;
+    }
 
-    console.log(formData);
-    navigate("/signup-complete");
+    try {
+      const response = await register(formData);
+
+      if (response?.status === 200 || response?.status === "success") {
+        setErrorMessage("");
+        toastManager.addToast({
+          message: `Succesful registration`,
+          type: "success",
+        });
+        navigate("/signup-complete");
+        return;
+      } else {
+        setErrorMessage(response.message);
+      }
+    } catch (error) {
+      setErrorMessage(error.response.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -39,6 +68,7 @@ function Signup() {
           <h3>Sign up</h3>
           <form onSubmit={handleSubmit}>
             <Input
+              required
               className="signup__input"
               type="text"
               label="First Name"
@@ -47,6 +77,7 @@ function Signup() {
               onChange={handleChange}
             />
             <Input
+              required
               className="signup__input"
               type="text"
               label="Middle Name"
@@ -55,6 +86,7 @@ function Signup() {
               onChange={handleChange}
             />
             <Input
+              required
               className="signup__input"
               type="text"
               label="Last Name"
@@ -63,6 +95,7 @@ function Signup() {
               onChange={handleChange}
             />
             <Input
+              required
               className="signup__input"
               type="email"
               label="Email Address"
@@ -71,6 +104,7 @@ function Signup() {
               onChange={handleChange}
             />
             <Input
+              required
               className="signup__input"
               type="password"
               label="Password"
@@ -79,6 +113,7 @@ function Signup() {
               onChange={handleChange}
             />
             <Input
+              required
               className="signup__input"
               type="password"
               label="Confirm Password"
@@ -86,6 +121,7 @@ function Signup() {
               value={formData.confirmPassword}
               onChange={handleChange}
             />
+            <p className="signup__error">{errorMessage}</p>
             <span className="signup__start__switch">
               <p>
                 Already have an account?
@@ -99,8 +135,13 @@ function Signup() {
               type="submit"
               typeOf="success"
               className="signup__create__button"
+              disabled={loading}
             >
-              Create account
+              {loading ? (
+                <ClipLoader color="#fff" size={20} />
+              ) : (
+                "Create account"
+              )}
             </Button>
           </form>
         </div>

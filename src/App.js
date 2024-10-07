@@ -17,11 +17,13 @@ import Withdrawal from "./pages/main/withdrawal/Withdrawal";
 import Donation from "./pages/main/donation/Donation";
 import SignupComplete from "./pages/auth/signup-complete/SignupComplete";
 import LoanApplicationCompleted from "./pages/main/loan-completed/LoanCompleted";
+import ToasterContainer from "./components/ui/toast/ToasterContainer";
 
 function App() {
   return (
     <div className="app">
       <Router>
+        <ToasterContainer />
         <ScrollToTop />
         <Routes>
           {/* PUBLIC ROUTES */}
