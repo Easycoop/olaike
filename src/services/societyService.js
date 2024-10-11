@@ -1,8 +1,8 @@
 import api from "../api/axios";
 
-export const getUsers = async () => {
+export const getSocieties = async () => {
   try {
-    const response = await api.get("/user/all");
+    const response = await api.get("/group/");
     return response.data;
   } catch (error) {
     if (error.response) {

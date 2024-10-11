@@ -87,7 +87,11 @@
   width: 30%;
   border-radius: var(--border-radius-small);
 }
-
+.error__message {
+  font-size: var(--text-secondary-font-size);
+  color: red;
+  margin-bottom: var(--spacing-small);
+}
 @media all and (max-width: 768px) {
   .login__main {
     width: 80%;

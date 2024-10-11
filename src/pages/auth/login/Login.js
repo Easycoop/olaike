@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ClipLoader } from "react-spinners";
 import "./login.css";
 import login_image from "../../../assets/images/auth/login-image-1.png";
 import logo from "../../../assets/icons/logo.png";
@@ -12,10 +13,11 @@ function Login() {
   const login = useLogin();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    id: "",
+    email: "",
     password: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,12 +28,14 @@ function Login() {
   };
 
   const handleSubmit = async (e) => {
-    navigate("/main/dashboard");
-
     e.preventDefault();
 
     try {
-      const response = await login(formData.email, formData.password);
+      setLoading(true);
+      const response = await login({
+        email: formData.email,
+        password: formData.password,
+      });
       if (response.status === true || response.status === "success") {
         setErrorMessage("");
 
@@ -46,6 +50,8 @@ function Login() {
       }
     } catch (error) {
       setErrorMessage(error.response.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,8 +66,8 @@ function Login() {
             <form onSubmit={handleSubmit}>
               <Input
                 type="text"
-                label="Application/Membership Number"
-                name="id"
+                label="Email"
+                name="email"
                 value={formData.name}
                 onChange={handleChange}
               />
@@ -72,6 +78,7 @@ function Login() {
                 value={formData.password}
                 onChange={handleChange}
               />
+              {errorMessage && <p className="error__message">{errorMessage}</p>}
               <span className="login__main__start__switch">
                 <p>
                   Don't have an account?{" "}
@@ -81,8 +88,17 @@ function Login() {
                   <b>Forgotten password</b>
                 </p>
               </span>
-              <Button type="submit" typeOf="success" style={{ width: "100%" }}>
-                Sign me in
+              <Button
+                type="submit"
+                typeOf="success"
+                disabled={loading}
+                style={{ wemailth: "100%" }}
+              >
+                {loading ? (
+                  <ClipLoader color="#fff" size={20} />
+                ) : (
+                  "Sign me in "
+                )}
               </Button>
             </form>
           </div>

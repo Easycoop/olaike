@@ -19,9 +19,14 @@ const Select = ({
         className={selectClass}
         {...rest}
       >
-        {options.map((option, index) => (
+        {/* {options.map((option, index) => (
           <option key={index} value={option.value}>
             {option.label}
+          </option>
+        ))} */}
+        {options.map((option, index) => (
+          <option key={index} value={option.id}>
+            {option.name}
           </option>
         ))}
       </select>

@@ -6,6 +6,7 @@
   font-size: var(--font-size-secondary);
   min-height: 40px;
   transition: background-color 0.3s;
+  min-width: 100px;
 }
 
 .button.primary {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./signup.css";
 import logo from "../../../assets/icons/logo-secondary-color1.png";
 import Input from "../../../components/ui/form-elements/input";
@@ -8,18 +8,22 @@ import { useRegister } from "../../../redux/actions/authActions";
 import toastManager from "../../../components/ui/toast/ToasterManager";
 import { ClipLoader } from "react-spinners";
 import Select from "../../../components/ui/form-elements/select";
+import { useGetSocieties } from "../../../redux/actions/societyAction";
+
+// const options =[
+//   { value: null, label: "Select a society" },
+//   { value: "option1", label: "Option 1" },
+//   { value: "option2", label: "Option 2" },
+// ]
 
 function Signup() {
+  const getSocieties = useGetSocieties();
   const register = useRegister();
   const navigate = useNavigate();
   const [verified, setVerified] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [societies, setSocieties] = useState([
-    { value: null, label: "Select a society" },
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-  ]);
+  const [societies, setSocieties] = useState([]);
   const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
@@ -27,9 +31,30 @@ function Signup() {
     email: "",
     password: "",
     confirmPassword: "",
-    phoneNumber: "",
+    phone: "",
     group: "",
   });
+
+  const handleGetSocieties = async () => {
+    try {
+      const response = await getSocieties(formData);
+
+      if (
+        response?.payload.status === 200 ||
+        response?.payload.status === "success"
+      ) {
+        setErrorMessage("");
+
+        setSocieties(response.payload.data.groups);
+        return;
+      } else {
+        setErrorMessage(response.message);
+      }
+    } catch (error) {
+      setErrorMessage(error.response.message);
+    } finally {
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -67,6 +92,10 @@ function Signup() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    handleGetSocieties();
+  }, []);
 
   return (
     <div className="signup">
@@ -115,8 +144,8 @@ function Signup() {
               className="signup__input"
               type="number"
               label="Phone Number"
-              name="phoneNumber"
-              value={formData.phoneNumber}
+              name="phone"
+              value={formData.phone}
               onChange={handleChange}
             />
             <Select

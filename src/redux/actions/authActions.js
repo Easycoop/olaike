@@ -59,15 +59,15 @@ export function useInitAuth() {
 }
 
 // Async Actions
-export const doLoginAction = (email, password) => async (dispatch) => {
+export const doLoginAction = (payload) => async (dispatch) => {
   dispatch(loggingIn());
 
   try {
-    const response = await login(email, password);
+    const response = await login(payload);
     dispatch(
       loginSuccess({
         user: {
-          email,
+          email: payload.email,
           name: response.name,
         },
         tokens: {
