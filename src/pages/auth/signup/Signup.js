@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useRegister } from "../../../redux/actions/authActions";
 import toastManager from "../../../components/ui/toast/ToasterManager";
 import { ClipLoader } from "react-spinners";
+import Select from "../../../components/ui/form-elements/select";
 
 function Signup() {
   const register = useRegister();
@@ -14,6 +15,11 @@ function Signup() {
   const [verified, setVerified] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [societies, setSocieties] = useState([
+    { value: null, label: "Select a society" },
+    { value: "option1", label: "Option 1" },
+    { value: "option2", label: "Option 2" },
+  ]);
   const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
@@ -21,7 +27,8 @@ function Signup() {
     email: "",
     password: "",
     confirmPassword: "",
-    phone: "",
+    phoneNumber: "",
+    group: "",
   });
 
   const handleChange = (e) => {
@@ -34,13 +41,13 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     if (formData.password !== formData.confirmPassword) {
       setErrorMessage("Passwords do not match");
       return;
     }
 
     try {
+      setLoading(true);
       const response = await register(formData);
 
       if (response?.status === 200 || response?.status === "success") {
@@ -101,6 +108,23 @@ function Signup() {
               label="Email Address"
               name="email"
               value={formData.email}
+              onChange={handleChange}
+            />
+            <Input
+              required
+              className="signup__input"
+              type="number"
+              label="Phone Number"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+            />
+            <Select
+              required
+              label="Society"
+              name="group"
+              className="signup__input"
+              options={societies}
               onChange={handleChange}
             />
             <Input

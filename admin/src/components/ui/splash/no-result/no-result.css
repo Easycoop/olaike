@@ -9,21 +9,29 @@
   background-color: inherit;
   text-align: center;
 }
+.no__result > img {
+  object-fit: contain;
+  width: 200px;
+}
 .no__result > h1 {
   font-size: 18px;
   font-weight: 600;
-  color: var(--color-foreground);
+  color: #121212;
   width: 300px;
+  margin: 10px 0;
 }
 .no__result > p {
-  font-size: 14px;
+  font-size: var(--font-size-secondary);
   font-weight: 400;
   color: #777;
-  margin-top: 10px;
   width: 300px;
 }
 
 @media all and (max-width: 768px) {
+  .no__result > img {
+    object-fit: contain;
+    width: 60%;
+  }
   .no__result > h1 {
     width: 100%;
   }

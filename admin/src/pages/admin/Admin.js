@@ -92,6 +92,17 @@ function Admin() {
           </div>
           <div
             onClick={() => {
+              setPath("Create Society");
+              setColorId(103);
+              navigate("/main/create-society");
+            }}
+            className={colorId === 103 ? "dashboard__navbar__active" : ""}
+          >
+            <FaUserPlus className="dashboard__navbar__icon" />
+            <h3>Create new society</h3>
+          </div>
+          <div
+            onClick={() => {
               setPath("Registration applications");
               setColorId(23);
               navigate("/main/registration-applications");

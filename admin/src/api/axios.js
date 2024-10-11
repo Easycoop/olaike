@@ -1,7 +1,7 @@
 import axios from "axios";
 import { store } from "../redux/store";
 
-export const BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL;
+export const BASE_URL = "http://localhost:5000/api/v1";
 
 const state = store.getState();
 

@@ -1,0 +1,22 @@
+.toaster-container {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  max-width: 400px;
+  width: calc(100% - 20px);
+  z-index: 100;
+}
+
+.toaster-container button {
+  margin: 5px;
+}
+
+@media all and (max-width: 768px) {
+  .toaster-container {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    max-width: 100%;
+    width: calc(100% - 20px);
+  }
+}

@@ -3,53 +3,25 @@ import "./Admin.registration.applications.css";
 import { PiCircleFill } from "react-icons/pi";
 import { FaFileCircleCheck } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetApplications } from "../../redux/actions/applicationAction";
+import Loading from "../../components/splash/loading/Loading";
+import NoResult from "../../components/splash/no-result/NoResult";
 
 function AdminRegistrationApplication() {
   const getApplications = useGetApplications();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const applicationId = 1;
+  const [result, setResult] = useState([]);
   const navigate = useNavigate();
-  const result = [
-    {
-      id: 1,
-      name: "John Doe",
-      email: "john.doe@example.com",
-      phone: "+1 1234567890",
-      status: "pending",
-      role: "End User",
-      date: "12th July, 2024",
-    },
-    {
-      id: 2,
-      name: "Emmanuel Kant",
-      email: "jane.doe@example.com",
-      phone: "+2 9876543210",
-      status: "successful",
-      role: "End User",
-      date: "12th July, 2024",
-    },
-    {
-      id: 3,
-      name: "David Smith",
-      email: "david.smith@example.com",
-      phone: "+3 3333333333",
-      status: "unsuccessful",
-      role: "End User",
-      date: "12th July, 2024",
-    },
-  ];
 
   const handleGetApplications = async () => {
     setLoading(true);
     try {
       const response = await getApplications();
-
-      if (response?.status === 200 || response?.status === "success") {
+      if (response?.payload.success === true) {
         setErrorMessage("");
-        console.log("yello", response);
+        setResult(response.payload.data.result);
         return;
       } else {
         setErrorMessage(response.message);
@@ -60,6 +32,10 @@ function AdminRegistrationApplication() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    handleGetApplications();
+  }, []);
 
   return (
     <>
@@ -89,7 +65,7 @@ function AdminRegistrationApplication() {
                 <h1>
                   {
                     result.filter(function (item, i) {
-                      if (result[i].status == "successful") {
+                      if (result[i].status == "success") {
                         return result[i];
                       }
                     }).length
@@ -119,7 +95,7 @@ function AdminRegistrationApplication() {
                 <h1>
                   {
                     result.filter(function (item, i) {
-                      if (result[i].status == "unsuccessful") {
+                      if (result[i].status == "failed") {
                         return result[i];
                       }
                     }).length
@@ -129,71 +105,80 @@ function AdminRegistrationApplication() {
             </div>
           </article>
         </section>
-        <section className="ad__student__app__section__two">
-          <div className="ad__student__app__section__two__header">
-            <h1 className="ad__student__app__section__two__header__date">
-              Application date
-            </h1>
-            <h1 className="ad__student__app__section__two__header__id">
-              Application number
-            </h1>
-            <h1 className="ad__student__app__section__two__header__university">
-              Name
-            </h1>
-            <h1 className="ad__student__app__section__two__header__universityemail">
-              Email
-            </h1>
+        {loading ? (
+          <Loading />
+        ) : result.length == 0 ? (
+          <NoResult
+            header="No user application"
+            content="There are no user applications"
+          />
+        ) : (
+          <section className="ad__student__app__section__two">
+            <div className="ad__student__app__section__two__header">
+              <h1 className="ad__student__app__section__two__header__date">
+                Application date
+              </h1>
+              <h1 className="ad__student__app__section__two__header__id">
+                Application number
+              </h1>
+              <h1 className="ad__student__app__section__two__header__university">
+                Name
+              </h1>
+              <h1 className="ad__student__app__section__two__header__universityemail">
+                Email
+              </h1>
 
-            <h1 className="ad__student__app__section__two__header__userid">
-              Role
-            </h1>
-            <h1 className="ad__student__app__section__two__header__status">
-              Status
-            </h1>
-          </div>
+              <h1 className="ad__student__app__section__two__header__userid">
+                Role
+              </h1>
+              <h1 className="ad__student__app__section__two__header__status">
+                Status
+              </h1>
+            </div>
 
-          {result.map((item, i) => {
-            return (
-              <div
-                className="ad__student__app__section__two__entry"
-                onClick={() => {
-                  navigate(`/main/registration-application/${applicationId}`);
-                }}
-              >
-                <h1 className="ad__student__app__section__two__entry__date">
-                  {result[i].date}
-                </h1>
-                <h1 className="ad__student__app__section__two__entry__id">
-                  {result[i].id}
-                </h1>
-                <h1 className="ad__student__app__section__two__entry__university">
-                  {result[i].name}
-                </h1>
-                <h1 className="ad__student__app__section__two__entry__universityemail">
-                  {result[i].email}
-                </h1>
+            {result.map((item, i) => {
+              return (
+                <div
+                  className="ad__student__app__section__two__entry"
+                  onClick={() => {
+                    navigate(`/main/registration-application/${result[i].id}`);
+                  }}
+                >
+                  <h1 className="ad__student__app__section__two__entry__date">
+                    {result[i].createdAt}
+                  </h1>
+                  <h1 className="ad__student__app__section__two__entry__id">
+                    {result[i].id}
+                  </h1>
+                  <h1 className="ad__student__app__section__two__entry__university">
+                    {`${result[i].firstName} ${result[i].lastName}`}
+                  </h1>
+                  <h1 className="ad__student__app__section__two__entry__universityemail">
+                    {result[i].email}
+                  </h1>
 
-                <h1 className="ad__student__app__section__two__entry__userid">
-                  {result[i].role}
-                </h1>
-                <h1 className="ad__student__app__section__two__entry__status">
-                  <span>
-                    <PiCircleFill
-                      className={
-                        result[i].status == "successful"
-                          ? "ad__student__app__section__two__entry__status__icon successful"
-                          : result[i].status == "unsuccessful"
-                          ? "ad__student__app__section__two__entry__status__icon unsuccessful"
-                          : "ad__student__app__section__two__entry__status__icon"
-                      }
-                    />{" "}
-                    {result[i].status}
-                  </span>
-                </h1>
-              </div>
-            );
-          })}
-        </section>
+                  <h1 className="ad__student__app__section__two__entry__userid">
+                    EndUser
+                  </h1>
+                  <h1 className="ad__student__app__section__two__entry__status">
+                    <span>
+                      <PiCircleFill
+                        className={
+                          result[i].status == "success"
+                            ? "ad__student__app__section__two__entry__status__icon successful"
+                            : result[i].status == "failed"
+                            ? "ad__student__app__section__two__entry__status__icon unsuccessful"
+                            : "ad__student__app__section__two__entry__status__icon"
+                        }
+                      />{" "}
+                      {result[i].status}
+                    </span>
+                  </h1>
+                </div>
+              );
+            })}
+          </section>
+        )}
       </div>
     </>
   );

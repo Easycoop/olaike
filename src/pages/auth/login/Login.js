@@ -5,19 +5,17 @@ import logo from "../../../assets/icons/logo.png";
 import Input from "../../../components/ui/form-elements/input";
 import Button from "../../../components/ui/button/Button";
 import { useNavigate } from "react-router-dom";
-
-// const options = [
-//   { value: "", label: "Select an option" },
-//   { value: "option1", label: "Option 1" },
-//   { value: "option2", label: "Option 2" },
-// ];
+import { useLogin } from "../../../redux/actions/authActions";
+import toastManager from "../../../components/ui/toast/ToasterManager";
 
 function Login() {
+  const login = useLogin();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     id: "",
     password: "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,10 +25,28 @@ function Login() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // console.log(formData);
+  const handleSubmit = async (e) => {
     navigate("/main/dashboard");
+
+    e.preventDefault();
+
+    try {
+      const response = await login(formData.email, formData.password);
+      if (response.status === true || response.status === "success") {
+        setErrorMessage("");
+
+        toastManager.addToast({
+          message: "Successful login",
+          type: "success",
+        });
+        navigate("/main/dashboard");
+        return;
+      } else {
+        setErrorMessage(response.message);
+      }
+    } catch (error) {
+      setErrorMessage(error.response.message);
+    }
   };
 
   return (

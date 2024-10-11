@@ -18,6 +18,7 @@ import AdminSingleUser from "./pages/admin.single.user/Admin.single.user";
 import AdminEditUser from "./pages/admin.edit.user/Admin.edit.user";
 import { useContext } from "react";
 import StateContext from "./context/StateProvider";
+import AdminCreateSociety from "./pages/admin.create.society/Admin.create.society";
 
 function App() {
   const { theme } = useContext(StateContext);
@@ -36,6 +37,7 @@ function App() {
               <Route path="edit-user" element={<AdminEditUser />} />
               <Route path="setting" element={<AdminSettings />} />
               <Route path="create-user" element={<AdminCreateUser />} />
+              <Route path="create-society" element={<AdminCreateSociety />} />
               <Route
                 path="loan-applications"
                 element={<AdminLoanApplication />}
