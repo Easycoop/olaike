@@ -68,11 +68,11 @@ export const doLoginAction = (payload) => async (dispatch) => {
       loginSuccess({
         user: {
           email: payload.email,
-          name: response.name,
+          name: `${response.data.firstName} ${response.data.lastName}`,
         },
         tokens: {
-          accessToken: response.token,
-          refreshToken: response.refresh_token,
+          accessToken: response.data.accessToken,
+          refreshToken: response.data.refreshToken,
         },
       })
     );

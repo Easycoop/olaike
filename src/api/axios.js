@@ -41,7 +41,7 @@ api.interceptors.response.use(
       const refreshToken = state.auth.refreshToken;
 
       try {
-        const response = await api.post("/auth/token/refresh/", {
+        const response = await api.post("/auth/refresh/", {
           refresh: refreshToken,
         });
 
