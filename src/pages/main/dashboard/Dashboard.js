@@ -3,41 +3,131 @@ import { FaArrowTrendUp, FaCircle } from "react-icons/fa6";
 import chart2 from "../../../assets/images/main/chart2.png";
 import chart3 from "../../../assets/images/main/chart3.png";
 import chart from "../../../assets/images/main/chart.png";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useGetTransactions } from "../../../redux/actions/transactionAction";
+import { useSelector } from "react-redux";
+import Loading from "../../../components/splash/loading/Loading";
+import NoResult from "../../../components/splash/no-result/NoResult";
+import { useGetWallets } from "../../../redux/actions/walletAction";
 
 function Dashboard() {
+  const navigate = useNavigate();
+  const getTransactions = useGetTransactions();
+  const getWallets = useGetWallets();
+  const [wallets, setWallets] = useState({});
+  const pageRef = useRef(null); // ensure this is null initially
+  const { user } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [transactions, setTransactions] = useState([]);
+  const [page, setPage] = useState(1);
+
+  const handleGetWallets = async () => {
+    setLoading(true);
+    try {
+      const response = await getWallets(user.id);
+      console.log("wallet response", response);
+      if (response?.payload.status === "success") {
+        setErrorMessage("");
+        setWallets(response.payload.data);
+      } else {
+        setErrorMessage(response.message);
+      }
+    } catch (error) {
+      setErrorMessage(error.response.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGetTransactions = async () => {
+    setLoading(true);
+    try {
+      const response = await getTransactions({ userId: user.id, page: page });
+      if (response?.payload.status === "success") {
+        setErrorMessage("");
+        const newData = response.payload.data.result;
+        setTransactions((prevData) => [...prevData, ...newData]);
+      } else {
+        setErrorMessage(response.message);
+      }
+    } catch (error) {
+      setErrorMessage(error.response.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const debounce = (func, delay) => {
+    let timeout;
+    return (...args) => {
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        func.apply(null, args);
+      }, delay);
+    };
+  };
+
+  useEffect(() => {
+    handleGetTransactions();
+  }, [page]);
+
+  // Detect when user scrolls to the bottom
+  const handleScroll = () => {
+    if (
+      pageRef.current &&
+      pageRef.current.scrollTop + pageRef.current.clientHeight >=
+        pageRef.current.scrollHeight - 500 &&
+      !loading
+    ) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  // Set up scroll event listener on the scrollable container
+  useEffect(() => {
+    const pageElement = pageRef.current; // Get the scrollable container
+
+    if (pageElement) {
+      const debouncedHandleScroll = debounce(handleScroll, 200);
+      pageElement.addEventListener("scroll", debouncedHandleScroll);
+      return () =>
+        pageElement.removeEventListener("scroll", debouncedHandleScroll);
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    handleGetWallets();
+  }, []);
+
   return (
-    <div className="dashboard">
+    <div
+      className="dashboard"
+      ref={pageRef}
+      // style={{ height: "40vh", overflowY: "auto" }}
+    >
       <section className="dashboard__section__one">
         <h5>My wallets</h5>
         <div className="dashboard__section__one__block__wrap">
           <span className="dashboard__section__one__block">
             <h5>Main Wallet</h5>
-            <h3>N50,000</h3>
+            <h3>{`${wallets?.wallet?.balance} ${wallets?.wallet?.currency}`}</h3>
             <div>
               24.44% <FaArrowTrendUp />
             </div>
           </span>
-          <span className="dashboard__section__one__block">
-            <h5>Savings Wallet</h5>
-            <h3>N20,000</h3>
-            <div>
-              24.44% <FaArrowTrendUp />
-            </div>
-          </span>
-          <span className="dashboard__section__one__block">
-            <h5>Home Savings Wallet</h5>
-            <h3>N35,560</h3>
-            <div>
-              24.44% <FaArrowTrendUp />
-            </div>
-          </span>
-          <span className="dashboard__section__one__block">
-            <h5>Holiday Wallet</h5>
-            <h3>N10,200</h3>
-            <div>
-              24.44% <FaArrowTrendUp />
-            </div>
-          </span>
+          {wallets?.subWallets?.map((wallet, i) => {
+            return (
+              <span className="dashboard__section__one__block">
+                <h5>{wallet?.name}</h5>
+                <h3>{`${wallet?.balance} ${wallet?.currency}`}</h3>
+                <div>
+                  24.44% <FaArrowTrendUp />
+                </div>
+              </span>
+            );
+          })}
         </div>
       </section>
       <section className="dashboard__section__two">
@@ -57,53 +147,62 @@ function Dashboard() {
         </div>
       </section>
       <section className="dashboard__section__one">
-        <h5>Recent Transactions</h5>
+        <h5>Transaction history</h5>
         <div className="dashboard__section__two">
-          <div className="dashboard-section-two-table-row-wrap">
-            <div className="dashboard-section-two-table-row">
-              <div className="dashboard-section-two-table-cell">
-                Monthly Salary
-              </div>
-              <div className="dashboard-section-two-table-cell">Salary</div>
-              <div className="dashboard-section-two-table-cell">
-                Emmanuel Johnson
-              </div>
-              <div className="dashboard-section-two-table-cell">
-                <FaCircle style={{ color: "#32C398" }} />
-                Income
-              </div>
-              <div className="dashboard-section-two-table-cell">N5,000</div>
-              <div className="dashboard-section-two-table-cell">...</div>
-            </div>
-            <div className="dashboard-section-two-table-row">
-              <div className="dashboard-section-two-table-cell">
-                Design Project
-              </div>
-              <div className="dashboard-section-two-table-cell">Project</div>
-              <div className="dashboard-section-two-table-cell">
-                Linda Howsten
-              </div>
-              <div className="dashboard-section-two-table-cell">
-                <FaCircle style={{ color: "#32C398" }} />
-                Income
-              </div>
-              <div className="dashboard-section-two-table-cell">N5,000</div>
-              <div className="dashboard-section-two-table-cell">...</div>
-            </div>
-            <div className="dashboard-section-two-table-row">
-              <div className="dashboard-section-two-table-cell">
-                Paypal Topup
-              </div>
-              <div className="dashboard-section-two-table-cell">Topup</div>
-              <div className="dashboard-section-two-table-cell">Paypal inc</div>
-              <div className="dashboard-section-two-table-cell">
-                <FaCircle style={{ color: "#6345D5" }} />
-                Expenses
-              </div>
-              <div className="dashboard-section-two-table-cell">N5000</div>
-              <div className="dashboard-section-two-table-cell">...</div>
-            </div>
+          <div className="dashboard__section__two__header">
+            <h1 className="dashboard__section__two__header__date">
+              Transaction Date
+            </h1>
+            <h1 className="dashboard__section__two__header__amount">Amount</h1>
+            <h1 className="dashboard__section__two__header__description">
+              Description
+            </h1>
+            <h1 className="dashboard__section__two__header__currency">
+              Currency
+            </h1>
+
+            <h1 className="dashboard__section__two__header__type">Type</h1>
+            <h1 className="dashboard__section__two__header__transid">
+              Transaction ID
+            </h1>
+            <h1 className="dashboard__section__two__header__status">Status</h1>
           </div>
+          {transactions.length == 0 ? (
+            <NoResult
+              header="No transaction"
+              content="You dont have any transaction history yet"
+            />
+          ) : (
+            transactions.map((transaction, i) => {
+              return (
+                <div className="dashboard__section__two__entry">
+                  <div className="dashboard__section__two__entry__date">
+                    {transaction.createdAt}
+                  </div>
+                  <div className="dashboard__section__two__entry__amount">
+                    {transaction.amount}
+                  </div>
+                  <div className="dashboard__section__two__entry__description">
+                    {transaction.description}
+                  </div>
+                  <div className="dashboard__section__two__entry__currency">
+                    {transaction.currency}
+                  </div>
+                  <div className="dashboard__section__two__entry__type">
+                    {/* <FaCircle style={{ color: "#32C398" }} /> */}
+                    {transaction.type}
+                  </div>
+                  <div className="dashboard__section__two__entry__transid">
+                    {transaction.id}
+                  </div>
+                  <div className="dashboard__section__two__entry__status">
+                    {transaction.status}
+                  </div>
+                </div>
+              );
+            })
+          )}
+          {loading && <Loading />}
         </div>
       </section>
     </div>

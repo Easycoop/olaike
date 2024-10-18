@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 import { useContext } from "react";
 import "./app.css";
 import ScrollToTop from "./utils/ScrollToTop";
@@ -35,7 +40,7 @@ function App() {
             <Route path="/main" element={<Main />}>
               <Route index element={<Dashboard />} />
               <Route path="dashboard" element={<Dashboard />} />
-              <Route path="payment" element={<Payment />} />
+              <Route path="fund" element={<Payment />} />
               <Route path="loans" element={<Loan />} />
               <Route
                 path="loan-completed"

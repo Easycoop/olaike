@@ -73,10 +73,21 @@
   .header__sc__one > img {
     display: none;
   }
+  .header__sc__two {
+    margin-left: auto;
+    width: 100%;
+    border-bottom: 1px solid var(--color-text-tertiary);
+  }
   .header__sc__two__search {
     display: none;
   }
   .header__sc__two__profile {
+  }
+  .header__sc__two__profile > img {
+    object-fit: fill;
+    height: 45px;
+    width: 45px;
+    border-radius: 0;
   }
   .header__sc__two__profile > p {
     color: var(--color-text-quaternar) !important;

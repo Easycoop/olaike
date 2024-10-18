@@ -24,6 +24,7 @@ const Select = ({
             {option.label}
           </option>
         ))} */}
+        <option value={null}>--</option>
         {options.map((option, index) => (
           <option key={index} value={option.id}>
             {option.name}

@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 function Header({ handleNav }) {
   const misc = useSelector((state) => state.misc);
+  const { user } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [active, setActive] = useState(false);
@@ -51,8 +53,8 @@ function Header({ handleNav }) {
             className="header__sc__two__profile"
             onClick={() => navigate("/admin/profile")}
           >
+            <p>Application ID: {user.id}</p>
             <img alt="profile" src={image2} />
-            <p>Application ID: 825917</p>
           </div>
           {/* <div>
             <IoNotificationsOutline className="header__sc__two__notification__icon" />

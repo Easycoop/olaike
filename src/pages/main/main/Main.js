@@ -17,7 +17,7 @@ import { IoWalletSharp } from "react-icons/io5";
 
 const NAV__ARRAY = [
   { id: 1, path: "dashboard", name: "My Passbook", icon: MdDashboard },
-  { id: 2, path: "payment", name: "Add Money", icon: IoWalletSharp },
+  { id: 2, path: "fund", name: "Fund Wallet", icon: IoWalletSharp },
   { id: 3, path: "loans", name: "Loan Applications", icon: FaSackDollar },
   { id: 4, path: "referrals", name: "Referrals", icon: FaLink },
   { id: 5, path: "fees/dues", name: "Fees/Dues", icon: GiMoneyStack },
@@ -82,23 +82,6 @@ function Main() {
                     key={index}
                     onClick={() => {
                       handleModalClick("withdraw1");
-                      setColorId(item.id);
-                    }}
-                    className={
-                      colorId === item.id ? "admin__navbar__active" : ""
-                    }
-                  >
-                    <item.icon className="admin__navbar__icon" />
-
-                    <h3>{item.name}</h3>
-                  </div>
-                );
-              } else if (item.id == "2") {
-                return (
-                  <div
-                    key={index}
-                    onClick={() => {
-                      handleModalClick("payment");
                       setColorId(item.id);
                     }}
                     className={
@@ -198,20 +181,6 @@ function Main() {
           </div>
           <div onClick={() => handleModalClick("payment3")}>Loan Wallet</div>
           <p>Select the wallet to fund</p>
-        </div>
-      </Modal>
-
-      {/* PAYMENT MODAL 3 */}
-      <Modal isOpen={isOpen.payment3} onClose={closeModal}>
-        <div className="modal__payment2">
-          <h3>Add Funds</h3>
-          <p>Select the type of account you want to use to fund your wallet</p>
-          <div>
-            <PiBankFill /> Bank Transfer
-          </div>
-          <div>
-            <FaCreditCard /> Card
-          </div>
         </div>
       </Modal>
     </div>

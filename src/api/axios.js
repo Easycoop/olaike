@@ -1,5 +1,6 @@
 import axios from "axios";
 import { store } from "../redux/store";
+import toastManager from "../components/ui/toast/ToasterManager";
 
 export const BASE_URL = "http://localhost:5000/api/v1";
 // console.log("base url", BASE_URL);
@@ -53,6 +54,11 @@ api.interceptors.response.use(
         // Handle token refresh failure
 
         store.dispatch({ type: "LOGOUT" });
+        toastManager.addToast({
+          message: "Session has expired. Please log in again.",
+          type: "error",
+        });
+        window.location.href = "/";
         return Promise.reject(err);
       }
     }

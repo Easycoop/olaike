@@ -12,15 +12,19 @@
 .no__result > h1 {
   font-size: 18px;
   font-weight: 600;
-  color: #669933;
+  color: var(--color-foreground);
   width: 300px;
 }
 .no__result > p {
   font-size: 14px;
   font-weight: 400;
-  color: #777;
+  color: var(--color-secondary-text);
   margin-top: 10px;
   width: 300px;
+}
+.no__result > img {
+  object-fit: cover;
+  width: 250px;
 }
 
 @media all and (max-width: 768px) {
@@ -28,6 +32,10 @@
     width: 100%;
   }
   .no__result > p {
+    width: 100%;
+  }
+  .no__result > img {
+    object-fit: cover;
     width: 100%;
   }
 }

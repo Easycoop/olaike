@@ -66,10 +66,8 @@ export const doLoginAction = (payload) => async (dispatch) => {
     const response = await login(payload);
     dispatch(
       loginSuccess({
-        user: {
-          email: payload.email,
-          name: `${response.data.firstName} ${response.data.lastName}`,
-        },
+        user: response.data.user,
+        roles: response.data.roles,
         tokens: {
           accessToken: response.data.accessToken,
           refreshToken: response.data.refreshToken,
