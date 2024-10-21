@@ -1,5 +1,6 @@
 import React from "react";
 import "./input.css";
+import { BsAsterisk } from "react-icons/bs";
 
 const Input = ({
   type = "text",
@@ -7,6 +8,7 @@ const Input = ({
   value,
   onChange,
   placeholder,
+  important = false,
   className = "",
   ...rest
 }) => {
@@ -14,7 +16,12 @@ const Input = ({
 
   return (
     <div className={inputClass}>
-      {label && <label className="input__label">{label}</label>}
+      {label && (
+        <label className="input__label">
+          {label}
+          {important && <BsAsterisk className="input__label__icon" />}
+        </label>
+      )}
       <input
         type={type}
         value={value}

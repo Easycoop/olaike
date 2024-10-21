@@ -53,7 +53,7 @@ function Header({ handleNav }) {
             className="header__sc__two__profile"
             onClick={() => navigate("/admin/profile")}
           >
-            <p>Application ID: {user.id}</p>
+            <p>ID: {user.id}</p>
             <img alt="profile" src={image2} />
           </div>
           {/* <div>

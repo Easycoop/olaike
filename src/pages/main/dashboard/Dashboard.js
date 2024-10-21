@@ -27,7 +27,6 @@ function Dashboard() {
     setLoading(true);
     try {
       const response = await getWallets(user.id);
-      console.log("wallet response", response);
       if (response?.payload.status === "success") {
         setErrorMessage("");
         setWallets(response.payload.data);

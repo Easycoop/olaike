@@ -7,14 +7,18 @@
 .referrals__input__link__wrap {
   display: flex;
   align-items: center;
-  width: 100%;
+  justify-content: center;
+  width: 60%;
+  background-color: #6bfd83;
 }
 .referrals__input__code {
-  font-size: var(--font-size-tertiary);
+  font-size: var(--font-size-secondary);
   color: var(--color-text-secondary);
   padding: var(--spacing-small) 0;
   border: 0;
-  width: 40%;
+}
+.referrals__input__code:focus {
+  outline: none;
 }
 .referrals__input__link__wrap > button {
   background-color: #718198;
@@ -23,6 +27,7 @@
   align-items: center;
   gap: var(--spacing-small);
   border-radius: var(--border-radius-small);
+  margin-left: auto;
 }
 .referrals__users {
   display: flex;
@@ -68,7 +73,7 @@
   gap: var(--spacing-medium);
 }
 .referrals__input__email__code {
-  padding: var(--spacing-medium);
+  padding: var(--spacing-large);
   background-color: var(--color-foreground);
   font-size: var(--font-size-tertiary);
   color: var(--color-text-quaternary);
@@ -130,6 +135,9 @@
     width: 100%;
   }
   .referrals__options {
+    width: 100%;
+  }
+  .referrals__input__link__wrap {
     width: 100%;
   }
   .referrals__input__code {

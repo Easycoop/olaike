@@ -1,18 +1,25 @@
 import React from "react";
 import "./select.css";
+import { BsAsterisk } from "react-icons/bs";
 
 const Select = ({
   label,
   options,
   value,
   onChange,
+  important = false,
   className = "",
   ...rest
 }) => {
   const selectClass = `select ${className}`;
   return (
     <div className="selectWrapper">
-      {label && <label className="label">{label}</label>}
+      {label && (
+        <label className="select__label">
+          {label}
+          {important && <BsAsterisk className="select__label__icon" />}
+        </label>
+      )}
       <select
         value={value}
         onChange={onChange}

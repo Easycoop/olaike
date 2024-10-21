@@ -5,8 +5,29 @@ import { FaCrown } from "react-icons/fa6";
 import { IoPeopleSharp } from "react-icons/io5";
 import { MdAccountTree, MdInsertLink } from "react-icons/md";
 import { RiArrowRightSLine } from "react-icons/ri";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import toastManager from "../../../components/ui/toast/ToasterManager";
 
 function Referrals() {
+  const { user } = useSelector((state) => state.auth);
+
+  const referralLink = user.referral;
+
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(referralLink)
+      .then(() => {
+        toastManager({
+          message: "Referral link copied to clipboard",
+          type: "success",
+        });
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
+  };
+
   return (
     <div className="referrals">
       <h5>Share your your referrals codes to your friends</h5>
@@ -14,9 +35,10 @@ function Referrals() {
         <input
           type="text"
           className="referrals__input__code"
-          placeholder="https://.referralscodebynabungin.com/ujexnpyc"
+          placeholder={`http://localhost:3000/?referral-code=${referralLink}`}
+          disabled={true}
         />
-        <button>
+        <button onClick={copyToClipboard}>
           <FaLink />
           Copy link
         </button>
@@ -42,7 +64,7 @@ function Referrals() {
         />
         <button>Send Email</button>
       </span>
-      <div className="referrals__options">
+      {/* <div className="referrals__options">
         <div>
           <span>
             <BsPatchMinusFill color="#000000" />
@@ -65,8 +87,8 @@ function Referrals() {
           </div>
         </div>
         <RiArrowRightSLine />
-      </div>
-      <div className="referrals__options">
+      </div> */}
+      {/* <div className="referrals__options">
         <div>
           <span>
             <MdAccountTree color="#000000" />
@@ -77,7 +99,7 @@ function Referrals() {
           </div>
         </div>
         <RiArrowRightSLine />
-      </div>
+      </div> */}
       <div className="referrals__options">
         <div>
           <span>

@@ -10,11 +10,11 @@ import { ClipLoader } from "react-spinners";
 import Select from "../../../components/ui/form-elements/select";
 import { useGetSocieties } from "../../../redux/actions/societyAction";
 
-// const options =[
-//   { value: null, label: "Select a society" },
-//   { value: "option1", label: "Option 1" },
-//   { value: "option2", label: "Option 2" },
-// ]
+const genders = [
+  { value: null, label: "Select a gender" },
+  { value: "Male", label: "Male" },
+  { value: "Female", label: "Female" },
+];
 
 function Signup() {
   const getSocieties = useGetSocieties();
@@ -33,6 +33,8 @@ function Signup() {
     confirmPassword: "",
     phone: "",
     group: "",
+    gender: "",
+    referralCode: "",
   });
 
   const handleGetSocieties = async () => {
@@ -104,6 +106,7 @@ function Signup() {
           <h3>Sign up</h3>
           <form onSubmit={handleSubmit}>
             <Input
+              important={true}
               required
               className="signup__input"
               type="text"
@@ -112,7 +115,8 @@ function Signup() {
               value={formData.firstName}
               onChange={handleChange}
             />
-            <Input
+            {/* <Input
+              important={true}
               required
               className="signup__input"
               type="text"
@@ -120,8 +124,9 @@ function Signup() {
               name="middleName"
               value={formData.middleName}
               onChange={handleChange}
-            />
+            /> */}
             <Input
+              important={true}
               required
               className="signup__input"
               type="text"
@@ -131,6 +136,7 @@ function Signup() {
               onChange={handleChange}
             />
             <Input
+              important={true}
               required
               className="signup__input"
               type="email"
@@ -140,6 +146,7 @@ function Signup() {
               onChange={handleChange}
             />
             <Input
+              important={true}
               required
               className="signup__input"
               type="number"
@@ -149,6 +156,7 @@ function Signup() {
               onChange={handleChange}
             />
             <Select
+              important={true}
               required
               label="Society"
               name="group"
@@ -156,7 +164,25 @@ function Signup() {
               options={societies}
               onChange={handleChange}
             />
+            <Select
+              important={true}
+              required
+              label="Gender"
+              name="gender"
+              className="signup__input"
+              options={genders}
+              onChange={handleChange}
+            />
             <Input
+              className="signup__input"
+              type="number"
+              label="Referral code (Optional)"
+              name="referralCode"
+              value={formData.referralCode}
+              onChange={handleChange}
+            />
+            <Input
+              important={true}
               required
               className="signup__input"
               type="password"
@@ -166,6 +192,7 @@ function Signup() {
               onChange={handleChange}
             />
             <Input
+              important={true}
               required
               className="signup__input"
               type="password"
