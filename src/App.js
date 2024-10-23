@@ -23,6 +23,10 @@ import Donation from "./pages/main/donation/Donation";
 import SignupComplete from "./pages/auth/signup-complete/SignupComplete";
 import LoanApplicationCompleted from "./pages/main/loan-completed/LoanCompleted";
 import ToasterContainer from "./components/ui/toast/ToasterContainer";
+import SignupReferral from "./pages/auth/signup-referral/SignupReferral";
+import Chat from "./pages/main/chat/Chat";
+import MessagingFeature from "./pages/main/chat/Messaging";
+import SelectChat from "./pages/main/chat/SelectChat";
 
 function App() {
   return (
@@ -35,6 +39,10 @@ function App() {
           <Route path="/" element={<PublicRoute />}>
             <Route index element={<Login />} />
             <Route path="signup" element={<Signup />} />
+            <Route
+              path="signup/rc/:referralCode"
+              element={<SignupReferral />}
+            />
             <Route path="signup-complete" element={<SignupComplete />} />
 
             <Route path="/main" element={<Main />}>
@@ -50,6 +58,8 @@ function App() {
               <Route path="fees/dues" element={<Fees />} />
               <Route path="withdrawal" element={<Withdrawal />} />
               <Route path="donation" element={<Donation />} />
+              <Route path="message" element={<SelectChat />} />
+              <Route path="message-user/:id" element={<MessagingFeature />} />
             </Route>
           </Route>
 

@@ -1,0 +1,155 @@
+/* Header Styles */
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.app-title {
+  font-size: 24px;
+  color: #333;
+}
+
+/* Header Styles */
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.new-chat-wrapper {
+  position: relative;
+}
+
+.new-chat-btn {
+  padding: 8px 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.new-chat-btn:hover {
+  background-color: #218838;
+}
+
+/* Search Bar Styles */
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Chat List Styles */
+.chat-list {
+  margin-top: 10px;
+}
+
+.no-chats-message {
+  text-align: center;
+  font-size: 16px;
+  color: #888;
+}
+
+/* Chat Item Styles */
+.chat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+}
+
+.chat-item:hover {
+  background-color: #f9f9f9;
+}
+
+.chat-details {
+  max-width: 80%;
+}
+
+.chat-name {
+  font-size: 18px;
+  margin: 0;
+  color: #333;
+}
+
+.last-message {
+  font-size: 14px;
+  color: #999;
+  margin-top: 5px;
+}
+
+.chat-timestamp {
+  font-size: 12px;
+  color: #999;
+}
+/* New Chat Dropdown Styles */
+.new-chat-dropdown {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 250px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.contact-search-input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+}
+
+.contact-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 10px 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.contact-item {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.contact-item:hover {
+  background-color: #f9f9f9;
+}
+
+@media (max-width: 768px) {
+  .chat-item {
+    padding: 10px;
+  }
+
+  .chat-name {
+    font-size: 16px;
+  }
+
+  .last-message {
+    font-size: 12px;
+  }
+
+  .chat-timestamp {
+    font-size: 10px;
+  }
+
+  .new-chat-btn {
+    padding: 6px 12px;
+  }
+}

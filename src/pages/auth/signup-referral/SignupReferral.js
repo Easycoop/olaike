@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import "./signup.css";
+import "./signup-referral.css";
 import logo from "../../../assets/icons/logo-secondary-color1.png";
 import Input from "../../../components/ui/form-elements/input";
 import Button from "../../../components/ui/button/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRegister } from "../../../redux/actions/authActions";
 import toastManager from "../../../components/ui/toast/ToasterManager";
 import { ClipLoader } from "react-spinners";
@@ -15,7 +15,9 @@ const genders = [
   { id: "Female", name: "Female" },
 ];
 
-function Signup() {
+function SignupReferral() {
+  const { referralCode } = useParams();
+  console.log("manny", referralCode);
   const getSocieties = useGetSocieties();
   const register = useRegister();
   const navigate = useNavigate();
@@ -82,7 +84,7 @@ function Signup() {
           message: `Succesful registration`,
           type: "success",
         });
-        navigate("/signup-complete");
+        navigate("/Referral-complete");
         return;
       } else {
         setErrorMessage(response.message);
@@ -177,8 +179,9 @@ function Signup() {
               type="number"
               label="Referral code (Optional)"
               name="referralCode"
-              value={formData.referralCode}
-              onChange={handleChange}
+              defaultValue={referralCode}
+              // value={formData.referralCode}
+              disabled={true}
             />
             <Input
               important={true}
@@ -233,4 +236,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default SignupReferral;

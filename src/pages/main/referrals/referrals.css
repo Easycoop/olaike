@@ -7,31 +7,31 @@
 .referrals__input__link__wrap {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   width: 60%;
-  background-color: #6bfd83;
 }
 .referrals__input__code {
   font-size: var(--font-size-secondary);
   color: var(--color-text-secondary);
   padding: var(--spacing-small) 0;
   border: 0;
+  width: 80%;
 }
 .referrals__input__code:focus {
   outline: none;
 }
 .referrals__input__link__wrap > button {
   background-color: #718198;
-  color: var(--color-text-quaternary);
+  color: white;
   display: flex;
   align-items: center;
   gap: var(--spacing-small);
   border-radius: var(--border-radius-small);
+  margin: 0;
   margin-left: auto;
 }
 .referrals__users {
   display: flex;
-  border-left: 7px solid var(--color-foreground);
   justify-content: space-between;
   align-items: center;
   background-color: #f5f8ff;
@@ -48,10 +48,10 @@
   align-items: center;
   justify-content: center;
   padding: var(--spacing-medium);
-  background-color: var(--color-foreground);
+  background-color: #6bfd83;
   border-radius: var(--border-radius-small);
   margin-right: var(--spacing-medium);
-  color: var(--color-text-quaternary);
+  color: var(--color-text-primary);
 }
 .referrals__users > div > div {
   display: flex;
@@ -69,28 +69,27 @@
 .referrals__input__email__wrap {
   display: flex;
   align-items: center;
-  width: 100%;
-  gap: var(--spacing-medium);
+  justify-content: space-between;
+  width: 60%;
 }
 .referrals__input__email__code {
-  padding: var(--spacing-large);
-  background-color: var(--color-foreground);
+  background-color: var(--color-border);
   font-size: var(--font-size-tertiary);
-  color: var(--color-text-quaternary);
-  padding: var(--spacing-small);
+  color: var(--color-text-primary);
+  padding: var(--spacing-medium);
   border-radius: var(--border-radius-small);
-  min-height: 35px;
   border: 0;
-  width: 40%;
+  width: 80%;
 }
 .referrals__input__email__wrap > button {
   background-color: var(--color-foreground);
   color: var(--color-text-quaternary);
   display: flex;
   align-items: center;
-  gap: var(--spacing-small);
+  gap: var(--spacing-medium);
   border-radius: var(--border-radius-small);
   margin: 0;
+  width: fit-content;
 }
 
 .referrals__options {
@@ -138,6 +137,9 @@
     width: 100%;
   }
   .referrals__input__link__wrap {
+    width: 100%;
+  }
+  .referrals__input__email__wrap {
     width: 100%;
   }
   .referrals__input__code {

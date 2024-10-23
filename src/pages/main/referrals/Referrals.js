@@ -8,37 +8,99 @@ import { RiArrowRightSLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import toastManager from "../../../components/ui/toast/ToasterManager";
+import { useSendReferralEmail } from "../../../redux/actions/miscAction";
+import { ClipLoader } from "react-spinners";
 
 function Referrals() {
+  const sendReferralEmail = useSendReferralEmail();
   const { user } = useSelector((state) => state.auth);
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const referralString = user.referralCode;
 
-  const referralLink = user.referral;
+  const copyLinkToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(
+        `http://localhost:3000/signup/rc/${referralString}`
+      );
+      toastManager.addToast({
+        message: "Referral link copied to clipboard",
+        type: "success",
+      });
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  };
 
-  const copyToClipboard = () => {
-    navigator.clipboard
-      .writeText(referralLink)
-      .then(() => {
-        toastManager({
-          message: "Referral link copied to clipboard",
+  const copyCodeToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(referralString);
+      toastManager.addToast({
+        message: "Referral code copied to clipboard",
+        type: "success",
+      });
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  };
+
+  const handleSendEmail = async () => {
+    if (!email) {
+      toastManager.addToast({
+        message: "Please enter an email address",
+        type: "error",
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await sendReferralEmail({
+        email: email,
+        id: user.id,
+      });
+
+      if (
+        response?.payload.status === 200 ||
+        response?.payload.status === "success"
+      ) {
+        setErrorMessage("");
+        toastManager.addToast({
+          message: "Referral email sent successfully",
           type: "success",
         });
-      })
-      .catch((err) => {
-        console.error("Failed to copy: ", err);
+        setEmail("");
+        return;
+      } else {
+        toastManager.addToast({
+          message: "Error sending mail",
+          type: "error",
+        });
+        setErrorMessage(response.message);
+      }
+    } catch (error) {
+      toastManager.addToast({
+        message: "Error sending mail",
+        type: "error",
       });
+      setErrorMessage(error.response.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="referrals">
-      <h5>Share your your referrals codes to your friends</h5>
+      <h5>Share your your referral link to your friends</h5>
       <span className="referrals__input__link__wrap">
         <input
           type="text"
           className="referrals__input__code"
-          placeholder={`http://localhost:3000/?referral-code=${referralLink}`}
+          placeholder={`http://localhost:3000/signup/rc:${referralString}`}
           disabled={true}
         />
-        <button onClick={copyToClipboard}>
+        <button onClick={copyLinkToClipboard}>
           <FaLink />
           Copy link
         </button>
@@ -61,8 +123,16 @@ function Referrals() {
           type="text"
           className="referrals__input__email__code"
           placeholder="Enter email address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
-        <button>Send Email</button>
+        <button onClick={handleSendEmail} disabled={loading}>
+          {loading ? (
+            <ClipLoader color="#fff" size={20} />
+          ) : (
+            "Send referral email"
+          )}
+        </button>
       </span>
       {/* <div className="referrals__options">
         <div>
@@ -100,17 +170,17 @@ function Referrals() {
         </div>
         <RiArrowRightSLine />
       </div> */}
-      <div className="referrals__options">
+      <div className="referrals__options" onClick={copyCodeToClipboard}>
         <div>
           <span>
             <MdInsertLink color="#000000" />
           </span>
           <div>
-            <h6>Referred Code</h6>
-            <p>Your referral code</p>
+            <h6>Referral Code</h6>
+            <p>Your referral code: {referralString}</p>
           </div>
         </div>
-        <RiArrowRightSLine />
+        {/* <RiArrowRightSLine /> */}
       </div>
     </div>
   );
