@@ -8,6 +8,7 @@ import "../../../components/ui/modal/modal-children-styles/modal-withdraw1.css";
 import "../../../components/ui/modal/modal-children-styles/modal-payment2.css";
 import { FaCreditCard, FaHeart, FaLink, FaSackDollar } from "react-icons/fa6";
 import { MdDashboard, MdLogout } from "react-icons/md";
+import { FaRegMessage } from "react-icons/fa6";
 import { GiMoneyStack } from "react-icons/gi";
 import { IoWalletSharp } from "react-icons/io5";
 
@@ -19,7 +20,7 @@ const NAV__ARRAY = [
   { id: 5, path: "fees/dues", name: "Fees/Dues", icon: GiMoneyStack },
   { id: 6, path: "withdrawal", name: "Withdrawal", icon: FaCreditCard },
   { id: 7, path: "donation", name: "Donation", icon: FaHeart },
-  { id: 8, path: "message", name: "Message", icon: FaHeart },
+  { id: 8, path: "message", name: "Message", icon: FaRegMessage },
 ];
 
 function Main() {

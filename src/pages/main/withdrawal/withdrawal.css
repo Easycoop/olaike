@@ -1,0 +1,52 @@
+.withdraw__money {
+  background-color: var(--color-border);
+  min-height: 100vh;
+}
+.withdraw__money__section__two {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: 20px 20px;
+}
+.withdraw__money__section__two__block {
+  width: 30%;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--border-radius-medium);
+  background-color: var(--color-border);
+  cursor: pointer;
+}
+.withdraw__money__section__two__block:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1),
+    /* light outer shadow */ 0 12px 24px rgba(0, 0, 0, 0.05); /* deeper, softer shadow */
+}
+.withdraw__money__section__two__block > div {
+  display: flex;
+  flex-direction: column;
+}
+.withdraw__money__section__two__block > div > h5 {
+  font-size: var(--font-size-primary);
+  font-weight: 600;
+}
+.withdraw__money__section__two__block > div > p {
+  font-size: var(--font-size-secondary);
+  color: var(--color-text-secondary);
+}
+.withdraw__money__section__two__block > img {
+  object-fit: contain;
+  width: 100px;
+  height: 100px;
+}
+
+@media all and (max-width: 768px) {
+  .withdraw__money__section__two {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .withdraw__money__section__two__block {
+    width: 100%;
+    padding: 20px 20px;
+  }
+}

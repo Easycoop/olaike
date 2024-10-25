@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import moment from "moment";
 import "./Chat.css";
 
 function Chat({ currentUser, messages, sendMessage, typingStatus, onTyping }) {
+  const messagesEndRef = useRef(null);
   const [newMessage, setNewMessage] = useState("");
 
   // Function to group messages by day
@@ -47,6 +48,16 @@ function Chat({ currentUser, messages, sendMessage, typingStatus, onTyping }) {
 
   const groupedMessages = groupMessagesByDay(messages);
 
+  // Function to scroll to the bottom of the chat window
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    // Scroll to the bottom every time messages change
+    scrollToBottom();
+  }, [messages]);
+
   return (
     <div className="chat-container">
       <div className="messages">
@@ -72,6 +83,8 @@ function Chat({ currentUser, messages, sendMessage, typingStatus, onTyping }) {
                 </div>
               </div>
             ))}
+
+            <div ref={messagesEndRef} />
           </div>
         ))}
       </div>

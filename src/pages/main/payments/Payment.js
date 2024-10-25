@@ -9,27 +9,36 @@ import { useSelector } from "react-redux";
 import {
   useInitializeTransaction,
   useVerifyTransactionFund,
+  useVerifyTransactionFundLoan,
+  useVerifyTransactionFundSavings,
 } from "../../../redux/actions/transactionAction";
 import { ClipLoader } from "react-spinners";
 import toastManager from "../../../components/ui/toast/ToasterManager";
+import image1 from "../../../assets/images/main/rb_1985.png";
+import image2 from "../../../assets/images/main/rb_12830.png";
 
 function Payment() {
   const PAYSTACK_KEY = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
   const initializeTransaction = useInitializeTransaction();
   const verifyTransactionFund = useVerifyTransactionFund();
+  const verifyTransactionFundSavings = useVerifyTransactionFundSavings();
+  const verifyTransactionFundLoan = useVerifyTransactionFundLoan();
   const { user } = useSelector((state) => state.auth);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [amount, setAmount] = useState(null);
+  const [type, setType] = useState("savings");
   const [isOpen, setIsOpen] = useState({
     fund: false,
-    done: false,
+    savings: false,
+    loan: false,
   });
 
   const closeModal = () => {
     setIsOpen({
       fund: false,
-      done: false,
+      savings: false,
+      loan: false,
     });
   };
 
@@ -37,8 +46,10 @@ function Payment() {
     closeModal();
     if (option === "fund") {
       setIsOpen((prev) => ({ ...prev, fund: true }));
-    } else if (option === "done") {
-      setIsOpen((prev) => ({ ...prev, done: true }));
+    } else if (option === "savings") {
+      setIsOpen((prev) => ({ ...prev, savings: true }));
+    } else if (option === "loan") {
+      setIsOpen((prev) => ({ ...prev, loan: true }));
     } else return;
   };
 
@@ -71,7 +82,17 @@ function Payment() {
           // Payment completed, verify the payment
           const verifyPayment = async () => {
             try {
-              const response = await verifyTransactionFund(res.reference); // Await the verification
+              let response;
+
+              if (type == "fund") {
+                response = await verifyTransactionFund(res.reference); // Await the verification
+              }
+              if (type == "savings") {
+                response = await verifyTransactionFundSavings(res.reference); // Await the verification
+              }
+              if (type == "loan") {
+                response = await verifyTransactionFundLoan(res.reference); // Await the verification
+              }
 
               if (
                 response?.payload.status === 200 ||
@@ -121,15 +142,39 @@ function Payment() {
     }
   };
   return (
-    <div className="payment">
-      <img src={payment} alt="payment" />
-      {/* <p>Fund your wallet now!</p> */}
-      <Button
-        className="modal__withdraw1__button"
-        onClick={() => handleModalClick("fund")}
-      >
-        Fund wallet
-      </Button>
+    <div className="withdraw">
+      <section className="withdraw__money__section__two">
+        <div
+          className="withdraw__money__section__two__block"
+          onClick={() => handleModalClick("fund")}
+        >
+          <div>
+            <h5>Wallet</h5>
+            <p>Fund your main wallet</p>
+          </div>
+          <img src={payment} />
+        </div>
+        <div
+          className="withdraw__money__section__two__block"
+          onClick={() => handleModalClick("savings")}
+        >
+          <div>
+            <h5>Savings</h5>
+            <p>Fund savings wallet</p>
+          </div>
+          <img src={image1} />
+        </div>
+        <div
+          className="withdraw__money__section__two__block"
+          onClick={() => handleModalClick("loan")}
+        >
+          <div>
+            <h5>Repay loan</h5>
+            <p>Pay back part or whole of your debt</p>
+          </div>
+          <img src={image2} />
+        </div>
+      </section>
 
       {/* FUND AMOUNT MODAL */}
       <Modal isOpen={isOpen.fund} onClose={closeModal}>
@@ -146,7 +191,66 @@ function Payment() {
           {errorMessage && (
             <h5 className="modal__withdraw1__error">{errorMessage}</h5>
           )}
-          <Button className="modal__withdraw1__button" onClick={handleFund}>
+          <Button
+            className="modal__withdraw1__button"
+            onClick={() => {
+              setType("fund");
+              handleFund();
+            }}
+          >
+            {loading ? <ClipLoader color="#fff" size={20} /> : "Fund wallet"}
+          </Button>
+        </div>
+      </Modal>
+
+      <Modal isOpen={isOpen.savings} onClose={closeModal}>
+        <div className="modal__withdraw1">
+          <h3>Enter how much you want to save</h3>
+          <Input
+            type="number"
+            placeholder="Enter an ammount"
+            name="amount"
+            value={amount}
+            disabled={loading}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+          {errorMessage && (
+            <h5 className="modal__withdraw1__error">{errorMessage}</h5>
+          )}
+          <Button
+            className="modal__withdraw1__button"
+            onClick={() => {
+              setType("savings");
+              handleFund();
+            }}
+          >
+            {loading ? <ClipLoader color="#fff" size={20} /> : "Fund wallet"}
+          </Button>
+        </div>
+      </Modal>
+
+      <Modal isOpen={isOpen.loan} onClose={closeModal}>
+        <div className="modal__withdraw1">
+          <h3>Enter how much you want to repay from loan</h3>
+          <p style={{ color: "crimson" }}>Debt owed: {user.loanBalance}</p>
+          <Input
+            type="number"
+            placeholder="Enter an ammount"
+            name="amount"
+            value={amount}
+            disabled={loading}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+          {errorMessage && (
+            <h5 className="modal__withdraw1__error">{errorMessage}</h5>
+          )}
+          <Button
+            className="modal__withdraw1__button"
+            onClick={() => {
+              setType("loan");
+              handleFund();
+            }}
+          >
             {loading ? <ClipLoader color="#fff" size={20} /> : "Fund wallet"}
           </Button>
         </div>

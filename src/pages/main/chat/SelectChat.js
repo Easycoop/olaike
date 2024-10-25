@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
+import moment from "moment";
 import "./select-chat.css";
-import { useGetAllMessages } from "../../../redux/actions/messageAction";
+import { useGetConversations } from "../../../redux/actions/messageAction";
 import { useGetUsers } from "../../../redux/actions/userAction";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function SelectChat() {
   const getUsers = useGetUsers();
-  const getAllMessages = useGetAllMessages();
+  const getConversations = useGetConversations();
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [userResult, setUserResult] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,13 +20,6 @@ function SelectChat() {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-
-  const [contacts, setContacts] = useState([
-    { id: 1, name: "John Doe" },
-    { id: 2, name: "Jane Smith" },
-    { id: 3, name: "Michael Jordan" },
-    { id: 4, name: "Serena Williams" },
-  ]);
 
   // Dummy data for chat conversations
   const dummyChats = [
@@ -56,19 +50,38 @@ function SelectChat() {
   ];
 
   // Filter chats based on search term
-  const filteredChats = dummyChats.filter((chat) =>
-    chat.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredChats = conversations.filter((chat) => {
+    const otherPersonName =
+      chat.userId1 === user.id ? chat.userId2Name : chat.userId1Name;
+
+    return otherPersonName.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   const ChatItem = ({ chat }) => {
     return (
-      <div className="chat-item">
+      <div
+        className="chat-item"
+        onClick={() =>
+          navigate(
+            `/main/message-user/${
+              chat.userId1 === user.id ? chat.userId2 : chat.userId1
+            }`
+          )
+        }
+      >
         <div className="chat-details">
-          <h2 className="chat-name">{chat.name}</h2>
-          <p className="last-message">{chat.lastMessage}</p>
+          <h2 className="chat-name">
+            {/* Determine the other participant in the conversation */}
+            {chat.userId1 === user.id ? (
+              <>{chat.userId2Name}</>
+            ) : (
+              <>{chat.userId1Name}</>
+            )}
+          </h2>
+          <p className="last-message">{chat.lastMessageContent}</p>
         </div>
         <div className="chat-timestamp">
-          <span>{chat.timestamp}</span>
+          <span>{moment(chat.updatedAt).format("h:mm A")}</span>
         </div>
       </div>
     );
@@ -83,7 +96,9 @@ function SelectChat() {
 
     // Filter contacts based on the search term
     const filteredContacts = excludedContacts.filter((contact) =>
-      contact.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+      (contact.firstName + contact.lastName)
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
     );
 
     return (
@@ -110,9 +125,9 @@ function SelectChat() {
     );
   };
 
-  const handleGetAllMessages = async () => {
+  const handleGetConversations = async () => {
     try {
-      const response = await getAllMessages();
+      const response = await getConversations();
 
       if (
         response?.payload.status === 200 ||
@@ -120,7 +135,7 @@ function SelectChat() {
       ) {
         setErrorMessage("");
         console.log("helen", response.payload.data);
-        setMessages(response.payload.data);
+        setConversations(response.payload.data);
         return;
       } else {
         setErrorMessage(response.message);
@@ -138,7 +153,6 @@ function SelectChat() {
       if (response?.payload.success === true) {
         setErrorMessage("");
         setUserResult(response.payload.data.result);
-        console.log("bennyta", response.payload.data.result);
         return;
       } else {
         setErrorMessage(response.message);
@@ -151,7 +165,7 @@ function SelectChat() {
   };
 
   useEffect(() => {
-    handleGetAllMessages();
+    handleGetConversations();
     handleGetUsers();
   }, []);
 

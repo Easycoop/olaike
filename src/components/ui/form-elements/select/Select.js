@@ -33,7 +33,7 @@ const Select = ({
         ))} */}
         <option value={null}>--</option>
         {options.map((option, index) => (
-          <option key={index} value={option.id}>
+          <option key={index} value={option.id} fee={option.entranceFee}>
             {option.name}
           </option>
         ))}

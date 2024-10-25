@@ -3,6 +3,9 @@ import Modal from "../../../components/ui/modal/Modal";
 import "./withdrawal.css";
 import Button from "../../../components/ui/button/Button";
 import Input from "../../../components/ui/form-elements/input";
+import image1 from "../../../assets/images/main/rb_24175.png";
+import image2 from "../../../assets/images/main/rb_24185.png";
+import image3 from "../../../assets/images/main/rb_2149335660.png";
 
 function Withdrawal() {
   const [withdrawAmmount, setWithdrawAmmount] = useState("");
@@ -35,8 +38,30 @@ function Withdrawal() {
     } else return;
   };
   return (
-    <div>
-      <div>withdrawla</div>
+    <div className="withdraw">
+      <section className="withdraw__money__section__two">
+        <div className="withdraw__money__section__two__block">
+          <div>
+            <h5>Request withdrawal</h5>
+            <p>Request withdrawal from main wallet</p>
+          </div>
+          <img src={image3} />
+        </div>
+        <div className="withdraw__money__section__two__block">
+          <div>
+            <h5>Savings</h5>
+            <p>Withdraw from savings wallet</p>
+          </div>
+          <img src={image2} />
+        </div>
+        <div className="withdraw__money__section__two__block">
+          <div>
+            <h5>Loan</h5>
+            <p>Withdraw from loan balance</p>
+          </div>
+          <img src={image2} />
+        </div>
+      </section>
 
       {/* WITHDRAW MODAL 1 */}
       <Modal isOpen={isOpen.withdraw1} onClose={closeModal}>

@@ -1,7 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { useDispatcher } from "../../utils/useDispatcher";
-import { getAllMessages, getMessages } from "../../services/messageService";
+import {
+  getAllMessages,
+  getConversations,
+  getMessages,
+} from "../../services/messageService";
 
 export const doGetMessages = createAsyncThunk(
   "message/doGetMessages",
@@ -27,5 +31,18 @@ export const doGetAllMessages = createAsyncThunk(
   }
 );
 
+export const doGetConversations = createAsyncThunk(
+  "message/doGetConversations",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getConversations();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message || "Action failed");
+    }
+  }
+);
+
 export const useGetMessages = () => useDispatcher(doGetMessages);
+export const useGetConversations = () => useDispatcher(doGetConversations);
 export const useGetAllMessages = () => useDispatcher(doGetAllMessages);

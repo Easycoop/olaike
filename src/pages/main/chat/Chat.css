@@ -1,7 +1,7 @@
 .chat-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 80vh;
   /* background-image: url("../../../assets/images/main/chat-bg.jpg");
   background-size: cover;
   background-repeat: no-repeat; */
@@ -60,7 +60,8 @@
   background-color: #f1f1f1;
   position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 75%;
+  height: 10vh;
 }
 
 .message-input > input {
@@ -88,5 +89,6 @@
 @media all and (max-width: 768px) {
   .message-input {
     left: 0;
+    width: 100%;
   }
 }

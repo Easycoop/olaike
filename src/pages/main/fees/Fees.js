@@ -2,102 +2,41 @@ import "./fees.css";
 import { BiPlus } from "react-icons/bi";
 import { FiFilter } from "react-icons/fi";
 import { TiExportOutline } from "react-icons/ti";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 import { FaCircle } from "react-icons/fa6";
-
-const DATA = [
-  {
-    id: 1,
-    fee: "N12,000",
-    date: "12th July, 2024",
-    status: "Paid",
-    date: "12th July, 2024",
-  },
-  {
-    id: 2,
-    fee: "N12,000",
-    date: "12t July, 2024",
-    status: "Paid",
-    date: "12th July, 2024",
-  },
-
-  // Add more user records as needed
-];
+import { useGetFes } from "../../../redux/actions/miscAction";
+import Loading from "../../../components/splash/loading/Loading";
+import NoResult from "../../../components/splash/no-result/NoResult";
 
 function Fees() {
   const navigate = useNavigate();
-  const [selectedUsers, setSelectedUsers] = useState([]);
-  const [isActionDropdown, setIsActionDropdown] = useState("");
-  const [currentActionId, setCurrentActionId] = useState("");
+  const getFees = useGetFes();
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [fees, setFees] = useState([]);
 
-  const [formData, setFormData] = useState({
-    tag: "",
-    category: "",
-  });
-
-  const [isOpen, setIsOpen] = useState({
-    assign: false,
-    reject: false,
-  });
-
-  const closeModal = () => {
-    setIsOpen({
-      assign: false,
-      reject: false,
-    });
-  };
-
-  const handleModalClick = (option) => {
-    option === "assign"
-      ? setIsOpen((prev) => ({ ...prev, assign: true }))
-      : setIsOpen((prev) => ({ ...prev, reject: true }));
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    console.log(formData);
-  };
-
-  const toggleActionDropdown = (id) => {
-    if (id === currentActionId) {
-      setIsActionDropdown("");
-      setCurrentActionId("");
-      return;
-    }
-    setIsActionDropdown(id);
-    setCurrentActionId(id);
-  };
-
-  const handleMenuClick = (e) => {
-    e.stopPropagation(); // Prevent the click from closing the dropdown
-  };
-
-  const handleSelectUser = (id) => {
-    setSelectedUsers((prevSelectedUsers) =>
-      prevSelectedUsers.includes(id)
-        ? prevSelectedUsers.filter((userId) => userId !== id)
-        : [...prevSelectedUsers, id]
-    );
-  };
-
-  const handleSelectAllUsers = () => {
-    if (selectedUsers.length === DATA.length) {
-      setSelectedUsers([]);
-    } else {
-      setSelectedUsers(DATA.map((user) => user.id));
+  const handleGetFees = async () => {
+    setLoading(true);
+    try {
+      const response = await getFees();
+      if (response?.payload.status === "success") {
+        setErrorMessage("");
+        setFees(response.payload.data);
+      } else {
+        setErrorMessage(response.message);
+      }
+    } catch (error) {
+      setErrorMessage(error.response.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleBulkAction = () => {
-    alert(`Performing bulk action on users: ${selectedUsers.join(", ")}`);
-  };
-
-  const handleApprove = () => {
-    console.log("appprove");
-  };
+  useEffect(() => {
+    handleGetFees();
+  }, []);
 
   return (
     <div className="ad__novel">
@@ -110,34 +49,46 @@ function Fees() {
           <div className="admin-table-header">
             <div className="admin-table-cell">FEES/DUES</div>
             <div className="admin-table-cell">DATE</div>
+            <div className="admin-table-cell">TYPE</div>
             <div className="admin-table-cell">STATUS</div>
-            <div className="admin-table-cell">DUE DATE</div>
           </div>
-          <div className="admin-table-body">
-            {DATA.map((user) => (
-              <div key={user.id} className="admin-table-row">
-                <div className="admin-table-cell">{user.fee}</div>
-                <div className="admin-table-cell">{user.date}</div>
-                <div className="admin-table-cell">
-                  <span
-                    style={{
-                      background: "#0BFD152B",
-                      borderRadius: "20px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "15px",
-                      padding: "10px 15px",
-                      width: "max-content",
-                    }}
-                  >
-                    <FaCircle color="#0BFD15" />
-                    {user.status}
-                  </span>
+          {fees.length == 0 && !loading ? (
+            <NoResult
+              header="No fees"
+              content="You dont have any fee history yet"
+            />
+          ) : (
+            <div className="admin-table-body">
+              {fees.map((fees, i) => (
+                <div key={i} className="admin-table-row">
+                  <div className="admin-table-cell">{`${fees.currency} ${fees.amount}`}</div>
+                  <div className="admin-table-cell">{fees.createdAt}</div>
+                  <div className="admin-table-cell">{fees.type}</div>
+                  <div className="admin-table-cell">
+                    <span
+                      style={{
+                        border: `1px solid ${
+                          fees.status == "paid" ? "#0BFD15" : "#dc143c"
+                        }`,
+                        borderRadius: "20px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "15px",
+                        padding: "10px 15px",
+                        width: "max-content",
+                      }}
+                    >
+                      <FaCircle
+                        color={fees.status == "paid" ? "#0BFD15" : "#dc143c"}
+                      />
+                      {fees.status}
+                    </span>
+                  </div>
                 </div>
-                <div className="admin-table-cell">{user.date}</div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
+          {loading && <Loading />}
         </div>
       </section>
     </div>

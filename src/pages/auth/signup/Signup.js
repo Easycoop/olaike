@@ -9,6 +9,10 @@ import toastManager from "../../../components/ui/toast/ToasterManager";
 import { ClipLoader } from "react-spinners";
 import Select from "../../../components/ui/form-elements/select";
 import { useGetSocieties } from "../../../redux/actions/societyAction";
+import {
+  useInitializeTransactionEntry,
+  useVerifyTransactionEntry,
+} from "../../../redux/actions/transactionAction";
 
 const genders = [
   { id: "Male", name: "Male" },
@@ -19,6 +23,10 @@ function Signup() {
   const getSocieties = useGetSocieties();
   const register = useRegister();
   const navigate = useNavigate();
+  const PAYSTACK_KEY = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
+  const initializeTransactionEntry = useInitializeTransactionEntry();
+  const verifyTransaction = useVerifyTransactionEntry();
+  const [amount, setAmount] = useState(null);
   const [verified, setVerified] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -65,13 +73,7 @@ function Signup() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      setErrorMessage("Passwords do not match");
-      return;
-    }
-
+  const handleSubmit = async () => {
     try {
       setLoading(true);
       const response = await register(formData);
@@ -98,12 +100,101 @@ function Signup() {
     handleGetSocieties();
   }, []);
 
+  const handleFund = async (e) => {
+    e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMessage("Passwords do not match");
+      return;
+    }
+
+    if (!amount) {
+      setErrorMessage("Please enter amount you want to fund");
+      return;
+    }
+    // Initialize transaction from backend
+    try {
+      setLoading(true);
+      const response = await initializeTransactionEntry({
+        email: formData.email,
+        amount: amount,
+        description: "entrance fee",
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        group: formData.group,
+      });
+      const { reference } = response.payload.data.data;
+      // Open Paystack modal to complete payment
+      const handler = window.PaystackPop.setup({
+        key: PAYSTACK_KEY, // Paystack public key
+        email: formData.email,
+        amount: amount * 100,
+        currency: "NGN",
+        ref: reference, // Reference from backend initialization
+        callback: function (res) {
+          // Payment completed, verify the payment
+          const verifyPayment = async () => {
+            try {
+              const response = await verifyTransaction(res.reference); // Await the verification
+              if (
+                response?.payload.status === 200 ||
+                response?.payload.status === "success"
+              ) {
+                toastManager.addToast({
+                  message: "Payment Successful",
+                  type: "success",
+                });
+                handleSubmit();
+              } else {
+                toastManager.addToast({
+                  message: "Payment failed: Could not verify payment",
+                  type: "error",
+                });
+              }
+            } catch (error) {
+              console.error("Verification error:", error);
+              toastManager.addToast({
+                message: "Payment failed: Could not verify payment",
+                type: "error",
+              });
+            }
+          };
+          // Call the async function inside the synchronous callback
+          verifyPayment();
+        },
+        onClose: function () {
+          toastManager.addToast({
+            message: "Payment canceled",
+            type: "error",
+          });
+        },
+      });
+      handler.openIframe(); // Open the Paystack modal
+    } catch (error) {
+      console.error("Payment initialization failed:", error);
+      toastManager.addToast({
+        message: "Payment initialization failed",
+        type: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const selectedSociety = societies.find((item) => item.id == formData.group);
+    if (selectedSociety) {
+      setAmount(selectedSociety.entranceFee);
+    } else {
+      setAmount(null);
+    }
+  }, [formData.group]);
+
   return (
     <div className="signup">
       <div className="signup__start">
         <div className="signup__start__wrap">
           <h3>Sign up</h3>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleFund}>
             <Input
               important={true}
               required
@@ -114,7 +205,7 @@ function Signup() {
               value={formData.firstName}
               onChange={handleChange}
             />
-            {/* <Input
+            <Input
               important={true}
               required
               className="signup__input"
@@ -123,7 +214,7 @@ function Signup() {
               name="middleName"
               value={formData.middleName}
               onChange={handleChange}
-            /> */}
+            />
             <Input
               important={true}
               required

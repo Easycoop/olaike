@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import Chat from "./Chat";
 import { useSelector } from "react-redux";
@@ -9,6 +9,7 @@ const socket = io("http://localhost:5000");
 
 const MessagingFeature = () => {
   const getMessages = useGetMessages();
+  const typingTimeoutRef = useRef(null);
   const { user } = useSelector((state) => state.auth);
   const [errorMessage, setErrorMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -52,11 +53,10 @@ const MessagingFeature = () => {
       // Ensure listeners are removed before adding new ones
       socket.off("directMessage");
       socket.off("typing");
-      socket.off("stop-typing");
+      socket.off("notTyping");
 
       // Add the listeners
       socket.on("directMessage", (message) => {
-        console.log("new message", message);
         setMessages((prev) => [...prev, message]);
       });
 
@@ -64,7 +64,8 @@ const MessagingFeature = () => {
         setTypingStatus(true);
       });
 
-      socket.on("stop-typing", () => {
+      socket.on("notTyping", () => {
+        console.log("reaching here");
         setTypingStatus(false);
       });
 
@@ -72,7 +73,7 @@ const MessagingFeature = () => {
       return () => {
         socket.off("directMessage");
         socket.off("typing");
-        socket.off("stop-typing");
+        socket.off("notTyping");
       };
     }
   }, [user, socket]);
@@ -89,11 +90,25 @@ const MessagingFeature = () => {
       recipientId: id,
       content: text,
     });
+    socket.emit("notTyping", {
+      recipientId: id,
+    });
     setMessages((prev) => [...prev, newMessage]);
   };
 
   const handleTyping = () => {
-    socket.emit("typing");
+    socket.emit("typing", {
+      recipientId: id,
+    });
+
+    // Clear previous timeout and set a new one to stop typing
+    clearTimeout(typingTimeoutRef.current);
+    typingTimeoutRef.current = setTimeout(() => {
+      setTypingStatus(false);
+      socket.emit("notTyping", {
+        recipientId: id,
+      }); // Emit stop typing event
+    }, 500); // Typing stops after 1 second of inactivity
   };
 
   return (

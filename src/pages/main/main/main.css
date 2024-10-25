@@ -125,10 +125,11 @@
 
   .admin__outlet {
     display: none;
+    padding: var(--spacing-medium) var(--spacing-small);
   }
   .admin__outlet.active {
     display: block;
     padding: 0;
-    padding: var(--spacing-medium) var(--spacing-large);
+    padding: var(--spacing-medium) var(--spacing-small);
   }
 }
