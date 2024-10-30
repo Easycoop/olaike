@@ -27,7 +27,7 @@ function Payment() {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [amount, setAmount] = useState(null);
-  const [type, setType] = useState("savings");
+  const [type, setType] = useState("");
   const [isOpen, setIsOpen] = useState({
     fund: false,
     savings: false,
@@ -40,6 +40,8 @@ function Payment() {
       savings: false,
       loan: false,
     });
+    setErrorMessage("");
+    setAmount(null);
   };
 
   const handleModalClick = (option) => {
@@ -56,6 +58,11 @@ function Payment() {
   const handleFund = async () => {
     if (!amount) {
       setErrorMessage("Please enter amount you want to fund");
+      return;
+    }
+
+    if (type == "loan" && amount > user.loanBalance) {
+      setErrorMessage("This amount is bigger than the amount you are owing");
       return;
     }
     // Initialize transaction from backend
@@ -146,7 +153,10 @@ function Payment() {
       <section className="withdraw__money__section__two">
         <div
           className="withdraw__money__section__two__block"
-          onClick={() => handleModalClick("fund")}
+          onClick={() => {
+            setType("fund");
+            handleModalClick("fund");
+          }}
         >
           <div>
             <h5>Wallet</h5>
@@ -156,7 +166,10 @@ function Payment() {
         </div>
         <div
           className="withdraw__money__section__two__block"
-          onClick={() => handleModalClick("savings")}
+          onClick={() => {
+            setType("savings");
+            handleModalClick("savings");
+          }}
         >
           <div>
             <h5>Savings</h5>
@@ -166,11 +179,22 @@ function Payment() {
         </div>
         <div
           className="withdraw__money__section__two__block"
-          onClick={() => handleModalClick("loan")}
+          onClick={() => {
+            if (user.loanBalance == 0) {
+              toastManager.addToast({
+                message: "You don't have any debt to repay",
+                type: "warning",
+              });
+            } else {
+              setType("loan");
+              handleModalClick("loan");
+            }
+          }}
         >
           <div>
             <h5>Repay loan</h5>
             <p>Pay back part or whole of your debt</p>
+            <p style={{ color: "crimson" }}>Debt owed: {user.loanBalance}</p>
           </div>
           <img src={image2} />
         </div>
@@ -182,7 +206,7 @@ function Payment() {
           <h3>Enter how much you want to fund</h3>
           <Input
             type="number"
-            placeholder="Enter an ammount"
+            placeholder="Enter an amount"
             name="amount"
             value={amount}
             disabled={loading}
@@ -191,13 +215,7 @@ function Payment() {
           {errorMessage && (
             <h5 className="modal__withdraw1__error">{errorMessage}</h5>
           )}
-          <Button
-            className="modal__withdraw1__button"
-            onClick={() => {
-              setType("fund");
-              handleFund();
-            }}
-          >
+          <Button className="modal__withdraw1__button" onClick={handleFund}>
             {loading ? <ClipLoader color="#fff" size={20} /> : "Fund wallet"}
           </Button>
         </div>
@@ -208,7 +226,7 @@ function Payment() {
           <h3>Enter how much you want to save</h3>
           <Input
             type="number"
-            placeholder="Enter an ammount"
+            placeholder="Enter an amount"
             name="amount"
             value={amount}
             disabled={loading}
@@ -217,14 +235,8 @@ function Payment() {
           {errorMessage && (
             <h5 className="modal__withdraw1__error">{errorMessage}</h5>
           )}
-          <Button
-            className="modal__withdraw1__button"
-            onClick={() => {
-              setType("savings");
-              handleFund();
-            }}
-          >
-            {loading ? <ClipLoader color="#fff" size={20} /> : "Fund wallet"}
+          <Button className="modal__withdraw1__button" onClick={handleFund}>
+            {loading ? <ClipLoader color="#fff" size={20} /> : "Save"}
           </Button>
         </div>
       </Modal>
@@ -232,10 +244,9 @@ function Payment() {
       <Modal isOpen={isOpen.loan} onClose={closeModal}>
         <div className="modal__withdraw1">
           <h3>Enter how much you want to repay from loan</h3>
-          <p style={{ color: "crimson" }}>Debt owed: {user.loanBalance}</p>
           <Input
             type="number"
-            placeholder="Enter an ammount"
+            placeholder="Enter an amount"
             name="amount"
             value={amount}
             disabled={loading}
@@ -244,14 +255,8 @@ function Payment() {
           {errorMessage && (
             <h5 className="modal__withdraw1__error">{errorMessage}</h5>
           )}
-          <Button
-            className="modal__withdraw1__button"
-            onClick={() => {
-              setType("loan");
-              handleFund();
-            }}
-          >
-            {loading ? <ClipLoader color="#fff" size={20} /> : "Fund wallet"}
+          <Button className="modal__withdraw1__button" onClick={handleFund}>
+            {loading ? <ClipLoader color="#fff" size={20} /> : "Repay loan"}
           </Button>
         </div>
       </Modal>

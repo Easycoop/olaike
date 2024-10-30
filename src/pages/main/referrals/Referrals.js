@@ -105,7 +105,7 @@ function Referrals() {
           Copy link
         </button>
       </span>
-      <div className="referrals__users">
+      {/* <div className="referrals__users">
         <div>
           <span>
             <IoPeopleSharp />
@@ -117,6 +117,18 @@ function Referrals() {
         </div>
 
         <RiArrowRightSLine />
+      </div> */}
+      <div className="referrals__options" onClick={copyCodeToClipboard}>
+        <div>
+          <span>
+            <MdInsertLink color="#000000" />
+          </span>
+          <div>
+            <h6>Referral Code</h6>
+            <p>Your referral code: {referralString}</p>
+          </div>
+        </div>
+        {/* <RiArrowRightSLine /> */}
       </div>
       <span className="referrals__input__email__wrap">
         <input
@@ -170,18 +182,6 @@ function Referrals() {
         </div>
         <RiArrowRightSLine />
       </div> */}
-      <div className="referrals__options" onClick={copyCodeToClipboard}>
-        <div>
-          <span>
-            <MdInsertLink color="#000000" />
-          </span>
-          <div>
-            <h6>Referral Code</h6>
-            <p>Your referral code: {referralString}</p>
-          </div>
-        </div>
-        {/* <RiArrowRightSLine /> */}
-      </div>
     </div>
   );
 }

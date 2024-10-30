@@ -5,4 +5,5 @@ export const LOADING = "LOADING";
 export const LOGOUT = "LOGOUT";
 export const LOGIN_UPDATE_SUCCESS = "LOGIN_UPDATE_SUCCESS";
 export const SET_USER_TYPE = "SET_USER_TYPE";
+export const UPDATE_USER = "UPDATE_USER";
 export const UPDATE_ACCESS_TOKEN = "UPDATE_ACCESS_TOKEN";

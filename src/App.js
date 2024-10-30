@@ -1,10 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-} from "react-router-dom";
-import { useContext } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./app.css";
 import ScrollToTop from "./utils/ScrollToTop";
 import { ADMIN_ROLES } from "./config/adminRoles";
@@ -24,9 +18,11 @@ import SignupComplete from "./pages/auth/signup-complete/SignupComplete";
 import LoanApplicationCompleted from "./pages/main/loan-completed/LoanCompleted";
 import ToasterContainer from "./components/ui/toast/ToasterContainer";
 import SignupReferral from "./pages/auth/signup-referral/SignupReferral";
-import Chat from "./pages/main/chat/Chat";
 import MessagingFeature from "./pages/main/chat/Messaging";
 import SelectChat from "./pages/main/chat/SelectChat";
+import LoanApplied from "./pages/main/loan-applied/LoanApplied";
+import LoanRedirect from "./pages/main/loans/loanRedirect";
+import LoanActive from "./pages/main/loan-active/LoanActive";
 
 function App() {
   return (
@@ -54,6 +50,9 @@ function App() {
                 path="loan-completed"
                 element={<LoanApplicationCompleted />}
               />
+              <Route path="loan-active" element={<LoanActive />} />
+              <Route path="loan-applied" element={<LoanApplied />} />
+              <Route path="loan-redirect" element={<LoanRedirect />} />
               <Route path="referrals" element={<Referrals />} />
               <Route path="fees/dues" element={<Fees />} />
               <Route path="withdrawal" element={<Withdrawal />} />

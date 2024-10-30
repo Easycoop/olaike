@@ -6,41 +6,80 @@ import Input from "../../../components/ui/form-elements/input";
 import image1 from "../../../assets/images/main/rb_24175.png";
 import image2 from "../../../assets/images/main/rb_24185.png";
 import image3 from "../../../assets/images/main/rb_2149335660.png";
+import request from "../../../assets/images/main/rb_7834.png";
+import { useRequestWithdraw } from "../../../redux/actions/miscAction";
+import { useSelector } from "react-redux";
+import toastManager from "../../../components/ui/toast/ToasterManager";
+import { ClipLoader } from "react-spinners";
 
 function Withdrawal() {
-  const [withdrawAmmount, setWithdrawAmmount] = useState("");
+  const requestWithdraw = useRequestWithdraw();
+  const { user } = useSelector((state) => state.auth);
+  const [type, setType] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState("");
+  const [withdrawAmmount, setWithdrawAmmount] = useState(null);
+  const [reason, setReason] = useState(null);
   const [isOpen, setIsOpen] = useState({
-    withdraw1: false,
-    payment: false,
-    payment2: false,
-    payment3: false,
+    request: false,
+    savings: false,
+    loan: false,
   });
 
   const closeModal = () => {
     setIsOpen({
-      withdraw1: false,
-      payment: false,
-      payment2: false,
-      payment3: false,
+      request: false,
+      savings: false,
+      loan: false,
     });
   };
 
   const handleModalClick = (option) => {
     closeModal();
-    if (option === "withdraw1") {
-      setIsOpen((prev) => ({ ...prev, withdraw1: true }));
-    } else if (option === "payment") {
-      setIsOpen((prev) => ({ ...prev, payment: true }));
-    } else if (option === "payment2") {
-      setIsOpen((prev) => ({ ...prev, payment2: true }));
-    } else if (option === "payment3") {
-      setIsOpen((prev) => ({ ...prev, payment3: true }));
+    if (option === "request") {
+      setIsOpen((prev) => ({ ...prev, request: true }));
+    } else if (option === "savings") {
+      setIsOpen((prev) => ({ ...prev, savings: true }));
+    } else if (option === "loan") {
+      setIsOpen((prev) => ({ ...prev, loan: true }));
     } else return;
   };
+
+  const handleRequestWithdraw = async () => {
+    setLoading(true);
+    try {
+      const response = await requestWithdraw({
+        userId: user.id,
+        amount: withdrawAmmount,
+        reason: reason,
+      });
+      if (response?.payload.status === "success") {
+        setErrorMessage("");
+        closeModal();
+        toastManager.addToast({
+          message: "Withdrawal request sent successfully",
+          type: "success",
+        });
+      } else {
+        setErrorMessage(response.message);
+      }
+    } catch (error) {
+      setErrorMessage(error.response.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="withdraw">
       <section className="withdraw__money__section__two">
-        <div className="withdraw__money__section__two__block">
+        <div
+          className="withdraw__money__section__two__block"
+          onClick={() => {
+            setType("request");
+            handleModalClick("request");
+          }}
+        >
           <div>
             <h5>Request withdrawal</h5>
             <p>Request withdrawal from main wallet</p>
@@ -59,38 +98,40 @@ function Withdrawal() {
             <h5>Loan</h5>
             <p>Withdraw from loan balance</p>
           </div>
-          <img src={image2} />
+          <img src={image1} />
         </div>
       </section>
 
       {/* WITHDRAW MODAL 1 */}
-      <Modal isOpen={isOpen.withdraw1} onClose={closeModal}>
+      <Modal isOpen={isOpen.request} onClose={closeModal}>
         <div className="modal__withdraw1">
-          <h3>Enter how much you want to withdraw</h3>
+          <img src={request} />
+          <h3>How much are you requesting for?</h3>
           <Input
-            type="text"
-            placeholder="Enter an ammount"
+            type="number"
+            placeholder="Enter an amount"
             name="withdrawAmmount"
             value={withdrawAmmount}
             onChange={(e) => setWithdrawAmmount(e.target.value)}
           />
-          <p>wallet balance: N 2,000.000.00</p>
-          <Button className="modal__withdraw1__button">
-            Select account details
+          <h3>Why are you are you requesting withdrawal?</h3>
+          <Input
+            type="text"
+            placeholder="Enter reason of request"
+            name="reason"
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+          />
+          <Button
+            className="modal__withdraw1__button"
+            onClick={handleRequestWithdraw}
+          >
+            {loading ? (
+              <ClipLoader color="#fff" size={20} />
+            ) : (
+              "Request withdraw"
+            )}
           </Button>
-        </div>
-      </Modal>
-
-      {/* PAYMENT MODAL 2 */}
-      <Modal isOpen={isOpen.payment2} onClose={closeModal}>
-        <div className="modal__payment2">
-          <div onClick={() => handleModalClick("payment3")}>Main Wallet</div>
-          <div onClick={() => handleModalClick("payment3")}>Savings Wallet</div>
-          <div onClick={() => handleModalClick("payment3")}>
-            Home Savings Wallet
-          </div>
-          <div onClick={() => handleModalClick("payment3")}>Loan Wallet</div>
-          <p>Select the wallet to fund</p>
         </div>
       </Modal>
     </div>

@@ -1,7 +1,5 @@
 import "./dashboard.css";
 import { FaArrowTrendUp, FaCircle } from "react-icons/fa6";
-import chart2 from "../../../assets/images/main/chart2.png";
-import chart3 from "../../../assets/images/main/chart3.png";
 import chart from "../../../assets/images/main/chart.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
@@ -10,6 +8,7 @@ import { useSelector } from "react-redux";
 import Loading from "../../../components/splash/loading/Loading";
 import NoResult from "../../../components/splash/no-result/NoResult";
 import { useGetWallets } from "../../../redux/actions/walletAction";
+import Button from "../../../components/ui/button/Button";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -134,15 +133,36 @@ function Dashboard() {
         <div className="dashboard__section__two__wrap">
           <div className="dashboard__section__two__wrap__start">
             <div className="dashboard__section__two__wrap__start__block">
-              <img src={chart2} alt="" />
+              <h3>Outstanding loan </h3>
+              <h4>{`${user.loanBalance} ${wallets?.wallet?.currency}`}</h4>
+            </div>
+
+            <div className="dashboard__section__two__wrap__start__block">
+              <h3>Start saving your money</h3>
+              <Button
+                type="submit"
+                typeOf="primary"
+                // className="signup__create__button"
+                onClick={() => navigate("/main/fund")}
+              >
+                Save now
+              </Button>
             </div>
             <div className="dashboard__section__two__wrap__start__block">
-              <img src={chart3} alt="" />
+              <h3>Apply for loan</h3>
+              <Button
+                type="submit"
+                typeOf="primary"
+                // className="signup__create__button"
+                onClick={() => navigate("/main/loan-redirect")}
+              >
+                Apply
+              </Button>
             </div>
           </div>
-          <div className="dashboard__section__two__wrap__end">
+          {/* <div className="dashboard__section__two__wrap__end">
             <img src={chart} alt="" />
-          </div>
+          </div> */}
         </div>
       </section>
       <section className="dashboard__section__one">

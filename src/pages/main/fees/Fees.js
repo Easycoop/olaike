@@ -6,13 +6,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 import { FaCircle } from "react-icons/fa6";
-import { useGetFes } from "../../../redux/actions/miscAction";
+import { useGetFees } from "../../../redux/actions/miscAction";
 import Loading from "../../../components/splash/loading/Loading";
 import NoResult from "../../../components/splash/no-result/NoResult";
 
 function Fees() {
   const navigate = useNavigate();
-  const getFees = useGetFes();
+  const getFees = useGetFees();
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [fees, setFees] = useState([]);

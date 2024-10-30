@@ -34,6 +34,8 @@
 .loan__segment__foot {
   margin-top: auto;
   display: flex;
+  justify-content: end;
+  gap: 20px;
 }
 .loan__button {
   width: max-content;
@@ -41,9 +43,22 @@
   border-radius: 30px;
 }
 .loan__foot__button {
-  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   padding: var(--spacing-medium) var(--spacing-large);
   border-radius: 30px;
+}
+.loan__foot__button.save {
+  background-color: #fdc30b;
+  padding: var(--spacing-medium) var(--spacing-large);
+  border-radius: 30px;
+  min-width: 150px;
+  display: flex;
+  justify-content: center;
+}
+.loan__foot__button.back {
+  /* background-color: black; */
 }
 .loan__form__set {
   display: flex;
@@ -118,10 +133,18 @@
     width: 200px;
     width: max-content;
   }
+  .loan__segment {
+    min-height: 80dvh;
+  }
   .loan__form__set {
     width: 100%;
   }
   .loan__header__wrap {
     overflow-x: scroll;
+  }
+  .loan__foot__button {
+    gap: 10px;
+    padding: var(--spacing-small) var(--spacing-medium);
+    border-radius: 30px;
   }
 }

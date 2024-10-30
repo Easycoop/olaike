@@ -15,7 +15,12 @@ import { IoWalletSharp } from "react-icons/io5";
 const NAV__ARRAY = [
   { id: 1, path: "dashboard", name: "My Passbook", icon: MdDashboard },
   { id: 2, path: "fund", name: "Fund Wallet", icon: IoWalletSharp },
-  { id: 3, path: "loans", name: "Loan Applications", icon: FaSackDollar },
+  {
+    id: 3,
+    path: "loan-redirect",
+    name: "Loan Applications",
+    icon: FaSackDollar,
+  },
   { id: 4, path: "referrals", name: "Referrals", icon: FaLink },
   { id: 5, path: "fees/dues", name: "Fees/Dues", icon: GiMoneyStack },
   { id: 6, path: "withdrawal", name: "Withdrawal", icon: FaCreditCard },

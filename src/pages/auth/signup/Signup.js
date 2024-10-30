@@ -310,7 +310,7 @@ function Signup() {
               {loading ? (
                 <ClipLoader color="#fff" size={20} />
               ) : (
-                "Create account"
+                "Proceed to pay"
               )}
             </Button>
           </form>

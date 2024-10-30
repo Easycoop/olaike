@@ -1,11 +1,8 @@
 import api from "../api/axios";
 
-export const sendReferralEmail = async (payload) => {
+export const saveChanges = async (payload) => {
   try {
-    const response = await api.post(`/misc/send-referral-email`, {
-      email: payload.email,
-      userId: payload.id,
-    });
+    const response = await api.patch(`/loan-application/`, payload);
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -24,9 +21,9 @@ export const sendReferralEmail = async (payload) => {
   }
 };
 
-export const getFees = async () => {
+export const submitLoan = async (payload) => {
   try {
-    const response = await api.get(`/fees/`);
+    const response = await api.post(`/loan-application/`, payload);
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -45,13 +42,9 @@ export const getFees = async () => {
   }
 };
 
-export const requestWithdraw = async (payload) => {
+export const getLoanApplication = async (payload) => {
   try {
-    const response = await api.post(`/request-withdraw/`, {
-      userId: payload.userId,
-      amount: payload.amount,
-      reason: payload.reason,
-    });
+    const response = await api.get(`/loan-application/${payload}`);
     return response.data;
   } catch (error) {
     if (error.response) {
