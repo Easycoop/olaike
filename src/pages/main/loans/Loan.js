@@ -33,6 +33,7 @@ function Loan() {
     phone: null,
     gender: null,
     dob: null,
+    amount: null,
     address: null,
     employmentStatus: null,
     employerName: null,
@@ -169,6 +170,8 @@ function Loan() {
   };
 
   useState(() => {
+    console.log("samuel", user);
+
     handleGetLoanApplication();
   }, []);
 
@@ -335,6 +338,17 @@ function Loan() {
                   name="address"
                   placeholder="e.g Port Harcourt, Rivers State"
                   value={formData?.address}
+                  onChange={handleChange}
+                />
+              </span>
+              <span className="loan__form__set">
+                <label className="loan__label">LOAN AMOUNT</label>
+                <input
+                  className="loan__input"
+                  type="number"
+                  name="amount"
+                  placeholder="Enter amount you are requesting for"
+                  value={formData?.amount}
                   onChange={handleChange}
                 />
               </span>

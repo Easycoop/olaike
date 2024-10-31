@@ -13,10 +13,12 @@
   font-size: var(--font-size-h4);
   margin-bottom: var(--spacing-small);
   color: var(--color-foreground);
+  text-align: center;
 }
 .loan-completed > p {
   font-size: var(--font-size-secondary);
   color: var(--color-text-secondary);
+  text-align: center;
 }
 
 @media all and (max-width: 768px) {
