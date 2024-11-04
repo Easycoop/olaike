@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Switch from "react-switch";
 import image1 from "../../../assets/images/main/profile-image.jpg";
 import { useNavigate } from "react-router-dom";
@@ -12,8 +12,10 @@ import {
 import { ClipLoader } from "react-spinners";
 import toastManager from "../../../components/ui/toast/ToasterManager";
 import { useDispatch, useSelector } from "react-redux";
+import { useGetWallets } from "../../../redux/actions/walletAction";
 
 function Loan() {
+  const getWallets = useGetWallets();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -24,6 +26,7 @@ function Loan() {
   const [checked2, setChecked2] = useState(true);
   const [checked3, setChecked3] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [wallets, setWallets] = useState({});
   const [loading, setLoading] = useState("");
 
   const [formData, setFormData] = useState({
@@ -45,6 +48,7 @@ function Loan() {
     nokPhone: null,
     nokRelationship: null,
     bvn: null,
+    nin: null,
     verificationDocument: null,
     guarantorFirstName: null,
     guarantorLastName: null,
@@ -102,7 +106,46 @@ function Loan() {
     setSelect((prevState) => ({ ...prevState, [option]: true }));
   };
 
+  function isSixMonthsLater(targetDateStr) {
+    const targetDate = new Date(targetDateStr);
+
+    if (isNaN(targetDate)) {
+      throw new Error("Invalid date format");
+    }
+
+    const today = new Date();
+
+    // Add 6 months to the target date
+    const sixMonthsLater = new Date(targetDate);
+    sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
+
+    // Check if today's date is equal to or greater than six months after the target date
+
+    return today >= sixMonthsLater;
+  }
+
   const handleSubmit = async () => {
+    if (formData.amount > 3 * wallets.wallet.balance) {
+      setErrorMessage("Amount should not exceed 3 times your wallet balance");
+      toastManager.addToast({
+        message: "Loan amount should not exceed 3 times your wallet balance",
+        type: "warning",
+      });
+      return;
+    }
+
+    if (!isSixMonthsLater(user.createdAt)) {
+      setErrorMessage(
+        "User must be registered for at least 6 months to apply for a loan"
+      );
+      toastManager.addToast({
+        message:
+          "User must be registered for at least 6 months to apply for a loan",
+        type: "warning",
+      });
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await submitLoan(formData);
@@ -169,9 +212,25 @@ function Loan() {
     }
   };
 
-  useState(() => {
-    console.log("samuel", user);
+  const handleGetWallets = async () => {
+    setLoading(true);
+    try {
+      const response = await getWallets(user.id);
+      if (response?.payload.status === "success") {
+        setErrorMessage("");
+        setWallets(response.payload.data);
+      } else {
+        setErrorMessage(response.message);
+      }
+    } catch (error) {
+      setErrorMessage(error.response.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
+    handleGetWallets();
     handleGetLoanApplication();
   }, []);
 
@@ -230,27 +289,6 @@ function Loan() {
             >
               Guarantor
             </button>
-
-            {/* <button
-              className={
-                select.select6
-                  ? "account__notifications__select selected"
-                  : "account__notifications__select"
-              }
-              onClick={() => handleSelect("select6")}
-            >
-              Notifications
-            </button> */}
-            {/* <button
-              className={
-                select.select7
-                  ? "account__notifications__select selected"
-                  : "account__notifications__select"
-              }
-              onClick={() => handleSelect("select7")}
-            >
-              Security
-            </button> */}
           </div>
         </div>
       </section>
@@ -566,6 +604,17 @@ function Loan() {
               />
             </span>
             <span className="loan__form__set">
+              <label className="loan__label">NIN</label>
+              <input
+                className="loan__input"
+                type="number"
+                placeholder="Bank Verification Number"
+                name="nin"
+                value={formData?.bvn}
+                onChange={handleChange}
+              />
+            </span>
+            <span className="loan__form__set">
               <label className="loan__label">ID VERIFICATION</label>
               <p className="loan__label__secondary">
                 Please upload a means of identification so we can verify who you
@@ -575,7 +624,7 @@ function Loan() {
                 className="loan__button"
                 style={{ backgroundColor: "#FDC30B", color: "#000" }}
               >
-                Verify my identity
+                Upload document
               </button>
             </span>
             <div className="loan__segment__foot">
@@ -716,66 +765,8 @@ function Loan() {
             </div>
           </div>
         )}
-        {/* {select.select6 ? (
-          <div className="loan__notification loan__segment">
-            <section className="loan__notification__block">
-              <h3>Notifications related to you and your space</h3>
-              <p>
-                Space, booking, payment and other notifications related to your
-                space
-              </p>
-              <Switch
-                onColor={"#FDC30B"}
-                onChange={() => {
-                  setChecked(!checked);
-                }}
-                checked={checked}
-                className="react-switch"
-              />
-            </section>
-            <section className="loan__notification__block">
-              <h3>Notifications related to you and your space</h3>
-              <p>
-                Space, booking, payment and other notifications related to your
-                space
-              </p>
-              <Switch
-                onColor={"#FDC30B"}
-                onChange={() => {
-                  setChecked2(!checked2);
-                }}
-                checked={checked2}
-                className="react-switch"
-              />
-            </section>
-            <section className="loan__notification__block">
-              <h3>Notifications related to you and your space</h3>
-              <p>
-                Space, booking, payment and other notifications related to your
-                space
-              </p>
-              <Switch
-                onColor={"#FDC30B"}
-                onChange={() => {
-                  setChecked3(!checked3);
-                }}
-                checked={checked3}
-                className="react-switch"
-              />
-            </section>
-            <div className="loan__segment__foot">
-              <button
-                className="loan__foot__button"
-                onClick={() => navigate("/main/loan-completed")}
-              >
-                Apply
-              </button>
-            </div>
-          </div>
-        ) : (
-          <></>
-        )} */}
-        {select.select7 ? <div className="">select 7</div> : <></>}
+
+        {select.select6 ? <div className="">select 7</div> : <></>}
       </section>
     </div>
   );

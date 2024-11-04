@@ -53,10 +53,17 @@ function Fees() {
             <div className="admin-table-cell">STATUS</div>
           </div>
           {fees.length == 0 && !loading ? (
-            <NoResult
-              header="No fees"
-              content="You dont have any fee history yet"
-            />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "200px",
+                gap: "20px",
+              }}
+            >
+              <p>No fees found yet </p>
+            </div>
           ) : (
             <div className="admin-table-body">
               {fees.map((fees, i) => (

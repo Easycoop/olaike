@@ -47,7 +47,7 @@ export const getFees = async () => {
 
 export const requestWithdraw = async (payload) => {
   try {
-    const response = await api.post(`/request-withdraw/`, {
+    const response = await api.post(`/withdraw-request/`, {
       userId: payload.userId,
       amount: payload.amount,
       reason: payload.reason,

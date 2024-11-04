@@ -6,7 +6,8 @@
 }
 .modal__withdraw1 > img {
   object-fit: contain;
-  width: 100%;
+  width: 200px;
+  margin: auto;
 }
 .modal__withdraw1 > h3 {
   font-size: var(--font-size-primary);
@@ -19,7 +20,7 @@
   margin-top: var(--spacing-large);
 }
 .modal__withdraw1__error {
-  color: crimson;
+  color: crimson !important;
   font-weight: 500;
 }
 .modal__withdraw1__button {

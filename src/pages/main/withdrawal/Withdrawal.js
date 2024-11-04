@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../../../components/ui/modal/Modal";
 import "./withdrawal.css";
 import Button from "../../../components/ui/button/Button";
@@ -11,15 +11,18 @@ import { useRequestWithdraw } from "../../../redux/actions/miscAction";
 import { useSelector } from "react-redux";
 import toastManager from "../../../components/ui/toast/ToasterManager";
 import { ClipLoader } from "react-spinners";
+import { useGetWallets } from "../../../redux/actions/walletAction";
 
 function Withdrawal() {
+  const getWallets = useGetWallets();
   const requestWithdraw = useRequestWithdraw();
   const { user } = useSelector((state) => state.auth);
   const [type, setType] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState("");
-  const [withdrawAmmount, setWithdrawAmmount] = useState(null);
+  const [withdrawAmount, setWithdrawAmount] = useState(null);
   const [reason, setReason] = useState(null);
+  const [wallets, setWallets] = useState({});
   const [isOpen, setIsOpen] = useState({
     request: false,
     savings: false,
@@ -46,11 +49,33 @@ function Withdrawal() {
   };
 
   const handleRequestWithdraw = async () => {
+    if (!withdrawAmount) {
+      setErrorMessage("Please enter an amount");
+      return;
+    }
+
+    if (!reason) {
+      setErrorMessage("Please enter a reason for your request");
+      return;
+    }
+
+    const balance = parseFloat(wallets.wallet.balance);
+    const amountToWithdraw = parseFloat(withdrawAmount);
+
+    if (balance < amountToWithdraw) {
+      closeModal();
+      toastManager.addToast({
+        message: "Insufficient balance",
+        type: "error",
+      });
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await requestWithdraw({
         userId: user.id,
-        amount: withdrawAmmount,
+        amount: withdrawAmount,
         reason: reason,
       });
       if (response?.payload.status === "success") {
@@ -61,6 +86,28 @@ function Withdrawal() {
           type: "success",
         });
       } else {
+        closeModal();
+        setErrorMessage(response.message);
+        toastManager.addToast({
+          message: response?.payload?.message,
+          type: "error",
+        });
+      }
+    } catch (error) {
+      setErrorMessage(error.response.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGetWallets = async () => {
+    setLoading(true);
+    try {
+      const response = await getWallets(user.id);
+      if (response?.payload.status === "success") {
+        setErrorMessage("");
+        setWallets(response.payload.data);
+      } else {
         setErrorMessage(response.message);
       }
     } catch (error) {
@@ -69,6 +116,10 @@ function Withdrawal() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    handleGetWallets();
+  }, []);
 
   return (
     <div className="withdraw">
@@ -110,9 +161,9 @@ function Withdrawal() {
           <Input
             type="number"
             placeholder="Enter an amount"
-            name="withdrawAmmount"
-            value={withdrawAmmount}
-            onChange={(e) => setWithdrawAmmount(e.target.value)}
+            name="withdrawAmount"
+            value={withdrawAmount}
+            onChange={(e) => setWithdrawAmount(e.target.value)}
           />
           <h3>Why are you are you requesting withdrawal?</h3>
           <Input
@@ -122,6 +173,7 @@ function Withdrawal() {
             value={reason}
             onChange={(e) => setReason(e.target.value)}
           />
+          <p className="modal__withdraw1__error">{errorMessage}</p>
           <Button
             className="modal__withdraw1__button"
             onClick={handleRequestWithdraw}
