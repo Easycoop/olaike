@@ -21,7 +21,7 @@
 @media all and (max-width: 768px) {
   .donation > img {
     object-fit: contain;
-    width: 100%;
+    width: 200px;
   }
   .donation > p {
     width: 100%;

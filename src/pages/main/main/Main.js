@@ -1,6 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { BsAirplane } from "react-icons/bs";
 import "./main.css";
 import logo from "../../../assets/icons/logo.png";
 import Header from "../../../components/layout/header/Header";
@@ -11,6 +10,8 @@ import { MdDashboard, MdLogout } from "react-icons/md";
 import { FaRegMessage } from "react-icons/fa6";
 import { GiMoneyStack } from "react-icons/gi";
 import { IoWalletSharp } from "react-icons/io5";
+import { useLogout } from "../../../redux/actions/authActions";
+import toastManager from "../../../components/ui/toast/ToasterManager";
 
 const NAV__ARRAY = [
   { id: 1, path: "dashboard", name: "My Passbook", icon: MdDashboard },
@@ -30,8 +31,11 @@ const NAV__ARRAY = [
 
 function Main() {
   const navigate = useNavigate();
+  const logout = useLogout();
   const [colorId, setColorId] = useState(1);
   const [active, setActive] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleNav = (active) => {
     setActive(active);
@@ -39,7 +43,31 @@ function Main() {
 
   const handleLogout = async (e) => {
     e.preventDefault();
-    navigate("/");
+    try {
+      setLoading(true);
+      const response = await logout();
+      if (response.status === true || response.status === "success") {
+        setErrorMessage("");
+
+        toastManager.addToast({
+          message: "Logout successful",
+          type: "success",
+        });
+        navigate("/");
+        return;
+      } else {
+        setErrorMessage(response.message);
+        toastManager.addToast({
+          message: "Logout unsuccessful",
+          type: "error",
+        });
+      }
+    } catch (error) {
+      setErrorMessage(error.response.message);
+    } finally {
+      setLoading(false);
+      navigate("/");
+    }
   };
 
   return (

@@ -112,7 +112,7 @@ function Dashboard() {
             <h5>Main Wallet</h5>
             <h3>{`${wallets?.wallet?.balance} ${wallets?.wallet?.currency}`}</h3>
             <div>
-              24.44% <FaArrowTrendUp />
+              <FaArrowTrendUp />
             </div>
           </span>
           {wallets?.subWallets?.map((wallet, i) => {
@@ -121,7 +121,7 @@ function Dashboard() {
                 <h5>{wallet?.name}</h5>
                 <h3>{`${wallet?.balance} ${wallet?.currency}`}</h3>
                 <div>
-                  24.44% <FaArrowTrendUp />
+                  <FaArrowTrendUp />
                 </div>
               </span>
             );

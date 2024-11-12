@@ -23,6 +23,7 @@ import SelectChat from "./pages/main/chat/SelectChat";
 import LoanApplied from "./pages/main/loan-applied/LoanApplied";
 import LoanRedirect from "./pages/main/loans/loanRedirect";
 import LoanActive from "./pages/main/loan-active/LoanActive";
+import NotFound from "./pages/extra/not-found/notFound";
 
 function App() {
   return (
@@ -31,16 +32,8 @@ function App() {
         <ToasterContainer />
         <ScrollToTop />
         <Routes>
-          {/* PUBLIC ROUTES */}
-          <Route path="/" element={<PublicRoute />}>
-            <Route index element={<Login />} />
-            <Route path="signup" element={<Signup />} />
-            <Route
-              path="signup/rc/:referralCode"
-              element={<SignupReferral />}
-            />
-            <Route path="signup-complete" element={<SignupComplete />} />
-
+          {/* PRIVATE ROUTES */}
+          <Route path="/" element={<PrivateRoute />}>
             <Route path="/main" element={<Main />}>
               <Route index element={<Dashboard />} />
               <Route path="dashboard" element={<Dashboard />} />
@@ -62,8 +55,19 @@ function App() {
             </Route>
           </Route>
 
-          {/* PRIVATE ROUTES */}
-          <Route element={<PrivateRoute allowedRoles={ADMIN_ROLES} />}></Route>
+          {/* PUBLIC ROUTES */}
+          <Route path="/" element={<PublicRoute />}>
+            <Route index element={<Login />} />
+            <Route path="signup" element={<Signup />} />
+            <Route
+              path="signup/rc/:referralCode"
+              element={<SignupReferral />}
+            />
+            <Route path="signup-complete" element={<SignupComplete />} />
+          </Route>
+
+          {/* CATCH ALL ROUTES */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </div>

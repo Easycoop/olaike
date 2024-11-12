@@ -1,11 +1,13 @@
-import { Navigate, Outlet } from "react-router-dom";
+import React from "react";
+import { useSelector } from "react-redux";
+import { Outlet, Navigate } from "react-router-dom";
 
-function PrivateRoute({ allowedRoles }) {
-  return allowedRoles.includes("admin") ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/unauthorized" />
-  );
-}
+const PrivateRoute = () => {
+  const { user } = useSelector((state) => state.auth);
+
+  const isAuthenticated = user;
+
+  return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
+};
 
 export default PrivateRoute;

@@ -25,7 +25,7 @@ export const login = async (payload) => {
 // Enhanced error handling for logout
 export const logout = async () => {
   try {
-    const response = await api.delete("/token/logout");
+    const response = await api.delete("/auth/logout");
     return response.data;
   } catch (error) {
     if (error.response) {

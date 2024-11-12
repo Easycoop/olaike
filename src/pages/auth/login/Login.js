@@ -30,6 +30,11 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!formData.email || !formData.password) {
+      setErrorMessage("Email or password cannot be blank");
+      return;
+    }
+
     try {
       setLoading(true);
       const response = await login({

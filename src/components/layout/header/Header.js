@@ -51,7 +51,7 @@ function Header({ handleNav }) {
           <h4>{misc.headerPath}</h4>
           <div
             className="header__sc__two__profile"
-            onClick={() => navigate("/admin/profile")}
+            // onClick={() => navigate("/profile")}
           >
             <p>ID: {user?.id}</p>
             <img alt="profile" src={image2} />
