@@ -1,6 +1,5 @@
 import "./dashboard.css";
 import { FaArrowTrendUp, FaCircle } from "react-icons/fa6";
-import chart from "../../../assets/images/main/chart.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useGetTransactions } from "../../../redux/actions/transactionAction";
