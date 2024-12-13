@@ -18,11 +18,12 @@ function Referrals() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const referralString = user.referralCode;
+  const WEB_URL = process.env.REACT_APP_WEB_URL;
 
   const copyLinkToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(
-        `http://localhost:3000/signup/rc/${referralString}`
+        `${WEB_URL}/signup/rc/${referralString}`
       );
       toastManager.addToast({
         message: "Referral link copied to clipboard",
@@ -97,7 +98,7 @@ function Referrals() {
         <input
           type="text"
           className="referrals__input__code"
-          placeholder={`http://localhost:3000/signup/rc:${referralString}`}
+          placeholder={`${WEB_URL}/signup/rc:${referralString}`}
           disabled={true}
         />
         <button onClick={copyLinkToClipboard}>

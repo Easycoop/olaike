@@ -41,7 +41,7 @@ function Login() {
         email: formData.email,
         password: formData.password,
       });
-      if (response.status === true || response.status === "success") {
+      if (response?.status === true || response?.status === "success") {
         setErrorMessage("");
 
         toastManager.addToast({
@@ -51,7 +51,7 @@ function Login() {
         navigate("/main/dashboard");
         return;
       } else {
-        setErrorMessage(response.message);
+        setErrorMessage(response?.message);
       }
     } catch (error) {
       setErrorMessage(error.response.message);

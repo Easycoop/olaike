@@ -5,7 +5,9 @@ import { useSelector } from "react-redux";
 import { useGetMessages } from "../../../redux/actions/messageAction";
 import { useParams } from "react-router-dom";
 
-const socket = io("http://localhost:5000");
+export const BASE_URL_SOCKET = process.env.REACT_APP_BASE_URL_SOCKET;
+
+const socket = io(BASE_URL_SOCKET);
 
 const MessagingFeature = () => {
   const getMessages = useGetMessages();

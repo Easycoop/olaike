@@ -2,8 +2,7 @@ import axios from "axios";
 import { store } from "../redux/store";
 import toastManager from "../components/ui/toast/ToasterManager";
 
-export const BASE_URL = "http://localhost:5000/api/v1";
-// console.log("base url", BASE_URL);
+export const BASE_URL = process.env.REACT_APP_BASE_URL;
 const state = store.getState();
 
 const api = axios.create({
