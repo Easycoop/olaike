@@ -16,7 +16,8 @@ export const login = async (payload) => {
       error.message = " No response received from server.";
     } else {
       // Add request setup details to the error
-      error.message = error.message;
+      // error.message = error.message;
+      console.log(error.message);
     }
     throw error;
   }

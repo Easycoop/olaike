@@ -1,5 +1,5 @@
 import { BiMenu } from "react-icons/bi";
-import "./header.css";
+import "./Header.css";
 import image1 from "../../../assets/icons/logo-secondary.png";
 import image2 from "../../../assets/images/main/profile-image.jpg";
 import { useEffect, useState } from "react";
