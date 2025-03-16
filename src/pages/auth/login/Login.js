@@ -13,8 +13,8 @@ function Login() {
   const login = useLogin();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: "chrisb@gmail.com",
+    password: "Buchess#2024",
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -73,7 +73,7 @@ function Login() {
                 type="text"
                 label="Email"
                 name="email"
-                value={formData.name}
+                value={formData.email}
                 onChange={handleChange}
               />
               <Input

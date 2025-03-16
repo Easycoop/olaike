@@ -1,0 +1,269 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { ClipLoader } from "react-spinners";
+import Button from "../../../components/ui/button/Button";
+import { useDispatch, useSelector } from "react-redux";
+import {getNin, initiatePhoneVerification, verifyOtp} from "../../../services/userService";
+import toastManager from "../../../components/ui/toast/ToasterManager";
+import {verifyNin} from "../../../services/userService";
+import {MdVerifiedUser} from "react-icons/md"
+
+const KYC = () => {
+    // const misc = useSelector((state) => state.misc);
+    const { user } = useSelector((state) => state.auth);
+    
+    const [phone, setPhone] = useState(user?.phone);
+    const [phoneBtnLoading, setPhoneBtnLoading] = useState(false);
+    const [otpBtnLoading, setOtpBtnLoading] = useState(false);
+    const [ninBtnLoading, setNinBtnLoading] = useState(false);
+    const [otp, setOtp] = useState("");
+    const [otpVerified, setOtpVerified] = useState(false);
+    const [phoneVerified, setPhoneVerified] = useState(user.phoneVerified);
+    const [ninVerified, setNinVerified] = useState(false);
+    const [otpSent, setOtpSent] = useState(false);
+    const [imagePreview, setImagePreview] = useState(null);
+    const [nin, setNin] = useState({
+        number: "",
+        image: null,
+        dob: ""
+    });
+
+    const navigate = useNavigate();
+
+    const handlePhoneVerification = async () => {
+        setPhoneBtnLoading(true);
+        const getOTP = await initiatePhoneVerification(user?.id, phone);
+        if(getOTP?.status === 'success'){
+            setOtpSent(true);
+            toastManager.addToast({
+                message: `${getOTP?.message}`,
+                type: "success",
+              });
+            setPhoneBtnLoading(false);
+        }else{
+            setPhoneBtnLoading(false);
+        }
+
+    }
+
+    const submitOtp = async () => {
+        try {
+            setOtpBtnLoading(true);
+            const validateOtp = await verifyOtp(user?.id, otp);
+            if(validateOtp?.status === 'success'){
+                setOtpBtnLoading(false);
+                setOtpVerified(true);
+                toastManager.addToast({
+                    message: `${validateOtp?.message}`,
+                    type: "success",
+                });
+                setPhoneVerified(true);
+                setOtpVerified(true)
+            }else{
+                setOtpBtnLoading(false);
+                toastManager.addToast({
+                    message: `${validateOtp?.message}`,
+                    type: "error",
+                });
+            }
+        } catch (error) {
+            setOtpBtnLoading(false);
+            toastManager.addToast({
+                message: `${error?.message}`,
+                type: "error",
+            });
+        }
+       
+    }
+    
+    const handleFileChange = (event) => {
+        const file = event.target.files[0]; // Get the selected file
+        if (file) {
+          const fileURL = URL.createObjectURL(file); // Create a URL for the selected file
+          setImagePreview(fileURL); // Set the image preview state
+          setNin({
+            ...nin,
+            image: file
+          })
+        }
+      };
+
+    const handleNinVerification = async () => {
+        try {   
+            setNinBtnLoading(true);
+            const formData = new FormData();
+            formData.append('nin', nin.number);
+            formData.append('image', nin.image);
+            formData.append('dob', nin.dob);
+            const response = await verifyNin(user.id, formData);
+            if(response?.status === 'success'){
+                setNinBtnLoading(false);
+                setNinVerified(true)
+                toastManager.addToast({
+                    message: `${response?.message}`,
+                    type: "success",
+                });
+                checkExistingNin();
+            }else{
+                setNinBtnLoading(false);
+                toastManager.addToast({
+                    message: `${response?.message}`,
+                    type: "error",
+                });
+            }
+            
+        } catch (error) {
+            setNinBtnLoading(false);
+            toastManager.addToast({
+                message: `${error?.message}`,
+                type: "error",
+            });
+        }
+      }
+    
+      const checkExistingNin = async () => {
+          try {
+              const response = await getNin(user.id);
+              if(response?.status === 'success'){
+                  
+                  setNinVerified(true);
+                  setImagePreview(response?.data?.documentFile);
+                  setNin({
+                      number: response?.data?.documentIdentifier,
+                      image: null,
+                      dob: response?.data?.dob
+                  })
+              }else{
+                  toastManager.addToast({
+                      message: `${response?.message}`,
+                      type: "error",
+                  });
+              }
+          } catch (error) {
+              toastManager.addToast({
+                  message: `${error?.message}`,
+                  type: "error",
+              });
+          }
+      }
+
+      useEffect(() => {
+        checkExistingNin();  
+      }, [])
+    return (
+        <div style={{ paddingTop: "20px" }}>
+            <div className="loan__segment">
+            <div style={{border: "1px solid #ccc", width:"90%", paddingLeft: "20px", paddingTop: "20px", borderRadius: "5px"}}>
+                <div className="d-flex " style={{alignItems: "center", gap: "10px"}}>
+                    <div className="loan__form__set" >
+                        <label className="loan__label">Phone</label>
+                        <input className="loan__input" type="tel" placeholder="Phone Number" name="phone" value={phone} onChange={(e)=>setPhone(e.target.value)} disabled={user?.phoneVerified}
+                    />
+                    </div> 
+                    {phoneVerified ? 
+                    <><MdVerifiedUser  style={{color:"green", fontSize: "40px"}}/> verified</>:
+                     <Button
+                        type="button"
+                        typeOf="primary"
+                        onClick={handlePhoneVerification}
+                        style={{ height: "50px  "}}
+                    >
+                        {phoneBtnLoading ? <ClipLoader color="#fff" size={20} /> : "Verify  number"}   
+                    </Button>}
+                </div>
+
+                {otpSent && !otpVerified &&
+                <div className="d-flex " style={{alignItems: "center", gap: "10px"}}>
+                    <div className="loan__form__set" >
+                        <label className="loan__label">OTP</label>
+                        <input
+                            className="loan__input"
+                            type="tel"
+                            placeholder="Enter the OTP sent to your phone number"
+                            name="otp"
+                            value={otp}
+                            onChange={(e)=>setOtp(e.target.value)}
+                        />
+                    </div> 
+                    
+                    <Button type="button" typeOf="success" onClick={submitOtp} style={{ height: "50px  "}}>
+                        {otpBtnLoading ? <ClipLoader color="#fff" size={20} /> : "Submit OTP"}   
+                    </Button>
+                
+                </div>
+                }
+            </div>
+             
+            <div style={{border: "1px solid #ccc", width:"90%", paddingLeft: "20px", paddingTop: "20px", borderRadius: "5px", marginTop : "20px"}}>
+                <div className="d-flex " style={{alignItems: "center", gap: "10px"}}>
+                    <div className="loan__form__set" >
+                        <label className="loan__label">NIN</label>
+                        <input className="loan__input" placeholder="National Identification Number" name="nin" value={nin.number} disabled={ninVerified} onChange={(e) => setNin({...nin, number: e.target.value})}
+                        />
+                    </div> 
+
+                    <div className="loan__form__set" >
+                        <label className="loan__label">Date of Birth</label>
+                        <input className="loan__input" type="date" name="dob" disabled={ninVerified} onChange={(e)=>setNin({...nin, dob: e.target.value})}/>
+                    </div> 
+                    
+                
+                </div>
+                <div className="d-flex " style={{alignItems: "center", gap: "10px"}} >
+                    {!ninVerified &&
+                    <div className="loan__form__set" >
+                        <label className="loan__label">Nin Slip </label>
+                        <input className="loan__input" type="file" name="file" accept="image/*" onChange={handleFileChange} />
+                    
+                    </div> 
+                    }
+
+                    <div className="d-flex" style={{alignItems: "center", gap: "10px", marginTop:"-40px"}} >
+                        {imagePreview ? (
+                        <img src={imagePreview} alt="NIN slip" style={{ width: "150px", height: "150px", objectFit: "contain" }} />
+                        ) : (
+                        <p>No image selected</p> // Show text if no image is selected
+                        )}
+
+                        {ninVerified && <><MdVerifiedUser  style={{color:"green", fontSize: "40px"}}/> verified</>}
+                    </div>
+                </div>
+                {!ninVerified &&
+                <Button type="button" typeOf="primary" onClick={handleNinVerification} style={{ height: "50px  "}}>
+                    {ninBtnLoading ? <ClipLoader color="#fff" size={20} /> : "Verify  NIN"}   
+                </Button>
+                }
+            </div>
+            {/* <div className="d-flex " style={{alignItems: "center", gap: "10px"}}>
+                <div className="loan__form__set" >
+                    <label className="loan__label">BVN</label>
+                    <input
+                        className="loan__input"
+                        type="tel"
+                        placeholder="Bank Verification Number"
+                        name="phone"
+                        value={""}
+                        onChange={()=>{}}
+                    />
+                </div> 
+                
+                <Button
+                        type="button"
+                        typeOf="primary"
+                        onClick={() => {}}
+                        style={{ height: "50px  "}}
+                            
+                    >
+                        Verify BVN
+                </Button>
+               
+            </div> */}
+            
+        </div>
+        </div>
+        
+    );
+}
+
+export default KYC;

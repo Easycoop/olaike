@@ -1,0 +1,151 @@
+.account__notifications__section__two {
+    padding: 30px 0;
+    padding-bottom: 25px;
+  }
+  .account__notifications__select__div {
+    border-bottom: 1px solid #eee;
+    display: flex;
+  }
+  .account__notifications__select {
+    margin: 0;
+    border-radius: 0;
+    border: 0;
+    padding: 15px 0;
+    background: transparent;
+    margin-right: 40px;
+    flex: 1;
+    text-align: start;
+    cursor: pointer;
+    font-weight: 400;
+    font-size: var(--font-size-primary);
+    color: #c6c6c9;
+  }
+  .account__notifications__select.selected {
+    border-bottom: 2.5px solid var(--color-text-primary);
+    color: var(--color-text-primary);
+  }
+  
+  .loan__segment {
+    width: 100%;
+    min-height: 70dvh;
+    display: flex;
+    flex-direction: column;
+  }
+  .loan__segment__foot {
+    margin-top: auto;
+    display: flex;
+    justify-content: end;
+    gap: 20px;
+  }
+  .loan__button {
+    width: max-content;
+    padding: var(--spacing-medium) var(--spacing-large);
+    border-radius: 30px;
+  }
+  .loan__foot__button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: var(--spacing-medium) var(--spacing-large);
+    border-radius: 30px;
+  }
+  .loan__foot__button.save {
+    background-color: #fdc30b;
+    padding: var(--spacing-medium) var(--spacing-large);
+    border-radius: 30px;
+    min-width: 150px;
+    display: flex;
+    justify-content: center;
+  }
+  .loan__foot__button.back {
+    /* background-color: black; */
+  }
+  .loan__form__set {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-medium);
+    margin-bottom: var(--spacing-medium);
+    width: 30%;
+  }
+  .kyc__input {
+    padding: var(--spacing-medium);
+    border-radius: 30px;
+    border: 1px solid var(--color-text-tertiary);
+    margin-bottom: var(--spacing-large);
+    font-size: var(--font-size-tertiary);
+    color: var(--color-text-secondary);
+    width: 100%;
+  }
+  .loan__select {
+    padding: var(--spacing-medium);
+    border-radius: 30px;
+    border: 1px solid var(--color-text-tertiary);
+    margin-bottom: var(--spacing-large);
+    font-size: var(--font-size-tertiary);
+    color: var(--color-text-secondary);
+    width: 100%;
+  }
+  .loan__label {
+    font-weight: 700;
+    font-size: var(--font-size-secondary);
+  }
+  .loan__label__secondary {
+    font-size: var(--font-size-tertiary);
+    color: var(--font-size-secondary);
+  }
+  .loan__segment__wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10%;
+  }
+  .loan__header__wrap {
+    width: 100%;
+  }
+  .loan__notification {
+  }
+  .loan__notification__block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-small);
+    margin-bottom: var(--spacing-large);
+  }
+  .loan__notification__block > h3 {
+    font-size: 19px;
+    font-weight: 500;
+    color: #3c3c3c;
+  }
+  .loan__notification__block > p {
+    font-size: var(--font-size-primary);
+    color: var(--color-text-secondary);
+  }
+  .loan__segment__profile {
+    margin-bottom: var(--spacing-large);
+  }
+  .loan__segment__profile > img {
+    object-fit: cover;
+    height: 70px;
+    width: 70px;
+    border-radius: 100%;
+  }
+  @media all and (max-width: 768px) {
+    .account__notifications__select {
+      flex: none;
+      width: 200px;
+      width: max-content;
+    }
+    .loan__segment {
+      min-height: 80dvh;
+    }
+    .loan__form__set {
+      width: 100%;
+    }
+    .loan__header__wrap {
+      overflow-x: scroll;
+    }
+    .loan__foot__button {
+      gap: 10px;
+      padding: var(--spacing-small) var(--spacing-medium);
+      border-radius: 30px;
+    }
+  }
+  

@@ -4,7 +4,7 @@ import logo from "../../../assets/icons/logo-secondary-color1.png";
 import Input from "../../../components/ui/form-elements/input";
 import Button from "../../../components/ui/button/Button";
 import { useNavigate } from "react-router-dom";
-import { useRegister } from "../../../redux/actions/authActions";
+import { useRegister, useSignUp } from "../../../redux/actions/authActions";
 import toastManager from "../../../components/ui/toast/ToasterManager";
 import { ClipLoader } from "react-spinners";
 import Select from "../../../components/ui/form-elements/select";
@@ -21,7 +21,8 @@ const genders = [
 
 function Signup() {
   const getSocieties = useGetSocieties();
-  const register = useRegister();
+  // const register = useRegister();
+  const register = useSignUp();
   const navigate = useNavigate();
   const PAYSTACK_KEY = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
   const initializeTransactionEntry = useInitializeTransactionEntry();
@@ -33,7 +34,6 @@ function Signup() {
   const [societies, setSocieties] = useState([]);
   const [formData, setFormData] = useState({
     firstName: "",
-    middleName: "",
     lastName: "",
     email: "",
     password: "",
@@ -41,7 +41,7 @@ function Signup() {
     phone: "",
     group: "",
     gender: "",
-    referralCode: "",
+    referralCode: "", 
   });
 
   const handleGetSocieties = async () => {
@@ -73,7 +73,8 @@ function Signup() {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       setLoading(true);
       const response = await register(formData);
@@ -121,6 +122,7 @@ function Signup() {
         firstName: formData.firstName,
         lastName: formData.lastName,
         group: formData.group,
+        phone: formData.phone,
       });
       const { reference } = response.payload.data.data;
       // Open Paystack modal to complete payment
@@ -194,7 +196,7 @@ function Signup() {
       <div className="signup__start">
         <div className="signup__start__wrap">
           <h3>Sign up</h3>
-          <form onSubmit={handleFund}>
+          <form onSubmit={handleSubmit}>
             <Input
               important={true}
               required
@@ -205,16 +207,15 @@ function Signup() {
               value={formData.firstName}
               onChange={handleChange}
             />
-            <Input
+            {/* <Input
               important={true}
-              required
               className="signup__input"
               type="text"
               label="Middle Name"
               name="middleName"
               value={formData.middleName}
               onChange={handleChange}
-            />
+            /> */}
             <Input
               important={true}
               required
