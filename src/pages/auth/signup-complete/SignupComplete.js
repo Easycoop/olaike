@@ -17,7 +17,7 @@ function SignupComplete() {
         <Button
           type="button"
           typeOf="primary"
-          onClick={() => navigate("/kyc")}
+          onClick={() => navigate("/main/kyc")}
           style={{ wemailth: "100%", marginTop:"20px" }}
         
         >

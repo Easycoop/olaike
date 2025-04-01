@@ -1,11 +1,11 @@
 .admin {
   transition: 250ms ease-in-out;
-  height: 100svh;
+  min-height: 100svh;
 }
 .admin__container {
   display: flex;
   /* height: 100%; */
-  height: 90vh;
+  min-height: 90vh;
 }
 .admin__outlet {
   position: relative;

@@ -86,6 +86,27 @@ export const verifyNin = async (user_id, formData) => {
   }
 };
 
+export const confirmPhoneVerification = async (user_id) => {
+  try {
+    const response = await api.get(`/user/${user_id}/confirm-phone-verification`);
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      // Add server response details to the error
+      error.message = `${
+        error.response.data.error || error.response.statusText
+      }`;
+    } else if (error.request) {
+      // Add request details to the error
+      error.message = "No response received from server.";
+    } else {
+      // Add request setup details to the error
+      error.message = `${error.message}`;
+    }
+    throw error;
+  }
+};
+
 export const getNin = async (user_id) => {
   try {
     const response = await api.get(`/user/${user_id}/get-nin`);
@@ -106,3 +127,4 @@ export const getNin = async (user_id) => {
     throw error;
   }
 };
+

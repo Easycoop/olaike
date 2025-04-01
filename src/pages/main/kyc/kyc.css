@@ -71,7 +71,7 @@
     padding: var(--spacing-medium);
     border-radius: 30px;
     border: 1px solid var(--color-text-tertiary);
-    margin-bottom: var(--spacing-large);
+    margin-bottom: var(--spacing-large);    
     font-size: var(--font-size-tertiary);
     color: var(--color-text-secondary);
     width: 100%;

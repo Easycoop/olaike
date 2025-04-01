@@ -30,6 +30,7 @@ const NAV__ARRAY = [
   { id: 6, path: "withdrawal", name: "Withdrawal", icon: FaCreditCard },
   { id: 7, path: "donation", name: "Donation", icon: FaHeart },
   { id: 8, path: "message", name: "Message", icon: FaRegMessage },
+  // { id: 10, path: "kyc", name: "KYC", icon: MdLogout },
 ];
 
 function Main() {
@@ -51,7 +52,10 @@ function Main() {
       const response = await logout();
       if (response.status === true || response.status === "success") {
         setErrorMessage("");
-
+        localStorage.clear();
+        // localStorage.removeItem("kegowWallet");
+        // localStorage.removeItem("persist:olaike");
+        // persistor.purge()
         toastManager.addToast({
           message: "Logout successful",
           type: "success",
@@ -94,6 +98,13 @@ function Main() {
                 </div>
               );
             })}
+            <div
+              onClick={handleLogout}
+                className={"admin__navbar__icon"}
+              >
+                <MdLogout className="admin__navbar__icon" />
+              <h3>Logout</h3>
+            </div>
           </section>
           <section
             className="admin__navbar__section__two"
@@ -104,10 +115,7 @@ function Main() {
               alt="logo"
               style={{ objectFit: "contain", height: "100px" }}
             />
-            <div onClick={handleLogout}>
-              <MdLogout className="admin__navbar__icon" />
-              <h3>Logout</h3>
-            </div>
+            
           </section>
         </div>
         <div className={active ? "admin__outlet active" : "admin__outlet"}>

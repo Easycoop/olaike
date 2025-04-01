@@ -85,7 +85,7 @@ function Signup() {
           message: `Succesful registration`,
           type: "success",
         });
-        navigate("/signup-complete");
+        navigate("/");
         return;
       } else {
         setErrorMessage(response.message);
@@ -311,7 +311,7 @@ function Signup() {
               {loading ? (
                 <ClipLoader color="#fff" size={20} />
               ) : (
-                "Proceed to pay"
+                "Register"
               )}
             </Button>
           </form>

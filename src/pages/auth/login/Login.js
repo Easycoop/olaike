@@ -13,7 +13,7 @@ function Login() {
   const login = useLogin();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: "chrisb@gmail.com",
+    email: "nnebuchiosigbo340+216@gmail.com",
     password: "Buchess#2024",
   });
   const [errorMessage, setErrorMessage] = useState("");
@@ -48,6 +48,7 @@ function Login() {
           message: "Successful login",
           type: "success",
         });
+      
         navigate("/main/dashboard");
         return;
       } else {

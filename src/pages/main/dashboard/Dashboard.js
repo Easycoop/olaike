@@ -1,5 +1,5 @@
 import "./dashboard.css";
-import { FaArrowTrendUp, FaCircle } from "react-icons/fa6";
+import { FaArrowTrendUp, FaCircle, FaCopy } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useGetTransactions } from "../../../redux/actions/transactionAction";
@@ -8,6 +8,11 @@ import Loading from "../../../components/splash/loading/Loading";
 import NoResult from "../../../components/splash/no-result/NoResult";
 import { useGetWallets } from "../../../redux/actions/walletAction";
 import Button from "../../../components/ui/button/Button";
+import toastManager from "../../../components/ui/toast/ToasterManager";
+import {getUserWallet, debitEntranceFee} from "../../../services/walletService";
+import Modal from "../../../components/ui/modal/Modal";
+import {ClipLoader} from "react-spinners";
+import {getUserSociety} from "../../../services/societyService";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -20,6 +25,9 @@ function Dashboard() {
   const [errorMessage, setErrorMessage] = useState("");
   const [transactions, setTransactions] = useState([]);
   const [page, setPage] = useState(1);
+  const [openModal, setOpenModal] = useState(false);
+  const [userSociety, setUserSociety] = useState({});
+  const [kegowWallet, setKegowWallet] = useState(localStorage.getItem('kegowWallet') &&  localStorage.getItem('kegowWallet') != "undefined" ? JSON.parse(localStorage.getItem('kegowWallet')) : null);
 
   const handleGetWallets = async () => {
     setLoading(true);
@@ -66,6 +74,15 @@ function Dashboard() {
     };
   };
 
+  const copyToClipBoard = async (text) => {
+    await navigator.clipboard.writeText(text)
+    toastManager.addToast({
+      message: `copied`,
+      type: "success",
+  });
+  }
+
+
   useEffect(() => {
     handleGetTransactions();
   }, [page]);
@@ -82,6 +99,84 @@ function Dashboard() {
     }
   };
 
+  const userWallet = async() => {
+    try {
+      const response = await getUserWallet(user.id);
+      if(response?.status === 'success'){
+        localStorage.setItem('kegowWallet', JSON.stringify(response?.data?.kegowData));
+        setKegowWallet(response?.data?.kegowData); 
+        return true           
+      }else{
+        setLoading(false);
+        toastManager.addToast({
+          message: `Complete your KYC to proceed`,
+          type: "error",
+        })
+        navigate('/main/kyc')
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error?.response?.data);
+      if(error?.response?.data?.message === "User not found" && error?.response?.data?.status === "fail"){
+        toastManager.addToast({
+          message: `Complete your KYC to proceed`,
+          type: "error",
+        })
+        navigate('/main/kyc')
+      }
+     
+      
+    }
+    
+  }
+
+  const getSocietyFee = async () => {
+    setLoading(true);
+    const society = await getUserSociety(user?.id);
+    if(society?.status === "success"){
+      setUserSociety(society?.data);
+      setOpenModal(true);
+      setLoading(false);
+    }else{
+      setLoading(false);
+    }
+  
+  };
+
+  const payEntranceFee = async () => {
+    setLoading(true);
+    const user_wallet_data = await userWallet();
+    if(user_wallet_data){
+      if(kegowWallet?.balance < userSociety?.entrance_fee){
+        toastManager.addToast({
+          message: `Insufficient balance`,
+          type: "error",
+        })
+        setLoading(false);
+      }else{
+        handleEntranceFeeDebit()
+      }
+    }
+    // setOpenModal(true);
+  };
+
+  const handleEntranceFeeDebit = async () => {
+    setLoading(true);
+    const response = await debitEntranceFee(user.id);
+    if(response?.status === "success"){
+      setLoading(false)
+      toastManager.addToast({
+        message: response?.message,
+        type: "success",
+      });
+      setLoading(false);
+    }else{
+      setLoading(false);
+      console.log(response);
+      
+    }
+  }
+
   // Set up scroll event listener on the scrollable container
   useEffect(() => {
     const pageElement = pageRef.current; // Get the scrollable container
@@ -95,6 +190,9 @@ function Dashboard() {
   }, [loading]);
 
   useEffect(() => {
+    // if(!kegowWallet){
+      userWallet();
+    // }
     handleGetWallets();
   }, []);
 
@@ -110,10 +208,40 @@ function Dashboard() {
           <span className="dashboard__section__one__block">
             <h5>Main Wallet</h5>
             <h3>{`${wallets?.wallet?.balance} ${wallets?.wallet?.currency}`}</h3>
-            <div>
-              <FaArrowTrendUp />
+            <div style={{fontSize:"15px", display:"block"}}>
+              <div>
+                Account no. <br /><strong>{kegowWallet?.topUpAccountDetails?.accountNumber}</strong> <strong style={{cursor:"pointer", fontSize:"20px"}} onClick={() => copyToClipBoard("909888773")}><FaCopy /></strong>
+              </div>
+             
+              <div style={{marginTop:"10px"}}>
+                Account name. <br /> <strong>{kegowWallet?.topUpAccountDetails?.accountName}</strong> <strong style={{cursor:"pointer", fontSize:"20px"}} onClick={() => copyToClipBoard("909888773")}></strong>
+              </div>
             </div>
           </span>
+          <div className="dashboard__section__one__block" style={{padding:"10px"}}>
+            {/* <h5>Kegow Wallet</h5>
+            <h3>{`${parseFloat(kegowWallet?.topUpAccountDetails?.balance).toFixed(2)} ${wallets?.wallet?.currency}`}</h3>
+            <div style={{fontSize:"15px", display:"block"}}>
+              <div>
+                Account no. <br /><strong>{kegowWallet?.topUpAccountDetails?.accountNumber}</strong> <strong style={{cursor:"pointer", fontSize:"20px"}} onClick={() => copyToClipBoard("909888773")}><FaCopy /></strong>
+              </div>
+             
+              <div style={{marginTop:"10px"}}>
+                Account name. <br /> <strong>{kegowWallet?.topUpAccountDetails?.accountName}</strong> <strong style={{cursor:"pointer", fontSize:"20px"}} onClick={() => copyToClipBoard("909888773")}></strong>
+              </div>
+            </div> */}
+            <h5>Entrance Fee</h5>
+            <p>You are required to pay your entrance fee to get a membership ID from your Society</p>
+              <Button
+                type="button"
+                typeOf="primary"
+                // className="signup__create__button"
+                onClick={getSocietyFee}
+              >
+                Pay entrance fee
+              </Button>
+            
+          </div>
           {wallets?.subWallets?.map((wallet, i) => {
             return (
               <span className="dashboard__section__one__block">
@@ -123,8 +251,10 @@ function Dashboard() {
                   <FaArrowTrendUp />
                 </div>
               </span>
+              
             );
           })}
+
         </div>
       </section>
       <section className="dashboard__section__two">
@@ -223,6 +353,18 @@ function Dashboard() {
           {loading && <Loading />}
         </div>
       </section>
+
+      {openModal && 
+      <Modal isOpen={openModal} onClose={() => setOpenModal(false)}>
+        <div className="modal__withdraw1">
+          <h3>{userSociety?.entranceFee} naira will be debited from your wallet</h3>
+          
+          <Button className="modal__withdraw1__button" onClick={payEntranceFee}>
+            {loading ? <ClipLoader color="#fff" size={20} /> : "Proceed to Fund wallet"}
+          </Button>
+        </div>
+      </Modal>
+      }
     </div>
   );
 }
