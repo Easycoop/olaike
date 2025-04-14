@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./app.css";
+import "./App.css";
 import ScrollToTop from "./utils/ScrollToTop";
 import { ADMIN_ROLES } from "./config/adminRoles";
 import PublicRoute from "./route/publicRoute";
