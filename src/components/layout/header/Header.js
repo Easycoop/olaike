@@ -53,8 +53,8 @@ function Header({ handleNav }) {
             className="header__sc__two__profile"
             // onClick={() => navigate("/profile")}
           >
-            <p>ID: {user?.id}</p>
-            <img alt="profile" src={image2} />
+            <p>{user?.firstName}  {user?.lastName}</p>
+            <img alt="profile" src="/user-avatar.webp" style={{objectPosition:"top"}} />
           </div>
           {/* <div>
             <IoNotificationsOutline className="header__sc__two__notification__icon" />

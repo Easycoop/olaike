@@ -66,16 +66,16 @@ function Fees() {
             </div>
           ) : (
             <div className="admin-table-body">
-              {fees.map((fees, i) => (
+              {fees.map((fee, i) => (
                 <div key={i} className="admin-table-row">
-                  <div className="admin-table-cell">{`${fees.currency} ${fees.amount}`}</div>
-                  <div className="admin-table-cell">{fees.createdAt}</div>
-                  <div className="admin-table-cell">{fees.type}</div>
+                  <div className="admin-table-cell">{`${fee.currency} ${fee.amount}`}</div>
+                  <div className="admin-table-cell">{fee.createdAt}</div>
+                  <div className="admin-table-cell">{fee.type}</div>
                   <div className="admin-table-cell">
                     <span
                       style={{
                         border: `1px solid ${
-                          fees.status == "paid" ? "#0BFD15" : "#dc143c"
+                          fee.status == "paid" ? "#0BFD15" : "#dc143c"
                         }`,
                         borderRadius: "20px",
                         display: "flex",
@@ -86,9 +86,9 @@ function Fees() {
                       }}
                     >
                       <FaCircle
-                        color={fees.status == "paid" ? "#0BFD15" : "#dc143c"}
+                        color={fee.status == "paid" ? "#0BFD15" : "#dc143c"}
                       />
-                      {fees.status}
+                      {fee.status}
                     </span>
                   </div>
                 </div>

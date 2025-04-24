@@ -108,7 +108,7 @@ function Dashboard() {
         <h5>My wallets</h5>
         <div className="dashboard__section__one__block__wrap">
           <span className="dashboard__section__one__block">
-            <h5>Main Wallet</h5>
+            <h5>Contribution Funds</h5>
             <h3>{`${wallets?.wallet?.balance} ${wallets?.wallet?.currency}`}</h3>
             <div>
               <FaArrowTrendUp />

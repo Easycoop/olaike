@@ -6,7 +6,7 @@ import Header from "../../../components/layout/header/Header";
 import "../../../components/ui/modal/modal-children-styles/modal-withdraw1.css";
 import "../../../components/ui/modal/modal-children-styles/modal-payment2.css";
 import { FaCreditCard, FaHeart, FaLink, FaSackDollar } from "react-icons/fa6";
-import { MdDashboard, MdLogout } from "react-icons/md";
+import { MdDashboard, MdLogout, MdVerifiedUser } from "react-icons/md";
 import { FaRegMessage } from "react-icons/fa6";
 import { GiMoneyStack } from "react-icons/gi";
 import { IoWalletSharp } from "react-icons/io5";
@@ -14,19 +14,23 @@ import { useLogout } from "../../../redux/actions/authActions";
 import toastManager from "../../../components/ui/toast/ToasterManager";
 
 const NAV__ARRAY = [
+  
   { id: 1, path: "dashboard", name: "My Passbook", icon: MdDashboard },
-  { id: 2, path: "fund", name: "Fund Wallet", icon: IoWalletSharp },
+  { id: 2, path: "fund", name: "Thrifts & Savings", icon: IoWalletSharp },
   {
     id: 3,
     path: "loan-redirect",
     name: "Loan Applications",
     icon: FaSackDollar,
   },
+  
+  // { id: 9, path: "kyc", name: "KYC", icon: MdVerifiedUser },
   { id: 4, path: "referrals", name: "Referrals", icon: FaLink },
   { id: 5, path: "fees/dues", name: "Fees/Dues", icon: GiMoneyStack },
   { id: 6, path: "withdrawal", name: "Withdrawal", icon: FaCreditCard },
   { id: 7, path: "donation", name: "Donation", icon: FaHeart },
   { id: 8, path: "message", name: "Message", icon: FaRegMessage },
+  // { id: 10, path: "kyc", name: "KYC", icon: MdLogout },
 ];
 
 function Main() {
@@ -48,7 +52,10 @@ function Main() {
       const response = await logout();
       if (response.status === true || response.status === "success") {
         setErrorMessage("");
-
+        localStorage.clear();
+        // localStorage.removeItem("kegowWallet");
+        // localStorage.removeItem("persist:olaike");
+        // persistor.purge()
         toastManager.addToast({
           message: "Logout successful",
           type: "success",
@@ -91,6 +98,13 @@ function Main() {
                 </div>
               );
             })}
+            <div
+              onClick={handleLogout}
+                className={"admin__navbar__icon"}
+              >
+                <MdLogout className="admin__navbar__icon" />
+              <h3>Logout</h3>
+            </div>
           </section>
           <section
             className="admin__navbar__section__two"
@@ -101,10 +115,7 @@ function Main() {
               alt="logo"
               style={{ objectFit: "contain", height: "100px" }}
             />
-            <div onClick={handleLogout}>
-              <MdLogout className="admin__navbar__icon" />
-              <h3>Logout</h3>
-            </div>
+            
           </section>
         </div>
         <div className={active ? "admin__outlet active" : "admin__outlet"}>

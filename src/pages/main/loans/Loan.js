@@ -13,12 +13,17 @@ import { ClipLoader } from "react-spinners";
 import toastManager from "../../../components/ui/toast/ToasterManager";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetWallets } from "../../../redux/actions/walletAction";
+import {runValidation} from '../../../utils/buchi';
+import ValidationError from "../../../components/ui/form-elements/ValidationError";
+import { formDateFormat } from "../../../utils/time";
+
 
 function Loan() {
   const getWallets = useGetWallets();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  // console.log(user);
   const getLoanApplication = useGetLoanApplication();
   const submitLoan = useSubmitLoan();
   const saveChanges = useSaveChanges();
@@ -28,16 +33,17 @@ function Loan() {
   const [errorMessage, setErrorMessage] = useState("");
   const [wallets, setWallets] = useState({});
   const [loading, setLoading] = useState("");
+  const [validationErrors, setValidationErrors] = useState();
 
   const [formData, setFormData] = useState({
-    firstName: null,
-    lastName: null,
-    email: null,
-    phone: null,
-    gender: null,
+    firstName: user?.firstName,
+    lastName: user?.lastName,
+    email: user?.email,
+    phone: user?.phone,
+    gender: user?.gender,
     dob: null,
     amount: null,
-    address: null,
+    address: user?.address,
     employmentStatus: null,
     employerName: null,
     jobTitle: null,
@@ -49,7 +55,7 @@ function Loan() {
     nokRelationship: null,
     bvn: null,
     nin: null,
-    verificationDocument: null,
+    // verificationDocument: null,
     guarantorFirstName: null,
     guarantorLastName: null,
     guarantorEmail: null,
@@ -59,6 +65,30 @@ function Loan() {
     guarantorHomeAddress: null,
     userId: user.id,
   });
+
+  const validateLoanForm = async () => {
+    
+    const validationData = [];
+    for (const key in formData) {
+      validationData.push({
+        input: { value: formData[key], field: key, type: "text" },
+        rules: { required: true },
+      });
+    }
+    
+    const validate = await runValidation(validationData);
+   
+    
+
+    if (validate?.status === false) {
+        
+        setValidationErrors(validate.errors);
+    } else {
+      handleSubmit()
+      // alert("kkkkkk")
+      // handleUpdateSociety();
+    }
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -117,7 +147,7 @@ function Loan() {
 
     // Add 6 months to the target date
     const sixMonthsLater = new Date(targetDate);
-    sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
+    sixMonthsLater.setMonth(sixMonthsLater.getMonth());
 
     // Check if today's date is equal to or greater than six months after the target date
 
@@ -200,7 +230,10 @@ function Loan() {
       const response = await getLoanApplication(user.loanApplicationId);
       if (response?.payload.status === "success") {
         setErrorMessage("");
-        setFormData(response.payload.data.application);
+        const application_data = response.payload.data.application;
+        delete application_data.verificationDocument;
+        setFormData(application_data);
+        
         // dispatch({ type: "UPDATE_USER", payload: response.payload.data.user });
       } else {
         setErrorMessage(response?.message);
@@ -234,10 +267,19 @@ function Loan() {
     handleGetLoanApplication();
   }, []);
 
+   useEffect(() => {
+    console.log(formDateFormat(formData?.dob));
+    
+  }, [formData.dob]);
   return (
     <div className="loans">
       <section className="account__notifications__section__two">
         <div className="loan__header__wrap">
+          <div className="bg-danger">
+            {Object.entries(formData).map(([key, value])=>(
+              <ValidationError key={key} validationErrors={validationErrors} field={key} />
+            ))}
+          </div>
           <div className="account__notifications__select__div">
             <button
               className={
@@ -297,7 +339,7 @@ function Loan() {
         {select.select1 && (
           <div className="loan__segment">
             <div className="loan__segment__profile">
-              <img src={image1} alt="logo" />
+              <img src="/user-avatar.webp" alt="logo" style={{objectFit:"contain"}} />
             </div>
             <span className="loan__segment__wrap">
               <span className="loan__form__set">
@@ -337,7 +379,7 @@ function Loan() {
                 <label className="loan__label">PHONE NUMBER</label>
                 <input
                   className="loan__input"
-                  type="number"
+                  type="text"
                   name="phone"
                   placeholder="Phone Number"
                   value={formData?.phone}
@@ -349,12 +391,13 @@ function Loan() {
                 <select
                   className="loan__select"
                   name="gender"
-                  value={formData?.gender}
+                  // value={formData?.gender}
+                  defaultValue={formData?.gender}
                   onChange={handleChange}
                 >
                   <option value="">Select an option</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
+                  <option value="Male" >Male</option>
+                  <option value="Female" >Female</option>
                 </select>
               </span>
               <span className="loan__form__set">
@@ -364,8 +407,8 @@ function Loan() {
                   type="date"
                   name="dob"
                   placeholder="DD/MM/YY"
-                  value={formData?.dob}
-                  onChange={handleChange}
+                  value={formDateFormat(formData?.dob)}
+                  onChange={(e) => setFormData({ ...formData, dob: e.target.value })}
                 />
               </span>
               <span className="loan__form__set">
@@ -548,7 +591,7 @@ function Loan() {
                   <select
                     className="loan__select"
                     name="nokRelationship"
-                    value={formData?.nokRelationship}
+                    defaultValue={formData?.nokRelationship}
                     onChange={handleChange}
                   >
                     <option value="">Select an option</option>
@@ -596,7 +639,7 @@ function Loan() {
               <label className="loan__label">BVN</label>
               <input
                 className="loan__input"
-                type="number"
+                type="text"
                 placeholder="Bank Verification Number"
                 name="bvn"
                 value={formData?.bvn}
@@ -610,11 +653,11 @@ function Loan() {
                 type="number"
                 placeholder="Bank Verification Number"
                 name="nin"
-                value={formData?.bvn}
+                value={formData?.nin}
                 onChange={handleChange}
               />
             </span>
-            <span className="loan__form__set">
+            {/* <span className="loan__form__set">
               <label className="loan__label">ID VERIFICATION</label>
               <p className="loan__label__secondary">
                 Please upload a means of identification so we can verify who you
@@ -626,7 +669,7 @@ function Loan() {
               >
                 Upload document
               </button>
-            </span>
+            </span> */}
             <div className="loan__segment__foot">
               <button
                 className="loan__foot__button save"
@@ -758,7 +801,7 @@ function Loan() {
               </button>
               <button
                 className="loan__foot__button submit"
-                onClick={handleSubmit}
+                onClick={validateLoanForm}
               >
                 {loading ? <ClipLoader color="#fff" size={20} /> : "Submit"}
               </button>
