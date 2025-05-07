@@ -42,6 +42,10 @@ function Login() {
         password: formData.password,
       });
       if (response?.status === true || response?.status === "success") {
+        if(response?.status === 'success' && response.action === 'otp'){
+          navigate(`/otp?email=${formData.email}&purpose=login`);
+          return
+        }
         setErrorMessage("");
 
         toastManager.addToast({

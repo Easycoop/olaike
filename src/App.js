@@ -24,6 +24,9 @@ import LoanApplied from "./pages/main/loan-applied/LoanApplied";
 import LoanRedirect from "./pages/main/loans/loanRedirect";
 import LoanActive from "./pages/main/loan-active/LoanActive";
 import NotFound from "./pages/extra/not-found/notFound";
+import KYC from "./pages/main/kyc/Kyc";
+import KycStrictRoute from "./route/kycStrictRoute";
+import OtpScreen from "./pages/auth/otp/OtpScreen";
 
 function App() {
   return (
@@ -38,7 +41,10 @@ function App() {
               <Route index element={<Dashboard />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="fund" element={<Payment />} />
-              <Route path="loans" element={<Loan />} />
+              <Route path="kyc" element={<KYC />} />
+              <Route path="loans" element={<KycStrictRoute />}>
+                <Route path="index" element={<Loan />} /> 
+              </Route>
               <Route
                 path="loan-completed"
                 element={<LoanApplicationCompleted />}
@@ -59,6 +65,7 @@ function App() {
           <Route path="/" element={<PublicRoute />}>
             <Route index element={<Login />} />
             <Route path="signup" element={<Signup />} />
+            <Route path="otp" element={<OtpScreen />} />
             <Route
               path="signup/rc/:referralCode"
               element={<SignupReferral />}

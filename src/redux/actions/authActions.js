@@ -15,6 +15,7 @@ import {
   resetPassword,
   signup,
   verifyOtp,
+  verifyEmailOtp,
 } from "../../services/authServices";
 import { delay } from "../../utils/delay";
 import { useDispatcher } from "../../utils/useDispatcher";
@@ -64,17 +65,51 @@ export const doLoginAction = (payload) => async (dispatch) => {
 
   try {
     const response = await login(payload);
-    dispatch(
-      loginSuccess({
-        user: response.data.user,
-        roles: response.data.roles,
-        tokens: {
-          accessToken: response.data.accessToken,
-          refreshToken: response.data.refreshToken,
-        },
-      })
-    );
-    return response;
+    if(response?.status === 'success' ){
+      if(response.action === 'otp'){
+        return response
+      }else{
+          dispatch(
+          loginSuccess({
+            user: response.data?.user,
+            roles: response.data?.roles,
+            tokens: {
+              accessToken: response.data?.accessToken,
+              refreshToken: response.data?.refreshToken,
+            },
+          })
+        );
+        return response;
+      }
+    }
+    
+  } catch (error) {
+    dispatch(loginFailure(error.message || "Login failed"));
+    return error;
+  }
+};
+
+export const doVerifyEmailOtpAction = (email, otp, purpose) => async (dispatch) => {
+  // dispatch(loggingIn());
+
+  try {
+    const response = await verifyEmailOtp(email, otp, purpose);
+    if(response?.status === 'success' ){
+        dispatch(
+        loginSuccess({
+          user: response.data?.user,
+          roles: response.data?.roles,
+          tokens: {
+            accessToken: response.data?.accessToken,
+            refreshToken: response.data?.refreshToken,
+          },
+        })
+      );
+      return response;
+    }else{
+      return response;
+    }
+    
   } catch (error) {
     dispatch(loginFailure(error.message || "Login failed"));
     return error;
@@ -196,5 +231,5 @@ export const useRegister = () => useDispatcher(doRegisterAction);
 export const useVerifyEmail = () => useDispatcher(doVerifyEmailAction);
 export const usePasswordForget = () => useDispatcher(doPasswordForgetAction);
 export const useResetPassword = () => useDispatcher(doResetPasswordAction);
-export const usePasswordResetComplete = () =>
-  useDispatcher(doPasswordResetCompleteAction);
+export const usePasswordResetComplete = () =>useDispatcher(doPasswordResetCompleteAction);
+export const useVerifyEmailOtp = () => useDispatcher(doVerifyEmailOtpAction);

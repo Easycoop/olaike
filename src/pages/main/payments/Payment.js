@@ -301,7 +301,6 @@ function Payment() {
                         {program.status}
                       </span>
                     </div>
-                    {/* <div className="admin-table-cell">}</div> */}
                   </div>
 
                   <h3>You Thrift Payments</h3>

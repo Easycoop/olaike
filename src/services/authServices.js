@@ -193,3 +193,50 @@ export const passwordResetComplete = async (email, request_id, code) => {
     throw error;
   }
 };
+
+export const resendOtp = async (email, purpose='login') => {
+  try {
+    const response = await api.post("/auth/resend-otp/", { email:email, purpose:purpose });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      // Add server response details to the error
+      error.message = `${
+        error.response.data.error || error.response.statusText
+      }`;
+    } else if (error.request) {
+      // Add request details to the error
+      error.message = "No response received from server.";
+    } else {
+      // Add request setup details to the error
+      error.message = `${error.message}`;
+    }
+    throw error;
+  }
+};
+
+export const verifyEmailOtp = async (email, otp, purpose='login') => {
+  
+  try {
+    const response = await api.post("/auth/verify-email-otp/", {
+      email,
+      purpose,
+      otp,
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      // Add server response details to the error
+      error.message = `Verification failed: ${
+        error.response.data.error || error.response.statusText
+      }`;
+    } else if (error.request) {
+      // Add request details to the error
+      error.message = "Verification failed: No response received from server.";
+    } else {
+      // Add request setup details to the error
+      error.message = `Verification failed: ${error.message}`;
+    }
+    throw error;
+  }
+};

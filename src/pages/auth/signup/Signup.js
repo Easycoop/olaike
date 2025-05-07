@@ -121,7 +121,19 @@ function Signup() {
         firstName: formData.firstName,
         lastName: formData.lastName,
         group: formData.group,
+        gender:formData.gender,
       });
+
+      // if()
+      
+      if(!response.payload?.data?.data){
+        console.log(response);
+        toastManager.addToast({
+          message: response.payload,
+          type: "error",
+        });
+        return
+      }
       const { reference } = response.payload.data.data;
       // Open Paystack modal to complete payment
       const handler = window.PaystackPop.setup({
@@ -170,7 +182,8 @@ function Signup() {
       });
       handler.openIframe(); // Open the Paystack modal
     } catch (error) {
-      console.error("Payment initialization failed:", error);
+      console.log(error);
+      
       toastManager.addToast({
         message: "Payment initialization failed",
         type: "error",

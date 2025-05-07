@@ -19,12 +19,12 @@ const NAV__ARRAY = [
   { id: 2, path: "fund", name: "Thrifts & Savings", icon: IoWalletSharp },
   {
     id: 3,
-    path: "loan-redirect",
+    path: "loans/index",
     name: "Loan Applications",
     icon: FaSackDollar,
   },
   
-  // { id: 9, path: "kyc", name: "KYC", icon: MdVerifiedUser },
+  { id: 9, path: "kyc", name: "KYC", icon: MdVerifiedUser },
   { id: 4, path: "referrals", name: "Referrals", icon: FaLink },
   { id: 5, path: "fees/dues", name: "Fees/Dues", icon: GiMoneyStack },
   { id: 6, path: "withdrawal", name: "Withdrawal", icon: FaCreditCard },
