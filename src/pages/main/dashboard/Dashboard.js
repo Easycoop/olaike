@@ -153,7 +153,7 @@ function Dashboard() {
                 type="submit"
                 typeOf="primary"
                 // className="signup__create__button"
-                onClick={() => navigate("/main/loan-redirect")}
+                onClick={() => navigate("/main/loans/index")}
               >
                 Apply
               </Button>

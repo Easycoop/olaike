@@ -12,6 +12,7 @@
   top: 0;
   left: 0;
   width: 80%;
+  margin-left: 20%;
   /* height: 90vh; */
   height: 100%;
   overflow-y: scroll;
@@ -22,12 +23,12 @@
   top: 0;
   left: 0;
   width: 100%;
-  margin-left: 0%;
+  /* margin-left: 20%; */
   height: 90vh;
   padding-left: 75px;
 }
 .admin__navbar {
-  position: relative;
+  position: fixed;
   /* height: 90.5vh; */
   height: 100%;
   top: 0;
@@ -38,6 +39,9 @@
   display: flex;
   flex-direction: column;
   z-index: 10;
+  overflow-y: scroll;
+  transition: 250ms ease-in-out;
+
 }
 .admin__navbar.active {
   display: none;
@@ -120,8 +124,9 @@
 }
 
 @media all and (max-width: 768px) {
+  
   .admin__navbar {
-    width: 100%;
+    width: 80%;
   }
   .admin__navbar__section__two > div {
     padding: 20px 10px;
@@ -130,6 +135,8 @@
   .admin__outlet {
     display: none;
     padding: var(--spacing-medium) var(--spacing-medium);
+    width:100%;
+    margin-left: 0px;
   }
   .admin__outlet.active {
     display: block;

@@ -30,6 +30,7 @@ function Payment() {
   const verifyTransactionFundLoan = useVerifyTransactionFundLoan();
   const getActiveProgram = useGetActiveProgram();
   const { user } = useSelector((state) => state.auth);
+ 
   const latenessCharge = user.loanStatus == "active" ? 500 : 100;
   
   const [errorMessage, setErrorMessage] = useState("");
@@ -175,7 +176,7 @@ function Payment() {
   const fetchActivePrograms = async () =>{
     setLoading(true);
     try{
-      const response = await getActiveProgram(user.Group?.id);
+      const response = await getActiveProgram(user.groupId);
       console.log(response);
       
       if (response?.payload.status === "success") {
@@ -198,7 +199,6 @@ function Payment() {
   }, []);
 
   useEffect(() => {
-    console.log(latenessFee);
     
     setMinValue(650+latenessFee);
   }, [latenessFee]);

@@ -61,3 +61,16 @@ export const formatUnixToHtmlDate = (unixTimestamp) => {
       year: 'numeric'  // e.g., "2025"
     });
   }
+
+  export const formatUnixToDateTime = (unixTimestamp) => {
+    const date = new Date(unixTimestamp * 1000); // Multiply by 1000 to convert seconds to milliseconds
+  
+    return date.toLocaleString('en-US', {
+      month: 'short',  // e.g., "Apr"
+      day: '2-digit',  // e.g., "25"
+      year: 'numeric',  // e.g., "2025"
+      hour: '2-digit',  // e.g., "12"
+      minute: '2-digit',  // e.g., "30"
+      hour12: true  // Use 12-hour format
+    });
+  }

@@ -98,6 +98,7 @@ function Main() {
                 </div>
               );
             })}
+            <hr style={{background:"#BBBBBB59"}}/>
             <div
               onClick={handleLogout}
                 className={"admin__navbar__icon"}
@@ -106,7 +107,7 @@ function Main() {
               <h3>Logout</h3>
             </div>
           </section>
-          <section
+          {/* <section
             className="admin__navbar__section__two"
             style={{ marginTop: "auto" }}
           >
@@ -116,7 +117,7 @@ function Main() {
               style={{ objectFit: "contain", height: "100px" }}
             />
             
-          </section>
+          </section> */}
         </div>
         <div className={active ? "admin__outlet active" : "admin__outlet"}>
           <Outlet />

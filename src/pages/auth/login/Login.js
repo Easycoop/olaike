@@ -5,7 +5,7 @@ import login_image from "../../../assets/images/auth/login-image-1.png";
 import logo from "../../../assets/icons/logo.png";
 import Input from "../../../components/ui/form-elements/input";
 import Button from "../../../components/ui/button/Button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "../../../redux/actions/authActions";
 import toastManager from "../../../components/ui/toast/ToasterManager";
 
@@ -13,7 +13,7 @@ function Login() {
   const login = useLogin();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: "ooo@gmail.com",
+    email: "ransom.b.job@gmail.com",
     password: "Buchess#2024",
   });
   const [errorMessage, setErrorMessage] = useState("");
@@ -94,7 +94,7 @@ function Login() {
                   <b onClick={() => navigate("signup")}>Signup</b>
                 </p>
                 <p>
-                  <b>Forgotten password</b>
+                  <b><Link to="/forgot-password">Forgot Password</Link></b>
                 </p>
               </span>
               <Button

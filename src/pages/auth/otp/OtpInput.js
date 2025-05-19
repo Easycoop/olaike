@@ -1,10 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import '../auth.css';
 import { resendOtp } from '../../../services/authServices';
 import { useLocation, useNavigate } from 'react-router-dom';
 import toastManager from '../../../components/ui/toast/ToasterManager';
 import {useVerifyEmailOtp} from '../../../redux/actions/authActions';
 
-const OtpInput = ({ length = 6, onVerifyOtp }) => {
+const OtpInput = ({ length = 4, userEmail, actionPurpose, setStep, setVirtualOtp  }) => {
     // state variables
     const [otp, setOtp] = useState(Array(length).fill(''));
     const [timer, setTimer] = useState(10);
@@ -17,8 +19,8 @@ const OtpInput = ({ length = 6, onVerifyOtp }) => {
 
 //   retrieve email and purpose from query string
   const searchParams = new URLSearchParams(location.search);
-  const email = searchParams.get('email');
-  const purpose = searchParams.get('purpose');
+  const email = userEmail || searchParams.get('email');
+  const purpose = actionPurpose || searchParams.get('purpose');
     console.log(purpose);
   
   const navigate = useNavigate();
@@ -92,7 +94,11 @@ const verifyEmailOtp = useVerifyEmailOtp();
     }
 
     try {
-        const response = await verifyEmailOtp(email, enteredOtp, purpose);
+        if(purpose == "password-reset"){
+            setStep(3);
+            return;
+        }
+        const response = await verifyEmailOtp({email, otp:enteredOtp, purpose});
         console.log(response);
         if(response?.status === true || response?.status === "success") {
             if(purpose === 'login'){
@@ -136,6 +142,12 @@ const verifyEmailOtp = useVerifyEmailOtp();
     }
   };
 
+  useEffect(() => {
+    if (typeof setVirtualOtp === 'function') {
+        setVirtualOtp(otp);
+      }
+  }, [otp]);
+
   return (
     <div className="otp-wrapper">
       <div className="otp-inputs">
@@ -167,68 +179,8 @@ const verifyEmailOtp = useVerifyEmailOtp();
         )}
       </div>
 
-      {/* Inline styles (Pure CSS) */}
-      <style>{`
-        .otp-wrapper {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 16px;
-        }
-
-        .otp-inputs {
-          display: flex;
-          gap: 10px;
-        }
-
-        .otp-input {
-          width: 60px;
-          height: 60px;
-          font-size: 24px;
-          text-align: center;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          outline: none;
-          transition: border 0.2s;
-          margin:0 10px;
-        }
-
-        .otp-input:focus {
-          border-color: #007bff;
-          box-shadow: 0 0 3px #007bff;
-        }
-
-        .verify-btn {
-          padding: 10px 20px;
-          color: white;
-          border: none;
-          border-radius: 6px;
-          font-size: 16px;
-          cursor: pointer;
-        }
-
-        .verify-btn:hover {
-          background-color: #0056b3;
-        }
-
-        .resend-section {
-          font-size: 14px;
-          color: #666;
-        }
-
-        .resend-btn {
-          background: none;
-          border: none;
-          color: #007bff;
-          cursor: pointer;
-          font-size: 14px;
-        }
-
-        .resend-btn:disabled {
-          color: #aaa;
-          cursor: not-allowed;
-        }
-      `}</style>
+        <Link to="/" className='text-primary'>Back to login</Link>
+     
     </div>
   );
 };

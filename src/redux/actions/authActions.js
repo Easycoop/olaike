@@ -89,29 +89,34 @@ export const doLoginAction = (payload) => async (dispatch) => {
   }
 };
 
-export const doVerifyEmailOtpAction = (email, otp, purpose) => async (dispatch) => {
+export const doVerifyEmailOtpAction = ({email, otp, purpose, password}) => async (dispatch) => {
   // dispatch(loggingIn());
 
   try {
-    const response = await verifyEmailOtp(email, otp, purpose);
+    const response = await verifyEmailOtp({email, otp, purpose, password});
     if(response?.status === 'success' ){
-        dispatch(
-        loginSuccess({
-          user: response.data?.user,
-          roles: response.data?.roles,
-          tokens: {
-            accessToken: response.data?.accessToken,
-            refreshToken: response.data?.refreshToken,
-          },
-        })
-      );
+      if(purpose === 'login'){
+          dispatch(
+            loginSuccess({
+              user: response.data?.user,
+              roles: response.data?.roles,
+              tokens: {
+                accessToken: response.data?.accessToken,
+                refreshToken: response.data?.refreshToken,
+              },
+            })
+        );
+      }
+        
       return response;
     }else{
       return response;
     }
     
   } catch (error) {
-    dispatch(loginFailure(error.message || "Login failed"));
+    // console.log(error);
+    
+    // dispatch(loginFailure(error.response.data.error || "Login failed"));
     return error;
   }
 };

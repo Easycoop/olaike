@@ -215,13 +215,14 @@ export const resendOtp = async (email, purpose='login') => {
   }
 };
 
-export const verifyEmailOtp = async (email, otp, purpose='login') => {
+export const verifyEmailOtp = async ({email, otp, purpose='login', password}) => {
   
   try {
     const response = await api.post("/auth/verify-email-otp/", {
       email,
       purpose,
       otp,
+      password
     });
     return response.data;
   } catch (error) {

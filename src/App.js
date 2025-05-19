@@ -27,6 +27,7 @@ import NotFound from "./pages/extra/not-found/notFound";
 import KYC from "./pages/main/kyc/Kyc";
 import KycStrictRoute from "./route/kycStrictRoute";
 import OtpScreen from "./pages/auth/otp/OtpScreen";
+import ForgotPassword from "./pages/auth/password/ForgotPassword";
 
 function App() {
   return (
@@ -66,6 +67,7 @@ function App() {
             <Route index element={<Login />} />
             <Route path="signup" element={<Signup />} />
             <Route path="otp" element={<OtpScreen />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
             <Route
               path="signup/rc/:referralCode"
               element={<SignupReferral />}

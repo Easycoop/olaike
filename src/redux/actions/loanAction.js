@@ -5,6 +5,7 @@ import {
   getLoanApplication,
   saveChanges,
   submitLoan,
+  getUserLoans,
 } from "../../services/loanService";
 
 export const doSaveChanges = createAsyncThunk(
@@ -43,6 +44,21 @@ export const doGetLoanApplication = createAsyncThunk(
   }
 );
 
+
+export const doGetUserLoans = createAsyncThunk(
+  "loan/doGetLoanApplication",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const data = await getUserLoans(payload);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message || "Action failed");
+    }
+  }
+);
+
+
 export const useSaveChanges = () => useDispatcher(doSaveChanges);
 export const useSubmitLoan = () => useDispatcher(doSubmitLoan);
 export const useGetLoanApplication = () => useDispatcher(doGetLoanApplication);
+export const useGetUserLoans = () => useDispatcher(doGetUserLoans);
