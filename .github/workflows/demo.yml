@@ -31,7 +31,7 @@ jobs:
           REACT_APP_WEB_URL: ${{ secrets.REACT_APP_WEB_URL }}
           REACT_APP_PAYSTACK_PUBLIC_KEY: "pk_test_abea14b8413cb3f06f2d652fced67a2d1a29ede7"
 
-      - name: Verify 'build' directory content # Debugging step, can be removed later
+      - name: Verify 'build' directory content
         run: |
           echo "Listing contents of 'build/' directory:"
           ls -la build/
@@ -39,24 +39,7 @@ jobs:
           du -sh build/
 
       - name: Archive built files
-        run: |
-          cd build/
-          tar -czf ../react-app.tar.gz .
-
-      # --- NEW STEP: Prepare Staging Directory on Server ---
-      - name: Prepare Staging Directory on Server
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            set -eux
-            echo "Ensuring staging directory exists and has correct permissions for SCP."
-            mkdir -p ${{ secrets.REACT_APP_STAGING_DIR }}
-            sudo chown -R ${{ secrets.SERVER_USER }}:${{ secrets.SERVER_USER }} ${{ secrets.REACT_APP_STAGING_DIR }}
-            sudo chmod 755 ${{ secrets.REACT_APP_STAGING_DIR }}
-            echo "Staging directory preparation complete."
+        run: tar -czf react-app.tar.gz -C build .
 
       - name: Copy built files to server staging directory
         uses: appleboy/scp-action@v0.1.7
@@ -64,10 +47,7 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "react-app.tar.gz"
-          # --- REVERTED THIS TARGET ---
-          # Now that the directory is prepared, we just target the directory.
-          # The scp-action should then simply copy the file into it.
+          source: react-app.tar.gz
           target: ${{ secrets.REACT_APP_STAGING_DIR }}
 
       - name: SSH into server and deploy React app
@@ -77,19 +57,21 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            set -eux # Keep this for continued debugging visibility
+            set -eux
 
-            # Navigate to the temporary staging directory on the server
+            mkdir -p ${{ secrets.REACT_APP_STAGING_DIR }}
+            sudo chown -R ${{ secrets.SERVER_USER }}:${{ secrets.SERVER_USER }} ${{ secrets.REACT_APP_STAGING_DIR }}
+            sudo chmod 755 ${{ secrets.REACT_APP_STAGING_DIR }}
+
             cd ${{ secrets.REACT_APP_STAGING_DIR }}
-
-            # Now, you explicitly untar the file after permissions are set
-            tar -xzf react-app.tar.gz 
-
-            # Remove the tarball after extraction
+            
+            mkdir -p temp
+            tar -xzf react-app.tar.gz -C temp
             rm react-app.tar.gz
 
-            # --- Deployment to the actual web server root ---
             sudo rm -rf ${{ secrets.REACT_APP_WEB_ROOT_DIR }}/*
-            sudo mv -T . ${{ secrets.REACT_APP_WEB_ROOT_DIR }}
+            sudo mv temp/* ${{ secrets.REACT_APP_WEB_ROOT_DIR }}/
+            sudo rm -rf temp
+
             sudo chown -R www-data:www-data ${{ secrets.REACT_APP_WEB_ROOT_DIR }}
             sudo systemctl reload nginx
