@@ -3,7 +3,7 @@ name: Deploy React Application
 on:
   push:
     branches:
-      - demo # Change to your demo branch name
+      - demo
 
 jobs:
   deploy:
@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Change to your Node.js version
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
@@ -31,7 +31,7 @@ jobs:
           REACT_APP_WEB_URL: ${{ secrets.REACT_APP_WEB_URL }}
           REACT_APP_PAYSTACK_PUBLIC_KEY: "pk_test_abea14b8413cb3f06f2d652fced67a2d1a29ede7"
 
-      - name: Verify 'build' directory content # Debugging step, can be removed later
+      - name: Verify 'build' directory content
         run: |
           echo "Listing contents of 'build/' directory:"
           ls -la build/
@@ -43,7 +43,6 @@ jobs:
           cd build/
           tar -czf ../react-app.tar.gz .
 
-      # --- NEW STEP: Prepare Staging Directory on Server ---
       - name: Prepare Staging Directory on Server
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -52,6 +51,16 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             set -eux
+
+            # --- DIAGNOSTIC COMMANDS ---
+            echo "--- Sudo Diagnostic Info ---"
+            echo "User executing SSH script: $(whoami)"
+            echo "Environment variables:"
+            env | sort
+            echo "Output of sudo -l for current user:"
+            sudo -l -U $(whoami) # This is crucial: confirms sudoers from inside the action
+            echo "--- End Sudo Diagnostic Info ---"
+
             echo "Ensuring staging directory exists and has correct permissions for SCP."
             mkdir -p ${{ secrets.REACT_APP_STAGING_DIR }}
             sudo chown -R ${{ secrets.SERVER_USER }}:${{ secrets.SERVER_USER }} ${{ secrets.REACT_APP_STAGING_DIR }}
@@ -65,9 +74,6 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "react-app.tar.gz"
-          # --- REVERTED THIS TARGET ---
-          # Now that the directory is prepared, we just target the directory.
-          # The scp-action should then simply copy the file into it.
           target: ${{ secrets.REACT_APP_STAGING_DIR }}
 
       - name: SSH into server and deploy React app
@@ -77,18 +83,14 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            set -eux # Keep this for continued debugging visibility
+            set -eux
 
-            # Navigate to the temporary staging directory on the server
             cd ${{ secrets.REACT_APP_STAGING_DIR }}
 
-            # Now, you explicitly untar the file after permissions are set
-            tar -xzf react-app.tar.gz 
+            tar -xzf react-app.tar.gz
 
-            # Remove the tarball after extraction
             rm react-app.tar.gz
 
-            # --- Deployment to the actual web server root ---
             sudo rm -rf ${{ secrets.REACT_APP_WEB_ROOT_DIR }}/*
             sudo mv -T . ${{ secrets.REACT_APP_WEB_ROOT_DIR }}
             sudo chown -R www-data:www-data ${{ secrets.REACT_APP_WEB_ROOT_DIR }}
