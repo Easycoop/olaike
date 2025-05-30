@@ -12,7 +12,9 @@ const validateField = async (input, constraints, alias = null, fields) => {
     const matchFinder = fields.find(field => constraints?.must_match === field.input?.field);
 
     const emailPattern = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
-    const specialCharsRegex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    // const specialCharsRegex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    // const specialCharsRegex = /[ `!@#$%^&*()_+=\[\]{};':"\\|,.<>\/?~]/;
+    const specialCharsRegex = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
     const numberPattern = /[0-9]/g;
 
     const rules = {
