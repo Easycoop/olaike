@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Modal from "../../../components/ui/modal/Modal";
 import "./withdrawal.css";
 import Button from "../../../components/ui/button/Button";
@@ -17,7 +17,7 @@ function Withdrawal() {
   const getWallets = useGetWallets();
   const requestWithdraw = useRequestWithdraw();
   const { user } = useSelector((state) => state.auth);
-  const [type, setType] = useState("");
+  // const [type, setType] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState("");
   const [withdrawAmount, setWithdrawAmount] = useState(null);
@@ -100,7 +100,7 @@ function Withdrawal() {
     }
   };
 
-  const handleGetWallets = async () => {
+ /* const handleGetWallets = async () => {
     setLoading(true);
     try {
       const response = await getWallets(user.id);
@@ -115,11 +115,35 @@ function Withdrawal() {
     } finally {
       setLoading(false);
     }
-  };
+  };*/
+
+  const handleGetWallets = useCallback(async () => {
+    setLoading(true);
+    try {
+      // Ensure user.id is valid before making the call
+      if (!user?.id) {
+        setErrorMessage("User ID is missing.");
+        return; // Exit early if user ID is not available
+      }
+      const response = await getWallets(user.id);
+      if (response?.payload?.status === "success") { // Added safe navigation for payload
+        setErrorMessage("");
+        setWallets(response.payload.data);
+      } else {
+        // Fallback message if response.message is undefined
+        setErrorMessage(response?.message || "An unknown error occurred.");
+      }
+    } catch (error) {
+      // It's good practice to check if error.response and error.response.message exist
+      setErrorMessage(error.response?.message || "Failed to fetch wallets.");
+    } finally {
+      setLoading(false);
+    }
+  }, [user.id, getWallets, setLoading, setErrorMessage, setWallets]);
 
   useEffect(() => {
     handleGetWallets();
-  }, []);
+  }, [handleGetWallets]);
 
   return (
     <div className="withdraw">
@@ -127,7 +151,7 @@ function Withdrawal() {
         <div
           className="withdraw__money__section__two__block"
           onClick={() => {
-            setType("request");
+            // setType("request");
             handleModalClick("request");
           }}
         >
@@ -135,28 +159,28 @@ function Withdrawal() {
             <h5>Request withdrawal</h5>
             <p>Request withdrawal from main wallet</p>
           </div>
-          <img src={image3} />
+          <img alt="" src={image3} />
         </div>
         <div className="withdraw__money__section__two__block">
           <div>
             <h5>Savings</h5>
             <p>Withdraw from savings wallet</p>
           </div>
-          <img src={image2} />
+          <img alt="" src={image2} />
         </div>
         <div className="withdraw__money__section__two__block">
           <div>
             <h5>Loan</h5>
             <p>Withdraw from loan balance</p>
           </div>
-          <img src={image1} />
+          <img alt="" src={image1} />
         </div>
       </section>
 
       {/* WITHDRAW MODAL 1 */}
       <Modal isOpen={isOpen.request} onClose={closeModal}>
         <div className="modal__withdraw1">
-          <img src={request} />
+          <img alt="" src={request} />
           <h3>How much are you requesting for?</h3>
           <Input
             type="number"

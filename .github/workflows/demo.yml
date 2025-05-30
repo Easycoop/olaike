@@ -26,7 +26,7 @@ jobs:
         run: npm run build # This command creates the 'build' folder with optimized production assets
         env:
           REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
-          REACT_APP_BASE_URL_SOCKET: ${{ secrets.REACT_APP_API_URL_SOCKET }}
+          REACT_APP_BASE_URL_SOCKET: ${{ secrets.REACT_APP_BASE_URL_SOCKET }}
           REACT_APP_WEB_URL: ${{ secrets.REACT_APP_WEB_URL }}
           REACT_APP_PAYSTACK_PUBLIC_KEY: "pk_test_abea14b8413cb3f06f2d652fced67a2d1a29ede7"
 
