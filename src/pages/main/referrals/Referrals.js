@@ -1,10 +1,6 @@
-import { BsPatchMinusFill } from "react-icons/bs";
 import "./referrals.css";
 import { FaLink } from "react-icons/fa";
-import { FaCrown } from "react-icons/fa6";
-import { IoPeopleSharp } from "react-icons/io5";
-import { MdAccountTree, MdInsertLink } from "react-icons/md";
-import { RiArrowRightSLine } from "react-icons/ri";
+import {MdInsertLink } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import toastManager from "../../../components/ui/toast/ToasterManager";
@@ -16,7 +12,6 @@ function Referrals() {
   const { user } = useSelector((state) => state.auth);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const referralString = user.referralCode;
   const WEB_URL = process.env.REACT_APP_WEB_URL;
 
@@ -66,7 +61,7 @@ function Referrals() {
         response?.payload.status === 200 ||
         response?.payload.status === "success"
       ) {
-        setErrorMessage("");
+       
         toastManager.addToast({
           message: "Referral email sent successfully",
           type: "success",
@@ -78,14 +73,12 @@ function Referrals() {
           message: "Error sending mail",
           type: "error",
         });
-        setErrorMessage(response.message);
       }
     } catch (error) {
       toastManager.addToast({
         message: "Error sending mail",
         type: "error",
       });
-      setErrorMessage(error.response.message);
     } finally {
       setLoading(false);
     }
