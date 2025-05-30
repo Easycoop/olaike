@@ -29,13 +29,9 @@ jobs:
           REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
           REACT_APP_BASE_URL_SOCKET: ${{ secrets.REACT_APP_BASE_URL_SOCKET }}
           REACT_APP_WEB_URL: ${{ secrets.REACT_APP_WEB_URL }}
-          # It's generally good practice to keep all env variables in secrets, even public ones, for consistency.
-          REACT_APP_PAYSTACK_PUBLIC_KEY: "pk_test_abea14b8413cb3f06f2d652fced67a2d1a29ede7" 
+          REACT_APP_PAYSTACK_PUBLIC_KEY: "pk_test_abea14b8413cb3f06f2d652fced67a2d1a29ede7"
 
       - name: Archive built files
-        # This command archives the *contents* of the 'build' directory.
-        # The -C build . part changes the directory to 'build' before archiving,
-        # so the tarball contains the files directly, not a 'build/' folder inside.
         run: tar -czf react-app.tar.gz -C build .
 
       - name: Copy built files to server staging directory
@@ -45,7 +41,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "react-app.tar.gz"
-          target: ${{ secrets.REACT_APP_STAGING_DIR }} # Target is the temporary staging directory
+          target: ${{ secrets.REACT_APP_STAGING_DIR }}
 
       - name: SSH into server and deploy React app
         uses: appleboy/ssh-action@v1.0.3
@@ -54,35 +50,42 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Ensure the staging directory exists and is owned by the current user
-            # Use 'sudo' as configured in your NOPASSWD line for this user
-            mkdir -p ${{ secrets.REACT_APP_STAGING_DIR }}
-            sudo chown -R ${{ secrets.SERVER_USER }}:${{ secrets.SERVER_USER }} ${{ secrets.REACT_APP_STAGING_DIR }}
-            sudo chmod 755 ${{ secrets.REACT_APP_STAGING_DIR }} # Ensure read/execute permissions for others, write for owner
+            set -eux # This will make the script exit immediately on any error and print commands as they are executed, which is great for debugging.
 
+            echo "--- Debugging Staging Directory Permissions ---"
+            # Ensure the staging directory exists and is owned by the current user
+            mkdir -p ${{ secrets.REACT_APP_STAGING_DIR }}
+            
+            # Show initial permissions of the staging directory
+            ls -ld ${{ secrets.REACT_APP_STAGING_DIR }} || true # Use || true to prevent script from failing if dir doesn't exist yet for ls
+
+            # Attempt to change ownership and permissions
+            sudo chown -R ${{ secrets.SERVER_USER }}:${{ secrets.SERVER_USER }} ${{ secrets.REACT_APP_STAGING_DIR }}
+            sudo chmod 755 ${{ secrets.REACT_APP_STAGING_DIR }}
+
+            # Show permissions of the staging directory AFTER chown/chmod
+            echo "Staging directory permissions after chown/chmod:"
+            ls -ld ${{ secrets.REACT_APP_STAGING_DIR }}
+
+            # Show permissions of the transferred tarball file
+            echo "Tarball file permissions before untar:"
+            ls -la ${{ secrets.REACT_APP_STAGING_DIR }}/react-app.tar.gz
+
+            echo "--- Attempting to extract tarball ---"
             # Navigate to the temporary staging directory on the server
             cd ${{ secrets.REACT_APP_STAGING_DIR }}
 
             # Extract the archived React build files
-            tar -xzf react-app.tar.gz
+            tar -xzf react-app.tar.gz # This is the line that's failing
 
+            echo "--- Tarball extracted successfully ---"
             # Remove the tarball after extraction
             rm react-app.tar.gz
 
             # --- Deployment to the actual web server root ---
-            # These commands now leverage the sudo NOPASSWD configuration
-            # Clear the existing content in the web server root directory
-            # BE CAREFUL: This will delete all files in REACT_APP_WEB_ROOT_DIR
+            echo "--- Deploying to Web Root ---"
             sudo rm -rf ${{ secrets.REACT_APP_WEB_ROOT_DIR }}/*
-
-            # Move the extracted built files from staging to the web server root
-            # The -T flag ensures the contents of the current directory (staging) are moved
-            # directly into the target directory (web root).
             sudo mv -T . ${{ secrets.REACT_APP_WEB_ROOT_DIR }}
-
-            # Set correct ownership for the web server (e.g., Nginx/Apache often uses 'www-data')
             sudo chown -R www-data:www-data ${{ secrets.REACT_APP_WEB_ROOT_DIR }}
-
-            # Reload your web server (e.g., Nginx or Apache) to pick up the new files
-            # Adjust 'nginx' to 'apache2' or your specific web server if needed
             sudo systemctl reload nginx
+            echo "--- Deployment Complete ---"
