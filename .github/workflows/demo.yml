@@ -25,6 +25,7 @@ jobs:
       - name: Build React application
         run: npm run build # This command creates the 'build' folder with optimized production assets
         env:
+          CI: false
           REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
           REACT_APP_BASE_URL_SOCKET: ${{ secrets.REACT_APP_BASE_URL_SOCKET }}
           REACT_APP_WEB_URL: ${{ secrets.REACT_APP_WEB_URL }}
