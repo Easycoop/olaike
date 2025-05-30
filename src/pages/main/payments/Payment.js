@@ -371,9 +371,6 @@ function Payment() {
             placeholder="Enter an amount"
             name="amount"
             min="{minValue}"
-            // defaultValue={minValue}
-            // value={minValue}
-            // value={user?.Group?.recurrent_payment}
             disabled={loading}
             onChange={(e) => setAmount(e.target.value)}
           />

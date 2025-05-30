@@ -149,6 +149,7 @@ function Dashboard() {
             </div>
             <div className="dashboard__section__two__wrap__start__block">
               <h3>Apply for loan</h3>
+              {/* <Link to="/main/loans/index">Apply now</Link> */}
               <Button
                 type="submit"
                 typeOf="primary"
