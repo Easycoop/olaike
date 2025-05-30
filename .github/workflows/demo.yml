@@ -38,9 +38,9 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          source: "build/*"
-          target: ${{ secrets.REACT_APP_WEB_ROOT_DIR }}
-
+          source: "build/**"
+          target: ${{ secrets.REMOTE_DEPLOY_DIR }}
+          
       - name: Restart App on Server (Optional)
         uses: appleboy/ssh-action@v1.0.0
         with:
