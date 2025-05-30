@@ -3,7 +3,7 @@ name: Deploy React Application
 on:
   push:
     branches:
-      - demo # Change to your demo branch name
+      - demo
 
 jobs:
   deploy:
@@ -17,13 +17,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Change to your Node.js version
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
 
       - name: Build React application
-        run: npm run build # This command creates the 'build' folder with optimized production assets
+        run: npm run build
         env:
           CI: false
           REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
@@ -31,20 +31,21 @@ jobs:
           REACT_APP_WEB_URL: ${{ secrets.REACT_APP_WEB_URL }}
           REACT_APP_PAYSTACK_PUBLIC_KEY: "pk_test_abea14b8413cb3f06f2d652fced67a2d1a29ede7"
 
-      # --- ADD THIS DEBUGGING STEP ---
       - name: Verify 'build' directory content
         run: |
           echo "Listing contents of 'build/' directory:"
           ls -la build/
           echo "Disk usage of 'build/' directory:"
           du -sh build/
-          # If 'build' directory is empty or doesn't exist, this will help identify it.
 
       - name: Archive built files
-        # This command archives the *contents* of the 'build' directory.
-        # The -C build . part changes the directory to 'build' before archiving,
-        # so the tarball contains the files directly, not a 'build/' folder inside.
-        run: tar -czf react-app.tar.gz -C build .
+        # --- MODIFIED THIS STEP ---
+        run: |
+          # Change directory into 'build' before archiving its contents
+          cd build/
+          # Archive all files/folders in the current directory (which is 'build')
+          # The tarball will be created one level up (in the repo root)
+          tar -czf ../react-app.tar.gz .
 
       - name: Copy built files to server staging directory
         uses: appleboy/scp-action@v0.1.7
@@ -52,7 +53,8 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          target: "${{ secrets.REACT_APP_STAGING_DIR }}/react-app.tar.gz" 
+          source: "react-app.tar.gz"
+          target: "${{ secrets.REACT_APP_STAGING_DIR }}/react-app.tar.gz"
 
       - name: SSH into server and deploy React app
         uses: appleboy/ssh-action@v1.0.3
@@ -61,7 +63,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            set -eux 
+            set -eux
 
             mkdir -p ${{ secrets.REACT_APP_STAGING_DIR }}
             sudo chown -R ${{ secrets.SERVER_USER }}:${{ secrets.SERVER_USER }} ${{ secrets.REACT_APP_STAGING_DIR }}
@@ -69,7 +71,7 @@ jobs:
 
             cd ${{ secrets.REACT_APP_STAGING_DIR }}
 
-            tar -xzf react-app.tar.gz 
+            tar -xzf react-app.tar.gz
 
             rm react-app.tar.gz
 
