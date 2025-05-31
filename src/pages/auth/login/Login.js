@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ClipLoader } from "react-spinners";
 import "./login.css";
 import login_image from "../../../assets/images/auth/login-image-1.png";
-import logo from "../../../assets/icons/logo_text_black.svg";
+import logo from "../../../assets/icons/logo_icon_main.svg";
 import Input from "../../../components/ui/form-elements/input";
 import Button from "../../../components/ui/button/Button";
 import { Link, useNavigate } from "react-router-dom";
