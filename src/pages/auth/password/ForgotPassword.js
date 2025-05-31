@@ -1,6 +1,6 @@
 import '../auth.css';
 import OtpInput from '../otp/OtpInput';
-import logo from "../../../assets/icons/logo.png";
+import logo from "../../../assets/icons/logo_icon_main.svg";
 import { useState } from 'react';
 import Input from '../../../components/ui/form-elements/input';
 import {resendOtp} from '../../../services/authServices';

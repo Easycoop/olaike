@@ -1,6 +1,6 @@
 // import React from 'react';
 import OtpInput from './OtpInput';
-import logo from "../../../assets/icons/logo.png";
+import logo from "../../../assets/icons/logo_icon_main.svg";
 
 function OtpScreen() {
   const handleOtpVerified = (response) => {
