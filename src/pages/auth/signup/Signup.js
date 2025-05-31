@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./signup.css";
-import logo from "../../../assets/icons/logo-secondary-color1.png";
+import logo from "../../../assets/icons/logo_text.svg";
 import Input from "../../../components/ui/form-elements/input";
 import Button from "../../../components/ui/button/Button";
 import { useNavigate } from "react-router-dom";
@@ -330,8 +330,8 @@ function Signup() {
         </div>
       </div>
       <div className="signup__end">
-        <img src={logo} alt="logo" />
-        <h5>TRANSFORMING LIVES</h5>
+        <img src={logo} alt="logo" height={"300"} />
+        {/* <h5>TRANSFORMING LIVES</h5> */}
       </div>
     </div>
   );
