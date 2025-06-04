@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { useDispatcher } from "../../utils/useDispatcher";
-import { getUsers } from "../../services/userService";
+import { getUsers, getDashboardData } from "../../services/userService";
 
 export const doGetUsers = createAsyncThunk(
   "users/doGetUsers",
@@ -15,4 +15,18 @@ export const doGetUsers = createAsyncThunk(
   }
 );
 
+export const doGetDashboardData = createAsyncThunk(
+  "users/doGetDashboardData",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getDashboardData();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message || "Action failed");
+    }
+  }
+);
+
+
 export const useGetUsers = () => useDispatcher(doGetUsers);
+export const useGetDashboardData = () => useDispatcher(doGetDashboardData);

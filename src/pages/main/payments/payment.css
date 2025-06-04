@@ -1,3 +1,101 @@
+
+:root {
+  --primary: #003399;
+  --secondary: #ED6E0A;
+  --tertiary: #6699FF;
+}
+
+.dashboard-root {
+  background-color: #f4f6fb;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.dashboard-wrapper {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  flex-wrap: wrap;
+}
+
+/* Card shared style */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+/* Primary card: 60% */
+.primary-card {
+  flex: 1 1 60%;
+}
+
+.primary-card h2 {
+  color: var(--primary);
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.primary-card p {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* Secondary card: 30% */
+.secondary-card {
+  flex: 1 1 30%;
+  background-color: #eef3ff;
+  border-left: 4px solid var(--tertiary);
+}
+
+.secondary-card h3 {
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.balance {
+  font-size: 1.5rem;
+  color: #222;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.fund-button {
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+  width: 100%;
+}
+
+.fund-button:hover {
+  background-color: var(--secondary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-wrapper {
+    flex-direction: column;
+  }
+
+  .primary-card,
+  .secondary-card {
+    flex: 1 1 100%;
+  }
+}
+
 .payment {
   display: flex;
   flex-direction: column;

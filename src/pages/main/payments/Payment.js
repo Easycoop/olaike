@@ -21,18 +21,21 @@ import { FaCircle } from "react-icons/fa6";
 import Loading from "../../../components/splash/loading/Loading";
 import { useGetActiveProgram } from "../../../redux/actions/societyAction";
 import { formatUnixToDate, ngDateTimeFormat } from "../../../utils/time";
+import { useGetWallets } from "../../../redux/actions/walletAction";
 
-function Payment() {
+const Payment = ()  => {
   const PAYSTACK_KEY = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
   const initializeTransaction = useInitializeTransaction();
   const verifyTransactionFund = useVerifyTransactionFund();
   const verifyTransactionFundSavings = useVerifyTransactionFundSavings();
   const verifyTransactionFundLoan = useVerifyTransactionFundLoan();
   const getActiveProgram = useGetActiveProgram();
+  const getWallets = useGetWallets();
+
   const { user } = useSelector((state) => state.auth);
  
   const latenessCharge = user.loanStatus == "active" ? 500 : 100;
-  
+  const [wallets, setWallets] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [amount, setAmount] = useState(null);
@@ -48,6 +51,7 @@ function Payment() {
   const [minValue, setMinValue] = useState(650+latenessFee);
 
   const [activeProgram, setActiveProgram] = useState([]);
+  const [savingsWallet, setSavingsWallet] = useState(null);
   
   // const [loading, setLoading] = useState(false);
 
@@ -191,10 +195,27 @@ function Payment() {
       setLoading(false);
     }
   };
+
+
+  const handleGetWallets = async () => {
+    setLoading(true);
+    try {
+      const response = await getWallets(user.id);
+      if (response?.payload.status === "success") {
+        setErrorMessage("");
+        setWallets(response.payload.data);
+      } else {
+        setErrorMessage(response.message);
+      }
+    } catch (error) {
+      setErrorMessage(error.response.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   
   useEffect(()=>{
-    console.log(user);
-    
+    handleGetWallets();
     fetchActivePrograms()
   }, []);
 
@@ -202,161 +223,162 @@ function Payment() {
     
     setMinValue(650+latenessFee);
   }, [latenessFee]);
+
+  useEffect(() => {
+    const sWallet = wallets?.subWallets?.find(wallet => wallet?.name === "Savings Wallet");
+    setSavingsWallet(sWallet);
+  }, [wallets])
   return (
     <div className="withdraw">
-      <section className="withdraw__money__section__two">
-       
-        <div
-          className="withdraw__money__section__two__block"
-          onClick={() => {
-            setType("savings");
-            handleModalClick("savings");
-          }}
-        >
-          <div>
-            <h5>Savings</h5>
-            <p>Fund savings wallet</p>
+     
+      <div className="dashboard-root">
+        <div className="dashboard-wrapper">
+          <div className="card primary-card">
+            <h2>Thrift and Savings</h2>
+            <p>
+              Here, you can manage your weekly thrift and also do special savings. The "Special Savings" button is for your special savings while the  table below is for the "Weekly Thrift"
+            </p>
           </div>
-          <img src={image1} />
-        </div>
-        <div
-          className="withdraw__money__section__two__block"
-          onClick={() => {
-            if (user.loanBalance == 0) {
-              toastManager.addToast({
-                message: "You don't have any debt to repay",
-                type: "warning",
-              });
-            } else {
-              setType("loan");
-              handleModalClick("loan");
-            }
-          }}
-        >
-          <div>
-            <h5>Repay loan</h5>
-            <p>Pay back part or whole of your debt</p>
-            <p style={{ color: "crimson" }}>Debt owed: {user.loanBalance}</p>
+          
+          <div className="card secondary-card">
+            <h3>Special Savings</h3>
+            <div className="balance">₦{`${savingsWallet?.balance.toLocaleString()}`} </div>
+            <button className="fund-button" 
+              onClick={() => {
+              setType("savings");
+              handleModalClick("savings");
+            }}
+            >Click here to save</button>
           </div>
-          <img src={image2} />
-        </div>
-      </section>
 
-      <section className="ad__novel__sc__three"> 
-        <h3>Contibution Programs</h3>
-        
-          {activeProgram.length == 0 && !loading ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "200px",
-                gap: "20px",
-              }}
-            >
-              <p>No active contribution program found yet </p>
+          <div className="card secondary-card">
+            <div style={{display:"flex", alignItems:"center", justifyContent:"space-around"}}>
+              <h3>Contibution Programs</h3>
+
+              <div className="balance"> Thrift Balance: ₦{`${wallets?.wallet?.balance.toLocaleString()} `}  </div>
             </div>
-          ) : (
-            <div className="admin-table-body">
-              {activeProgram.map((program, i) => (
-                
-                <div key={i} className="">
-                  <div className="admin-table">
-                    <div className="admin-table-header">
-                      <div className="admin-table-cell">Title</div>
-                      <div className="admin-table-cell">Min Amount</div>
-                      <div className="admin-table-cell">Started on</div>
-                      <div className="admin-table-cell">Ends on</div>
-                      <div className="admin-table-cell">Weekly Deadlines</div>
-                      <div className="admin-table-cell">Status </div>
-                    
-                    </div>
-                    
+
+            <section className="ad__novel__sc__three"> 
+                {activeProgram.length == 0 && !loading ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "200px",
+                      gap: "20px",
+                    }}
+                  >
+                    <p>No active contribution program found yet </p>
                   </div>
-
-                  <div className="admin-table-row">
-                    <div className="admin-table-cell">{program.title}</div>
-                    <div className="admin-table-cell">{`${program.currency} ${program.minAmount}`}</div>
-                    <div className="admin-table-cell">{program.startDate}</div>
-                    <div className="admin-table-cell">{program.endDate}</div>
-                    <div className="admin-table-cell">{program.deadline}</div>
-                    <div className="admin-table-cell">
-                      <span
-                        style={{
-                          border: `1px solid ${
-                            program.status == "active" ? "#0BFD15" : "#dc143c"
-                          }`,
-                          borderRadius: "20px",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "15px",
-                          padding: "10px 15px",
-                          width: "max-content",
-                        }}
-                      >
-                        <FaCircle
-                          color={program.status == "active" ? "#0BFD15" : "#dc143c"}
-                        />
-                        {program.status}
-                      </span>
-                    </div>
-                  </div>
-
-                  <h3>You Thrift Payments</h3>
-
-                    <div className="admin-table">
-                      <div className="admin-table-header">
-                        <div className="admin-table-cell">Amount Paid</div>
-                        <div className="admin-table-cell">Date Paid</div>
-                        <div className="admin-table-cell">Due Date</div>
-                        <div className="admin-table-cell">Lateness Fee (NGN)</div>
-                        <div className="admin-table-cell">Action</div>
+                ) : (
+                  <div className="admin-table-body">
+                    {activeProgram.map((program, i) => (
                       
-                      </div>
-                      
-                    </div>
-                    {
-                      program.ThriftRecords?.map(thrift=>(
-                        <div className="admin-table-row">
-                          <div className="admin-table-cell">{thrift.transaction?.amount ? thrift.transaction?.amount : 0.00}</div>
-                          <div className="admin-table-cell">{thrift.transaction?.createdAt ? ngDateTimeFormat(thrift.transaction?.createdAt) : "N/A"}</div>
-                          <div className="admin-table-cell">{formatUnixToDate(thrift.dueDate)}</div>
-                          <div className="admin-table-cell">{thrift.transaction && thrift.transaction.status == 'success' ? 
-                            thrift.fees?.length > 0 && thrift.fees.find((fee) => fee.type === "late_recurrent_payment") ? thrift.fees.find((fee) => fee.type === "late_recurrent_payment").amount : "N/A"
-                          :
-                          thrift.dueDate < Math.floor(Date.now() / 1000) ? latenessCharge :" N/A"
-                         }
+                      <div key={i} className="">
+                        <div className="admin-table">
+                          <div className="admin-table-header">
+                            <div className="admin-table-cell">Title</div>
+                            <div className="admin-table-cell">Min Amount</div>
+                            <div className="admin-table-cell">Started on</div>
+                            <div className="admin-table-cell">Ends on</div>
+                            <div className="admin-table-cell">Weekly Deadlines</div>
+                            <div className="admin-table-cell">Status </div>
+                          
                           </div>
+                          
+                        </div>
 
-                          <div className="admin-table-cell">{!(thrift.transaction && thrift.transaction.status == 'success') ?
-                           thrift.dueDate < Math.floor(Date.now() / 1000) ? 
-                            <button onClick={() => {
-                              setType("fund");
-                              handleModalClick("fund");
-                              setLatenessFee(latenessCharge)
-                              setThriftId(thrift.id)
-                            }}>Pay Lateness Fee and thrift amount</button> :
-                              <button onClick={() => {
-                              setType("fund");
-                              handleModalClick("fund");
-                              setLatenessFee(0)
-                              setThriftId(thrift.id)
-                            }}>Pay Thrift</button>
-                          :
-                          <span className="paid">Paid</span>
-                          }
+                        <div className="admin-table-row">
+                          <div className="admin-table-cell">{program.title}</div>
+                          <div className="admin-table-cell">{`${program.currency} ${program.minAmount}`}</div>
+                          <div className="admin-table-cell">{program.startDate}</div>
+                          <div className="admin-table-cell">{program.endDate}</div>
+                          <div className="admin-table-cell">{program.deadline}</div>
+                          <div className="admin-table-cell">
+                            <span
+                              style={{
+                                border: `1px solid ${
+                                  program.status == "active" ? "#0BFD15" : "#dc143c"
+                                }`,
+                                borderRadius: "20px",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "15px",
+                                padding: "10px 15px",
+                                width: "max-content",
+                              }}
+                            >
+                              <FaCircle
+                                color={program.status == "active" ? "#0BFD15" : "#dc143c"}
+                              />
+                              {program.status}
+                            </span>
                           </div>
                         </div>
-                      ))
-                    }
-                  
-                </div>
-              ))}
-            </div>
-          )}
-          {loading && <Loading />}
-      </section>
+
+                        <h3>You Thrift Payments</h3>
+
+                          <div className="admin-table">
+                            <div className="admin-table-header">
+                              <div className="admin-table-cell">Amount Paid</div>
+                              <div className="admin-table-cell">Date Paid</div>
+                              <div className="admin-table-cell">Due Date</div>
+                              <div className="admin-table-cell">Lateness Fee (NGN)</div>
+                              <div className="admin-table-cell">Action</div>
+                            
+                            </div>
+                            
+                          </div>
+                          {
+                            program.ThriftRecords?.map(thrift=>(
+                              <div className="admin-table-row">
+                                <div className="admin-table-cell">{thrift.transaction?.amount ? thrift.transaction?.amount : 0.00}</div>
+                                <div className="admin-table-cell">{thrift.transaction?.createdAt ? ngDateTimeFormat(thrift.transaction?.createdAt) : "N/A"}</div>
+                                <div className="admin-table-cell">{formatUnixToDate(thrift.dueDate)}</div>
+                                <div className="admin-table-cell">{thrift.transaction && thrift.transaction.status == 'success' ? 
+                                  thrift.fees?.length > 0 && thrift.fees.find((fee) => fee.type === "late_recurrent_payment") ? thrift.fees.find((fee) => fee.type === "late_recurrent_payment").amount : "N/A"
+                                :
+                                thrift.dueDate < Math.floor(Date.now() / 1000) ? latenessCharge :" N/A"
+                              }
+                                </div>
+
+                                <div className="admin-table-cell">{!(thrift.transaction && thrift.transaction.status == 'success') ?
+                                thrift.dueDate < Math.floor(Date.now() / 1000) ? 
+                                  <button onClick={() => {
+                                    setType("fund");
+                                    handleModalClick("fund");
+                                    setLatenessFee(latenessCharge)
+                                    setThriftId(thrift.id)
+                                  }}>Pay Lateness Fee and thrift amount</button> :
+                                    <button onClick={() => {
+                                    setType("fund");
+                                    handleModalClick("fund");
+                                    setLatenessFee(0)
+                                    setThriftId(thrift.id)
+                                  }}>Pay Thrift</button>
+                                :
+                                <span className="paid">Paid</span>
+                                }
+                                </div>
+                              </div>
+                            ))
+                          }
+                        
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {loading && <Loading />}
+            </section>
+            
+          </div>
+
+          
+        </div>
+      </div>
+
+      
       
 
       {/* FUND AMOUNT MODAL */}

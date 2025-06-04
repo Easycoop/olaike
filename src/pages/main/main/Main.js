@@ -1,7 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./main.css";
-import logo from "../../../assets/icons/logo.png";
 import Header from "../../../components/layout/header/Header";
 import "../../../components/ui/modal/modal-children-styles/modal-withdraw1.css";
 import "../../../components/ui/modal/modal-children-styles/modal-payment2.css";
@@ -107,17 +106,7 @@ function Main() {
               <h3>Logout</h3>
             </div>
           </section>
-          {/* <section
-            className="admin__navbar__section__two"
-            style={{ marginTop: "auto" }}
-          >
-            <img
-              src={logo}
-              alt="logo"
-              style={{ objectFit: "contain", height: "100px" }}
-            />
-            
-          </section> */}
+         
         </div>
         <div className={active ? "admin__outlet active" : "admin__outlet"}>
           <Outlet />

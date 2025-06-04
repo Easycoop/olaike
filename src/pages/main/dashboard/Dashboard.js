@@ -8,11 +8,15 @@ import Loading from "../../../components/splash/loading/Loading";
 import NoResult from "../../../components/splash/no-result/NoResult";
 import { useGetWallets } from "../../../redux/actions/walletAction";
 import Button from "../../../components/ui/button/Button";
+import { useGetDashboardData } from "../../../redux/actions/userAction";
 
-function Dashboard() {
+
+const Dashboard = ()  => {
   const navigate = useNavigate();
   const getTransactions = useGetTransactions();
   const getWallets = useGetWallets();
+  const getDashboardData = useGetDashboardData();
+
   const [wallets, setWallets] = useState({});
   const pageRef = useRef(null); // ensure this is null initially
   const { user } = useSelector((state) => state.auth);
@@ -20,6 +24,7 @@ function Dashboard() {
   const [errorMessage, setErrorMessage] = useState("");
   const [transactions, setTransactions] = useState([]);
   const [page, setPage] = useState(1);
+  const [dashboardData, setDashboardData] = useState({});
 
   const handleGetWallets = async () => {
     setLoading(true);
@@ -28,6 +33,24 @@ function Dashboard() {
       if (response?.payload.status === "success") {
         setErrorMessage("");
         setWallets(response.payload.data);
+      } else {
+        setErrorMessage(response.message);
+      }
+    } catch (error) {
+      setErrorMessage(error.response.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGetDashboardData = async () => {
+    setLoading(true);
+    try {
+      const response = await getDashboardData(user.id);
+      console.log(response);
+      if (response?.payload.status === "success") {
+        setErrorMessage("");
+        setDashboardData(response.payload.data);
       } else {
         setErrorMessage(response.message);
       }
@@ -96,6 +119,7 @@ function Dashboard() {
 
   useEffect(() => {
     handleGetWallets();
+    handleGetDashboardData();
   }, []);
 
   return (
@@ -133,7 +157,7 @@ function Dashboard() {
           <div className="dashboard__section__two__wrap__start">
             <div className="dashboard__section__two__wrap__start__block">
               <h3>Outstanding loan </h3>
-              <h4>{`${user.loanBalance} ${wallets?.wallet?.currency}`}</h4>
+              <h4>{`${dashboardData.loan_bal} ${wallets?.wallet?.currency}`}</h4>
             </div>
 
             <div className="dashboard__section__two__wrap__start__block">
@@ -148,7 +172,7 @@ function Dashboard() {
               </Button>
             </div>
             <div className="dashboard__section__two__wrap__start__block">
-              <h3>Apply for loan</h3>
+              <h3>Manage Loan </h3>
               {/* <Link to="/main/loans/index">Apply now</Link> */}
               <Button
                 type="submit"

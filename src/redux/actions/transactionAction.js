@@ -10,6 +10,7 @@ import {
   verifyTransactionFund,
   verifyTransactionFundLoan,
   verifyTransactionFundSavings,
+  getUnUsedLoanFormTransactions,
 } from "../../services/transactionServices";
 
 export const doInitializeTransaction = createAsyncThunk(
@@ -108,6 +109,18 @@ export const doGetTransactions = createAsyncThunk(
   }
 );
 
+export const doGetUnUsedLoanFormTransactions = createAsyncThunk(
+  "transactions/doGetUnUsedLoanFormTransactions",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const data = await getUnUsedLoanFormTransactions(payload);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message || "Action failed");
+    }
+  }
+);
+
 export const useGetTransactions = () => useDispatcher(doGetTransactions);
 export const useInitializeTransaction = () =>
   useDispatcher(doInitializeTransaction);
@@ -122,3 +135,5 @@ export const useVerifyTransactionFundLoan = () =>
   useDispatcher(doVerifyTransactionFundLoan);
 export const useVerifyTransactionEntry = () =>
   useDispatcher(doVerifyTransactionEntry);
+export const useGetUnUsedLoanFormTransactions = () =>
+  useDispatcher(doGetUnUsedLoanFormTransactions);

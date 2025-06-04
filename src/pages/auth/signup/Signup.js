@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import "./signup.css";
-import logo from "../../../assets/icons/logo_text.svg";
+// import logo from "../../../assets/icons/logo_text.svg";
 import Input from "../../../components/ui/form-elements/input";
 import Button from "../../../components/ui/button/Button";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ import {
   useInitializeTransactionEntry,
   useVerifyTransactionEntry,
 } from "../../../redux/actions/transactionAction";
+import { ConfigContext } from "../../../context/ConfigProvider";
 
 const genders = [
   { id: "Male", name: "Male" },
@@ -23,6 +24,7 @@ function Signup() {
   const getSocieties = useGetSocieties();
   const register = useRegister();
   const navigate = useNavigate();
+  const { config } = useContext(ConfigContext);
   const PAYSTACK_KEY = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
   const initializeTransactionEntry = useInitializeTransactionEntry();
   const verifyTransaction = useVerifyTransactionEntry();
@@ -96,9 +98,7 @@ function Signup() {
     }
   };
 
-  useEffect(() => {
-    handleGetSocieties();
-  }, []);
+ 
 
   const handleFund = async (e) => {
     e.preventDefault();
@@ -194,6 +194,10 @@ function Signup() {
   };
 
   useEffect(() => {
+    handleGetSocieties();
+  }, []);
+
+  useEffect(() => {
     const selectedSociety = societies.find((item) => item.id == formData.group);
     if (selectedSociety) {
       setAmount(selectedSociety.entranceFee);
@@ -201,6 +205,10 @@ function Signup() {
       setAmount(null);
     }
   }, [formData.group]);
+
+  useEffect(() => {
+    console.log(config)
+  }, [config]);
 
   return (
     <div className="signup">
@@ -330,7 +338,7 @@ function Signup() {
         </div>
       </div>
       <div className="signup__end">
-        <img src={logo} alt="logo" height={"300"} />
+        <img src={config?.logos?.text_logo_white} alt="logo" height={"300"} />
         {/* <h5>TRANSFORMING LIVES</h5> */}
       </div>
     </div>

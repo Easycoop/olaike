@@ -1,3 +1,9 @@
+:root {
+  --primary: #003399;
+  --secondary: #ED6E0A;
+  --tertiary: #6699FF;
+}
+
 .account__notifications__section__two {
   padding: 30px 0;
   padding-bottom: 25px;
@@ -152,112 +158,257 @@
 
 
 
-        .loan-container {
-          max-width: 900px;
-          margin: 2rem auto;
-          font-family: sans-serif;
-        }
+  .loan-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    font-family: sans-serif;
+  }
 
-        .loan-card {
-          border: 1px solid #e2e8f0;
-          border-radius: 0.75rem;
-          margin-bottom: 1.5rem;
-          overflow: hidden;
-          background: #fff;
-        }
+  .loan-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    background: #fff;
+  }
 
-        .loan-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 1rem;
-          background: #f8fafc;
-          cursor: pointer;
-        }
+  .loan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #f8fafc;
+    cursor: pointer;
+  }
 
-        .loan-header.active {
-          font-weight: 600;
-          background: #f1f5f9;
-        }
+  .loan-header.active {
+    font-weight: 600;
+    background: #f1f5f9;
+  }
 
-        .loan-title {
-          font-size: 1rem;
-          color: #334155;
-        }
+  .loan-title {
+    font-size: 1rem;
+    color: #334155;
+  }
 
-        .loan-subtitle {
-          font-size: 0.875rem;
-          color: #64748b;
-        }
+  .loan-subtitle {
+    font-size: 0.875rem;
+    color: #64748b;
+  }
 
-        .loan-toggle-icon {
-          font-size: 1.25rem;
-          color: #475569;
-        }
+  .loan-toggle-icon {
+    font-size: 1.25rem;
+    color: #475569;
+  }
 
-        .loan-body {
-          padding: 1rem;
-        }
+  .loan-body {
+    padding: 1rem;
+  }
 
-        .loan-table {
-          width: 100%;
-          border-collapse: collapse;
-        }
+  .loan-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
 
-        .loan-table th,
-        .loan-table td {
-          text-align: left;
-          padding: 0.75rem 1rem;
-          font-size: 0.875rem;
-        }
+  .loan-table th,
+  .loan-table td {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
 
-        .loan-table thead {
-          background-color: #f1f5f9;
-          color: #64748b;
-          text-transform: uppercase;
-          font-size: 0.75rem;
-        }
+  .loan-table thead {
+    background-color: #f1f5f9;
+    color: #64748b;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+  }
 
-        .loan-table tr:hover {
-          background-color: #f8fafc;
-        }
+  .loan-table tr:hover {
+    background-color: #f8fafc;
+  }
 
-        .status-badge {
-          padding: 0.25rem 0.5rem;
-          border-radius: 9999px;
-          font-size: 0.75rem;
-          font-weight: 600;
-        }
+  .status-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
 
-        .status-badge.paid {
-          background-color: #dcfce7;
-          color: #16a34a;
-        }
+  .status-badge.paid {
+    background-color: #dcfce7;
+    color: #16a34a;
+  }
 
-        .status-badge.pending {
-          background-color: #fef9c3;
-          color: #ca8a04;
-        }
+  .status-badge.pending {
+    background-color: #fef9c3;
+    color: #ca8a04;
+  }
 
-        .status-badge.overdue {
-          background-color: #fee2e2;
-          color: #dc2626;
-        }
+  .status-badge.overdue {
+    background-color: #fee2e2;
+    color: #dc2626;
+  }
 
-        .pay-btn {
-          background: none;
-          border: none;
-          color: #4f46e5;
-          font-size: 0.75rem;
-          cursor: pointer;
-        }
+  .pay-btn {
+    background: none;
+    border: none;
+    color: #4f46e5;
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
 
-        .pay-btn:hover {
-          text-decoration: underline;
-        }
+  .pay-btn:hover {
+    text-decoration: underline;
+  }
 
-        .paid-label {
-          font-size: 0.75rem;
-          color: #94a3b8;
-        }
+  .paid-label {
+    font-size: 0.75rem;
+    color: #94a3b8;
+  }
       
+
+  
+
+.payment-root {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6fb;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.payment-container {
+  max-width: 500px;
+  width: 100%;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  display: block;
+  height: auto;
+  padding-bottom: 20px;
+}
+
+.header h1 {
+  color: white;
+  font-size: 1.8rem;
+  /* margin-bottom: 0.3rem; */
+}
+
+.header p {
+  color: var(--tertiary);
+  font-size: 1rem;
+}
+
+.details {
+  margin-bottom: 2rem;
+}
+
+.details-item {
+  margin-bottom: 1rem;
+}
+
+.details-item label {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.details-item .value {
+  font-size: 1.2rem;
+  color: #222;
+}
+
+.description {
+  background-color: #eef3ff;
+  border-left: 4px solid var(--tertiary);
+  padding: 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 2rem;
+}
+
+.pay-button {
+  display: block;
+  width: 100%;
+  background-color: var(--primary);
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.pay-button:hover {
+  background-color: var(--secondary);
+}
+
+
+button:disabled {
+    background-color: transparent;
+    cursor: not-allowed;
+}
+
+
+/* Tablet (up to 768px) */
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 1.6rem;
+  }
+
+  .header p {
+    font-size: 0.95rem;
+  }
+
+  .details-item .value {
+    font-size: 1.1rem;
+  }
+
+  .description {
+    font-size: 0.9rem;
+  }
+
+  .pay-button {
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile (up to 480px) */
+@media (max-width: 480px) {
+  .payment-root, .payment-container {
+    padding: 1rem;
+  }
+  .header h1 {
+    font-size: 1.4rem;
+  }
+
+  .header p {
+    font-size: 0.9rem;
+  }
+
+  .details-item .value {
+    font-size: 1rem;
+  }
+
+  .description {
+    font-size: 0.85rem;
+  }
+
+  .pay-button {
+    font-size: 0.9rem;
+  }
+}
+
+

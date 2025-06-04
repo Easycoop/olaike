@@ -141,7 +141,7 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
 
   return (
     <div className="loan-container">
-      {loans.map((app) => (
+      {loans?.active?.map((app) => (
         <div key={app.id} className="loan-card">
           <div
             className={`loan-header ${activeApp === app.id ? "active" : ""}`}

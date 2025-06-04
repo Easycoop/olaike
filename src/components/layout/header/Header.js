@@ -2,15 +2,18 @@ import { BiMenu } from "react-icons/bi";
 import "./Header.css";
 import image1 from "../../../assets/icons/logo-secondary.png";
 import image2 from "../../../assets/images/main/profile-image.jpg";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MdOutlineClose } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+import { ConfigContext } from "../../../context/ConfigProvider";
 
 function Header({ handleNav }) {
   const misc = useSelector((state) => state.misc);
   const { user } = useSelector((state) => state.auth);
+
+  const {config} = useContext(ConfigContext);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -39,7 +42,7 @@ function Header({ handleNav }) {
   return (
     <div className="header">
       <section className="header__sc__one">
-        <img src={image1} alt="logo" />
+        <img src={config?.logos?.text_logo_white} alt="logo" />
         {active === true ? (
           <MdOutlineClose className="menu" onClick={setNav} />
         ) : (
