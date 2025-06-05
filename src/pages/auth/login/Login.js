@@ -13,7 +13,7 @@ import { ConfigContext } from "../../../context/ConfigProvider";
 function Login() {
   const login = useLogin();
   const navigate = useNavigate();
-  const { config } = useContext(ConfigContext);
+  const { config, fetchConfig } = useContext(ConfigContext);
 
   const [formData, setFormData] = useState({
     email: "ransom.b.job@gmail.com",
@@ -68,9 +68,9 @@ function Login() {
     }
   };
 
-   useEffect(()=>{
-    console.log(config)
-  }, [config]);
+  useEffect(()=>{
+    fetchConfig();
+  }, []);
 
   return (
     <div className="login">
