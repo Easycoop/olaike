@@ -129,7 +129,7 @@ const Dashboard = ()  => {
       // style={{ height: "40vh", overflowY: "auto" }}
     >
       <section className="dashboard__section__one">
-        <h5>My wallets</h5>
+        <h5 >My wallets</h5>
         <div className="dashboard__section__one__block__wrap">
           <span className="dashboard__section__one__block">
             <h5>Contribution Funds</h5>
@@ -140,7 +140,7 @@ const Dashboard = ()  => {
           </span>
           {wallets?.subWallets?.map((wallet, i) => {
             return (
-              <span className="dashboard__section__one__block">
+              <span className="dashboard__section__one__block" key={i}>
                 <h5>{wallet?.name}</h5>
                 <h3>{`${wallet?.balance} ${wallet?.currency}`}</h3>
                 <div>
@@ -157,7 +157,7 @@ const Dashboard = ()  => {
           <div className="dashboard__section__two__wrap__start">
             <div className="dashboard__section__two__wrap__start__block">
               <h3>Outstanding loan </h3>
-              <h4>{`${dashboardData.loan_bal} ${wallets?.wallet?.currency}`}</h4>
+              <h4>{`${dashboardData.loan_bal || 0} ${wallets?.wallet?.currency}`}</h4>
             </div>
 
             <div className="dashboard__section__two__wrap__start__block">

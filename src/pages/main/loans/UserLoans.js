@@ -192,9 +192,10 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
                       </td>
                       <td>
                         {sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) 
-                         ? ngDateFormat(rep.transactions[rep.transactions?.length -1]?.createdAt)  : "—"}</td>
+                         ? ngDateFormat(rep.transactions[rep.transactions?.length -1]?.createdAt)  : "—"}
+                      </td>
+                      
                       <td>
-
                         {sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) 
                          ? 
                         <span className="paid-label">Paid</span>  :
@@ -218,7 +219,15 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
                      
                     </tr>
                   ))}
-                   
+
+                {app.nextFutureUnpaid?.length > 0 && 
+                
+                <tr>
+                  <td colSpan="7"><hr /></td>
+                  <td colSpan="7">Upcoming</td>
+                  
+                </tr>}
+                
                 {app.nextFutureUnpaid?.map((rep, idx) => (
                     <tr key={idx}>
                       <td>{formatUnixToDateTime(rep.dueDate)}</td>
@@ -262,6 +271,17 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
                     </tr>
                   ))}
 
+                
+
+                {app.pastPaid?.length > 0 && 
+                <>
+                  <tr>
+                    <td colSpan="7"><hr /></td>
+                  </tr>
+                   <td colSpan="7">Paid</td>
+                </>
+                
+                }
                 {app.pastPaid?.map((rep, idx) => (
                     <tr key={idx}>
                       <td>{formatUnixToDateTime(rep.dueDate)}</td>
@@ -304,7 +324,7 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
                      
                     </tr>
                   ))}
-
+                
 
                 {app.futurePaid?.map((rep, idx) => (
                     <tr key={idx}>

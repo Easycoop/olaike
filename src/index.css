@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 /* Normalize or Reset CSS */
 @import-normalize;
 

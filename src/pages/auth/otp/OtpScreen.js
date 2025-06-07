@@ -1,8 +1,10 @@
-// import React from 'react';
+import {useContext} from 'react';
 import OtpInput from './OtpInput';
 import logo from "../../../assets/icons/logo_icon_main.svg";
+import {ConfigContext} from "../../../context/ConfigProvider";
 
-function OtpScreen() {
+const OtpScreen = () => {
+  const {config} = useContext(ConfigContext);
   const handleOtpVerified = (response) => {
     if (response.success) {
       alert('OTP Verified Successfully!');
@@ -16,7 +18,7 @@ function OtpScreen() {
         <div className="mb-4">
           {/* Replace with your logo image */}
           <div className="w-16 h-16 mx-auto bg-blue-200 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl">
-            <img src={logo} alt="logo" height="120" />
+            <img src={config?.logo?.main_icon} alt="logo" height="120" />
           </div>
         </div>
 

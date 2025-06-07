@@ -34,7 +34,7 @@ const Payment = ()  => {
 
   const { user } = useSelector((state) => state.auth);
  
-  const latenessCharge = user.loanStatus == "active" ? 500 : 100;
+  // const latenessCharge = user.loanStatus == "active" ? 500 : 100;
   const [wallets, setWallets] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -51,6 +51,7 @@ const Payment = ()  => {
   const [minValue, setMinValue] = useState(650+latenessFee);
 
   const [activeProgram, setActiveProgram] = useState([]);
+  const [activeLoan, setActiveLoan] = useState(null);
   const [savingsWallet, setSavingsWallet] = useState(null);
   
   // const [loading, setLoading] = useState(false);
@@ -63,6 +64,14 @@ const Payment = ()  => {
     });
     setErrorMessage("");
     setAmount(null);
+  };
+
+  const getLatenessCharge = (thriftDueDate) => {
+    if(thriftDueDate > activeLoan?.approvalDate){
+      return 500
+    }else{
+      return 100
+    }
   };
 
   const handleModalClick = (option) => {
@@ -185,6 +194,7 @@ const Payment = ()  => {
       
       if (response?.payload.status === "success") {
         setActiveProgram(response?.payload?.data)
+        setActiveLoan(response?.payload?.active_loan)
       } else {
         setErrorMessage(response.message);
       }
@@ -339,7 +349,7 @@ const Payment = ()  => {
                                 <div className="admin-table-cell">{thrift.transaction && thrift.transaction.status == 'success' ? 
                                   thrift.fees?.length > 0 && thrift.fees.find((fee) => fee.type === "late_recurrent_payment") ? thrift.fees.find((fee) => fee.type === "late_recurrent_payment").amount : "N/A"
                                 :
-                                thrift.dueDate < Math.floor(Date.now() / 1000) ? latenessCharge :" N/A"
+                                thrift.dueDate < Math.floor(Date.now() / 1000) ? getLatenessCharge(thrift.dueDate) :" N/A"
                               }
                                 </div>
 
@@ -348,9 +358,9 @@ const Payment = ()  => {
                                   <button onClick={() => {
                                     setType("fund");
                                     handleModalClick("fund");
-                                    setLatenessFee(latenessCharge)
+                                    setLatenessFee(getLatenessCharge(thrift.dueDate))
                                     setThriftId(thrift.id)
-                                  }}>Pay Lateness Fee and thrift amount</button> :
+                                  }}>Pay Thrift</button> :
                                     <button onClick={() => {
                                     setType("fund");
                                     handleModalClick("fund");

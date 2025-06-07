@@ -1,16 +1,18 @@
 import '../auth.css';
 import OtpInput from '../otp/OtpInput';
 import logo from "../../../assets/icons/logo_icon_main.svg";
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Input from '../../../components/ui/form-elements/input';
 import {resendOtp} from '../../../services/authServices';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, Link} from 'react-router-dom';
 import toastManager from '../../../components/ui/toast/ToasterManager';
 import { runValidation } from '../../../utils/buchi';
 import ValidationError from '../../../components/ui/form-elements/ValidationError';
 import { useVerifyEmailOtp } from '../../../redux/actions/authActions';
+import { ConfigContext } from '../../../context/ConfigProvider';
 
-function ForgotPassword() {
+const ForgotPassword = () => {
+  const {config} = useContext(ConfigContext);
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
   const [virtualOtp, setVirtualOtp] = useState('...');
@@ -106,7 +108,7 @@ function ForgotPassword() {
         <div className="mb-4">
           {/* Replace with your logo image */}
           <div className="w-16 h-16 mx-auto bg-blue-200 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl">
-            <img src={logo} alt="logo" height="120" />
+            <img src={config?.logos?.main_icon} alt="logo" height="120" />
           </div>
         </div>
 
@@ -120,16 +122,18 @@ function ForgotPassword() {
                 Enter Your Email Address
               </h1>
               <h5 style={{marginBottom:"10px"}} className='text-primary'>We will send you an OTP to reset your password</h5>
-              <div style={{width:"80%", margin:"auto", backgroundColor:"#eee", padding:"20px", borderRadius:"10px"}}>
+              <div style={{width:"100%", margin:"auto", backgroundColor:"#eee", padding:"20px", borderRadius:"10px"}}>
                   <Input
-                  type="text"
-                  label="Email"
-                  name="email"
-                  placeholder="Enter your email to reset your password"
-                  className="mb-4"
-                  onChange={(e) => setEmail(e.target.value)}
+                    type="text"
+                    label="Email"
+                    name="email"
+                    placeholder="Enter your email to reset your password"
+                    className="mb-4"
+                    onChange={(e) => setEmail(e.target.value.toLowerCase())}
                 />
+                
                 <button className='verify-btn' onClick={sendOtp}>Submit</button>
+                <div> <Link to="/" className='text-primary mt-3'>Back to login</Link></div>
               </div>
               
             </div>

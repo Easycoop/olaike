@@ -12,8 +12,6 @@ export const ConfigProvider = ({ children }) => {
             setConfig(response.payload.data);
             localStorage.setItem('easycoop_config', JSON.stringify(response.payload.data));
         }
-        
-        // return response;
     }
 
     const [config, setConfig] = useState({});
