@@ -63,7 +63,8 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
             amount: amount,
             description: "loan repayment",
             repayment_id : repaymentId,
-            loan_id: loanId
+            loan_id: loanId,
+            repayment_option:"scheduled_payment"
           });
     
           const { reference } = response.payload.data.data;
@@ -173,9 +174,12 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
                   </tr>
                 </thead>
                 <tbody>
+                
+                {app.pastUnpaid.length > 0 && 
                 <tr>
                     Past Due 
                 </tr>
+                }
                  {app.pastUnpaid.map((rep, idx) => (
                     <tr key={idx}>
                       <td>{formatUnixToDateTime(rep.dueDate)}</td>
@@ -223,10 +227,10 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
                 {app.nextFutureUnpaid?.length > 0 && 
                 
                 <tr>
-                  <td colSpan="7"><hr /></td>
-                  <td colSpan="7">Upcoming</td>
+                  Upcoming
                   
-                </tr>}
+                </tr>
+                }
                 
                 {app.nextFutureUnpaid?.map((rep, idx) => (
                     <tr key={idx}>
