@@ -188,7 +188,7 @@
 
   .loan-title {
     font-size: 1rem;
-    color: #334155;
+    color: var(--primary);
   }
 
   .loan-subtitle {

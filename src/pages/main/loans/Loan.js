@@ -570,7 +570,7 @@ const Loan = () => {
                           </div>
 
                           <div className="description">
-                            To apply for a loan you are required to make a nin-refundable payment of ₦{loanFormAmount.toLocaleString()}. This payment is required by the cooperative society to fund the logistics associated with your loan process
+                            To apply for a loan you are required to make a non-refundable payment of ₦{loanFormAmount.toLocaleString()}. This payment is required by the cooperative society to fund the logistics associated with your loan process
                           </div>
 
                           <button 

@@ -185,13 +185,5 @@ const verifyEmailOtp = useVerifyEmailOtp();
   );
 };
 
-// Simulated services
-const fakeOtpVerificationApi = (otp) =>
-  new Promise((resolve, reject) =>
-    setTimeout(() => (otp === '123456' ? resolve({ success: true }) : reject()), 1000)
-  );
-
-// const fakeResendOtpApi = () =>
-//   new Promise((resolve) => setTimeout(resolve, 1000));
 
 export default OtpInput;

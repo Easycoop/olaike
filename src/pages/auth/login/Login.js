@@ -16,7 +16,7 @@ function Login() {
   const { config, fetchConfig } = useContext(ConfigContext);
 
   const [formData, setFormData] = useState({
-    email: "ransom.b.job@gmail.com",
+    email: "nnebuchiosigbo340+1000@gmail.com",
     password: "Buchess#2024",
   });
   

@@ -1,4 +1,4 @@
-import './loan.css';
+import './user_loans.css';
 import { ClipLoader } from "react-spinners";
 import Button from "../../../components/ui/button/Button";
 import Input from "../../../components/ui/form-elements/input";
@@ -18,7 +18,7 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
 
     // state variables
     const [activeApp, setActiveApp] = useState(loans[0]?.id || null);
-    const [amount, setAmount] = useState(0);
+    const [amount, setAmount] = useState(null);
     const [expectedAmount, setExpectedAmount] = useState(0);
     const [latenessFee, setLatenessFee] = useState(0);
     const [loading, setLoading] = useState(false);
@@ -39,16 +39,6 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
     }
 
     const [isOpen, setIsOpen] = useState(false)
-    const [repayingFullLoan, setRepayingFullLoan] = useState(false);
-
-    const handleFullLoanModal = (pastPaid, futurePaid) => {
-      if(!repayingFullLoan){
-        const paidAmount = calculateTotalPaid(pastPaid, futurePaid);
-        setAmount(paidAmount);
-      }
-      
-      setRepayingFullLoan(!repayingFullLoan);
-    }
 
     const closeModal = () => {
         setIsOpen(false);
@@ -145,15 +135,7 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
         }
     };
 
-    const calculateTotalPaid = (pastPaid, futurePaid) => {
-      const allPayments = [...pastPaid, ...futurePaid];
-
-      return allPayments.reduce((total, payment) => {
-        const amount = parseFloat(payment.amountPaid || '0');
-        const interest = parseFloat(payment.interestPaid || '0');
-        return total + amount + interest;
-      }, 0);
-    }
+    
 
   return (
     <div className="loan-container">
@@ -163,32 +145,15 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
             className={`loan-header ${activeApp === app.id ? "active" : ""}`}
             onClick={() => toggleApplication(app.id)}
           >
-            <div className='block'>
-              <div>
-                <div className="loan-title">Loan ID #{app.id}</div>
-                <div className="loan-subtitle">
-                  Principal Amount: ₦{app.amount.toLocaleString()} | Status: {app.status} | Date:{" "}
-                  {formatUnixToDate(app.approvalDate)}
-                </div>
-              </div>
-              
-              <div className='mt-3'>
-                <div className="loan-title">Payment Summary</div>
-                <div className="loan-subtitle">
-                  Gross Repayment: ₦{(parseFloat(app.amount) + parseFloat(app.amount) * 0.2).toLocaleString()} | 
-                  Amount Paid: ₦{calculateTotalPaid(app.pastPaid, app.futurePaid).toLocaleString()} | 
-                  Balance:{" "}
-                  ₦{((app.amount + app.amount * 0.2 )- calculateTotalPaid(app.pastPaid, app.futurePaid)).toFixed(2).toLocaleString()}
-                </div>
+            <div>
+              <div className="loan-title">Loan Application #{app.id}</div>
+              <div className="loan-subtitle">
+                Amount: ₦{app.amount.toLocaleString()} | Status: {app.status} | Date:{" "}
+                {formatUnixToDate(app.approvalDate)}
               </div>
             </div>
-            {/* <button onClick={handleFullLoanModal(app.pastPaid, app.futurePaid)}>Pay Up Loan</button> */}
             <span className="loan-toggle-icon">{activeApp === app.id ? "▼" : "▶"}</span>
           </div>
-          {/* <div>
-
-              <button className='btn btn-secondary' onClick={() => setRepayingFullLoan(true)}>Repay Full Loan</button>
-            </div> */}
 
           {activeApp === app.id && (
             <div className="loan-body">
@@ -413,7 +378,7 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
       ))}
 
       {/* FUND AMOUNT MODAL */}
-        <Modal isOpen={isOpen}  onClose={closeModal}>
+        <Modal isOpen={isOpen} onClose={closeModal}>
             <div className="modal__withdraw1">
             <h3>Enter how much you want to pay</h3>  <small className="text-success">Due amount is <b>{expectedAmount}</b> naira</small>
             {latenessFee > 0 && <small className="modal__withdraw1__error">Attention! <br/> You have an interest of {latenessFee} naira for this week's payment</small>}
@@ -434,42 +399,6 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
             </Button>
             </div>
         </Modal>
-
-        {/* Full repayment MODAL */}
-        {/* <Modal isOpen={repayingFullLoan} onClose={()=>setRepayingFullLoan(false)}>
-            <div className="modal__withdraw1">
-            <h3>Loan Repayment</h3>  
-            <h5>Total loan amount</h5>
-          
-              <b>N {amount.toLocaleString}</b>
-            
-
-            <form>
-              <label>Choose Payment Type</label>
-              <div style={{fontSize:"12px"}}>
-                <input type='radio' name='payment_type' value={amount} className='text-sm ' /> Full Payment
-                <input type='radio' name='payment_type' value={amount} className='text-sm ml-5' /> Custom Payment
-              </div>
-              
-            </form>
-            
-            <Input
-                type="number"
-                label={"Payment amount"}
-                placeholder="Enter an amount"
-                name="amount"
-                defaultValue={"4500"}
-                disabled={false}
-                // onChange={(e) => setAmount(e.target.value)}
-            />
-            {errorMessage && (
-                <h5 className="modal__withdraw1__error">{errorMessage}</h5>
-            )}
-            <Button className="modal__withdraw1__button" onClick={handleFund}>
-                {loading ? <ClipLoader color="#fff" size={20} /> : "Make Payment"}
-            </Button>
-            </div>
-        </Modal> */}
 
       
     </div>

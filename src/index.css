@@ -38,6 +38,10 @@ code {
 /* Root Variables */
 :root {
   /* Colors */
+  --primary: #003399;
+  --secondary: #ED6E0A;
+  --tertiary: #6699FF;
+  
   --color-background: #ffffff;
   --color-foreground: #00208a;
   --color-text-primary: #0a0a0a;
