@@ -46,7 +46,7 @@ const UserLoans = ({ loans, user, fetchUserLoans, paymentDescription, setPayment
 
     const handleFullLoanModal = (loanApplication) => {
       if(!repayingFullLoan){
-        const paidAmount = (parseFloat(loanApplication.amount) + parseFloat(loanApplication.amount) * 0.02*4 )- calculateTotalPaid(loanApplication.pastPaid, loanApplication.futurePaid)
+        const paidAmount = (parseFloat(loanApplication.amount) + parseFloat(loanApplication.amount) * 0.02*6 )- calculateTotalPaid(loanApplication.pastPaid, loanApplication.futurePaid)
         setAmount(paidAmount.toFixed(2));
         setFullAmount(paidAmount.toFixed(2));
       }
@@ -184,11 +184,11 @@ const UserLoans = ({ loans, user, fetchUserLoans, paymentDescription, setPayment
               <div className='mt-3'>
                 <div className="loan-title">Payment Summary</div>
                 <div className="loan-subtitle">
-                  Gross Repayment: ₦{(parseFloat(app.amount) + parseFloat(app.amount) * 0.02*4).toLocaleString()} | 
+                  Gross Repayment: ₦{(parseFloat(app.amount) + parseFloat(app.amount) * 0.02*6).toLocaleString()} | 
                   Amount Paid: ₦{calculateTotalPaid(app.pastPaid, app.futurePaid).toLocaleString()} | 
                   Balance:{" "}
 
-                  ₦{((parseFloat(app.amount) + parseFloat(app.amount) * 0.02*4 )- calculateTotalPaid(app.pastPaid, app.futurePaid)).toLocaleString()}
+                  ₦{((parseFloat(app.amount) + parseFloat(app.amount) * 0.02*6 )- calculateTotalPaid(app.pastPaid, app.futurePaid)).toLocaleString()}
                 </div>
               </div>
             </div>
