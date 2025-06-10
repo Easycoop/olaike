@@ -8,6 +8,7 @@ const Input = ({
   value,
   onChange,
   placeholder,
+  ref,
   important = false,
   className = "",
   ...rest
@@ -27,6 +28,7 @@ const Input = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        ref={ref}
         className="input"
         {...rest}
       />

@@ -48,6 +48,7 @@ const Loan = () => {
   const [loans, setLoans] = useState({});
   const [loanFormAmount, setLoanFormAmount] = useState(0);
   const [unUsedLoanForms, setUnUsedLoanForms] = useState([]);
+  const [paymentDescription, setPaymentDescription] = useState("loan_application");
 
   const [paymentCompleted, setPaymentCompleted] = useState(false); // New state for payment
 
@@ -256,6 +257,7 @@ const Loan = () => {
         const application_data = response.payload.data.application;
         delete application_data.verificationDocument;
         delete application_data.transactionId;
+        delete application_data.approvalDate;
         
         setFormData(application_data);
       } else {
@@ -313,7 +315,7 @@ const Loan = () => {
         const response = await initializeTransaction({
           email: user.email,
           amount: loanFormAmount,
-          description: "loan_application",
+          description: paymentDescription,
         });
 
         const { reference } = response.payload.data.data;
@@ -432,9 +434,7 @@ const Loan = () => {
 
   useEffect(()=>{
     if(paymentCompleted){
-      
         handleNext("select1");
-      
     }
   }, [paymentCompleted]);
 
@@ -1057,7 +1057,7 @@ const Loan = () => {
           </div>
 
         ) : (
-          <UserLoans loans={loans} user={user} fetchUserLoans={fetchUserLoans} />
+          <UserLoans loans={loans} user={user} fetchUserLoans={fetchUserLoans} paymentDescription={paymentDescription} setPaymentDescription={setPaymentDescription} />
       )
     }
       

@@ -13,7 +13,7 @@ function Modal({ isOpen, onClose, children }) {
           <TfiClose onClick={onClose} className="modal__content__close" />
         </div>
 
-        <div className="modal__content__children">{children}</div>
+        <div className="modal__content__children px-3">{children}</div>
       </div>
     </div>
   );

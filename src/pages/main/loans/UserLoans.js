@@ -7,9 +7,10 @@ import { formatUnixToDate, formatUnixToDateTime, ngDateFormat } from "../../../u
 import { useState } from "react";
 import {useInitializeTransaction, useVerifyTransactionFundLoan} from "../../../redux/actions/transactionAction";
 import toastManager from "../../../components/ui/toast/ToasterManager";
-import { toFixedDown } from "../../../utils/truncate";
+// import { toFixedDown } from "../../../utils/truncate";
+import PayLoanBtn from './PayLoanBtn';
 
-const UserLoans = ({ loans, user, fetchUserLoans }) => {
+const UserLoans = ({ loans, user, fetchUserLoans, paymentDescription, setPaymentDescription }) => {
     const PAYSTACK_KEY = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
 
     // custom hooks
@@ -19,12 +20,14 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
     // state variables
     const [activeApp, setActiveApp] = useState(loans[0]?.id || null);
     const [amount, setAmount] = useState(0);
-    const [expectedAmount, setExpectedAmount] = useState(0);
+    // const [expectedAmount, setExpectedAmount] = useState(0);
     const [latenessFee, setLatenessFee] = useState(0);
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [repaymentId, setRepaymentId] = useState(null);
     const [loanId, setLoanId] = useState(null);
+
+    const [fullAmount, setFullAmount] = useState(0);
 
     // functions
     const toggleApplication = (id) => {
@@ -33,26 +36,30 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
 
     const sumRepaymentTransactionsAmount = (transactions) => {
         return transactions.reduce((total, transaction) => {
-            // transaction.transaction 
             return transaction.transaction ?  total + parseFloat(transaction.transaction?.amount) : total
         }, 0);
     }
 
     const [isOpen, setIsOpen] = useState(false)
     const [repayingFullLoan, setRepayingFullLoan] = useState(false);
+    const [isCustom, setIsCustom] = useState(false);
 
-    const handleFullLoanModal = (pastPaid, futurePaid) => {
+    const handleFullLoanModal = (loanApplication) => {
       if(!repayingFullLoan){
-        const paidAmount = calculateTotalPaid(pastPaid, futurePaid);
-        setAmount(paidAmount);
+        const paidAmount = (parseFloat(loanApplication.amount) + parseFloat(loanApplication.amount) * 0.02*4 )- calculateTotalPaid(loanApplication.pastPaid, loanApplication.futurePaid)
+        setAmount(paidAmount.toFixed(2));
+        setFullAmount(paidAmount.toFixed(2));
       }
       
       setRepayingFullLoan(!repayingFullLoan);
+      setIsCustom(false);
+      setLoanId(loanApplication.id);
     }
+
 
     const closeModal = () => {
         setIsOpen(false);
-        setAmount(null);
+        setAmount(0);
     };
     
     const handleFund = async () => {
@@ -62,10 +69,10 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
         }
     
     
-        if ( amount > expectedAmount) {
-          setErrorMessage("This amount is bigger than the amount you are owing");
-          return;
-        }
+        // if ( amount > expectedAmount) {
+        //   setErrorMessage("This amount is bigger than the amount you are owing");
+        //   return;
+        // }
         // Initialize transaction from backend
         try {
           setLoading(true);
@@ -75,7 +82,7 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
             description: "loan repayment",
             repayment_id : repaymentId,
             loan_id: loanId,
-            repayment_option:"scheduled_payment"
+            repayment_option: paymentDescription
           });
     
           const { reference } = response.payload.data.data;
@@ -155,6 +162,8 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
       }, 0);
     }
 
+  
+
   return (
     <div className="loan-container">
       {loans?.active?.map((app) => (
@@ -175,20 +184,18 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
               <div className='mt-3'>
                 <div className="loan-title">Payment Summary</div>
                 <div className="loan-subtitle">
-                  Gross Repayment: ₦{(parseFloat(app.amount) + parseFloat(app.amount) * 0.2).toLocaleString()} | 
+                  Gross Repayment: ₦{(parseFloat(app.amount) + parseFloat(app.amount) * 0.02*4).toLocaleString()} | 
                   Amount Paid: ₦{calculateTotalPaid(app.pastPaid, app.futurePaid).toLocaleString()} | 
                   Balance:{" "}
-                  ₦{((app.amount + app.amount * 0.2 )- calculateTotalPaid(app.pastPaid, app.futurePaid)).toFixed(2).toLocaleString()}
+
+                  ₦{((parseFloat(app.amount) + parseFloat(app.amount) * 0.02*4 )- calculateTotalPaid(app.pastPaid, app.futurePaid)).toLocaleString()}
                 </div>
               </div>
             </div>
-            {/* <button onClick={handleFullLoanModal(app.pastPaid, app.futurePaid)}>Pay Up Loan</button> */}
+            <button onClick={()=> handleFullLoanModal(app)}>Pay Up Loan</button>
             <span className="loan-toggle-icon">{activeApp === app.id ? "▼" : "▶"}</span>
           </div>
-          {/* <div>
-
-              <button className='btn btn-secondary' onClick={() => setRepayingFullLoan(true)}>Repay Full Loan</button>
-            </div> */}
+          
 
           {activeApp === app.id && (
             <div className="loan-body">
@@ -217,14 +224,27 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
                       <td>{formatUnixToDateTime(rep.dueDate)}</td>
                       <td>₦{rep.weeklyAmount.toLocaleString()}</td>
                       <td>₦{rep.weeklyInterest.toLocaleString()}</td>
-                      <td>₦{sumRepaymentTransactionsAmount(rep.transactions)}</td>
+                      <td>₦{parseFloat(rep.amountPaid) + parseFloat(rep.interestPaid)}</td>
                       <td>
-                        {sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) ? "paid" : (rep.transactions.length > 0)  ? 'Partly paid' :"unpaid"} 
+                        
+                        {/*{sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) ? "paid" : (rep.transactions.length > 0)  ? 'Partly paid' :"unpaid"} 
                           {(rep.dueDate < Date.now() / 1000) && sumRepaymentTransactionsAmount(rep.transactions) < (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) && 
                           <>
                           <br /><span className="status-badge overdue">  Overdue </span>
                           </>
+                          }*/}
+                          {rep.amountIsPaid && rep.interestIsPaid ? "paid" : 
+                          (rep.transactions.length > 0  ? 
+                          'Partly paid' :"unpaid")}
+                          { 
+                            rep.dueDate < Date.now() / 1000 && (!rep.amountIsPaid || !rep.interestIsPaid) && 
+                            <>
+                            <br /><span className="status-badge overdue">  Overdue </span>
+                            </>
+
                           }
+                          
+                          
                       </td>
                       <td>
                         {sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) 
@@ -232,23 +252,11 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
                       </td>
                       
                       <td>
-                        {sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) 
+                        {rep.amountIsPaid && rep.interestIsPaid  
                          ? 
                         <span className="paid-label">Paid</span>  :
-                        
-                        <button 
-                            className="pay-btn"
-                            onClick={() => {
-                                setAmount(toFixedDown((parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) - sumRepaymentTransactionsAmount(rep.transactions)));
-
-                                setExpectedAmount(toFixedDown((parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) - sumRepaymentTransactionsAmount(rep.transactions)));
-
-                                setIsOpen(true);
-                                setLatenessFee(parseFloat(rep.weeklyInterest))
-                                setRepaymentId(rep.id);
-                                setLoanId(rep.loanApplicationId)
-                            }}
-                            >Make Payment</button>}
+                          <PayLoanBtn rep={rep} setAmount={setAmount} setIsOpen={setIsOpen} setLatenessFee={setLatenessFee} setRepaymentId={setRepaymentId} setLoanId={setLoanId} />
+                        }
                        
                        
                       </td>
@@ -269,46 +277,43 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
                       <td>{formatUnixToDateTime(rep.dueDate)}</td>
                       <td>₦{rep.weeklyAmount.toLocaleString()}</td>
                       <td>₦{rep.weeklyInterest.toLocaleString()}</td>
-                      <td>₦{sumRepaymentTransactionsAmount(rep.transactions)}</td>
+                      <td>₦{parseFloat(rep.amountPaid) + parseFloat(rep.interestPaid)}</td>
                       <td>
-                        {sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) ? "paid" : (rep.transactions.length > 0)  ? 'Partly paid' :"unpaid"} 
+                        
+                        {/*{sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) ? "paid" : (rep.transactions.length > 0)  ? 'Partly paid' :"unpaid"} 
                           {(rep.dueDate < Date.now() / 1000) && sumRepaymentTransactionsAmount(rep.transactions) < (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) && 
                           <>
                           <br /><span className="status-badge overdue">  Overdue </span>
                           </>
+                          }*/}
+                          {rep.amountIsPaid && rep.interestIsPaid ? "paid" : 
+                          (rep.transactions.length > 0  ? 
+                          'Partly paid' :"unpaid")}
+                          { 
+                            rep.dueDate < Date.now() / 1000 && (!rep.amountIsPaid || !rep.interestIsPaid) && 
+                            <>
+                            <br /><span className="status-badge overdue">  Overdue </span>
+                            </>
+
                           }
+                          
+                          
                       </td>
                       <td>
                         {sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) 
                          ? ngDateFormat(rep.transactions[rep.transactions?.length -1]?.createdAt)  : "—"}</td>
                       <td>
-
-                        {sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) 
+                        {rep.amountIsPaid && rep.interestIsPaid}
                          ? 
                         <span className="paid-label">Paid</span>  :
                         
-                        <button 
-                            className="pay-btn"
-                            onClick={() => {
-                                setAmount(toFixedDown((parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) - sumRepaymentTransactionsAmount(rep.transactions)));
-
-                                setExpectedAmount(toFixedDown((parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) - sumRepaymentTransactionsAmount(rep.transactions)));
-
-                                setIsOpen(true);
-                                setLatenessFee(parseFloat(rep.weeklyInterest))
-                                setRepaymentId(rep.id);
-                                setLoanId(rep.loanApplicationId)
-                            }}
-                            >Make Payment</button>}
-                       
-                       
+                        <PayLoanBtn rep={rep} setAmount={setAmount} setIsOpen={setIsOpen} setLatenessFee={setLatenessFee} setRepaymentId={setRepaymentId} setLoanId={setLoanId} />
                       </td>
                      
                     </tr>
                   ))}
 
                 
-
                 {app.pastPaid?.length > 0 && 
                 <>
                   <tr>
@@ -323,37 +328,39 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
                       <td>{formatUnixToDateTime(rep.dueDate)}</td>
                       <td>₦{rep.weeklyAmount.toLocaleString()}</td>
                       <td>₦{rep.weeklyInterest.toLocaleString()}</td>
-                      <td>₦{sumRepaymentTransactionsAmount(rep.transactions)}</td>
+                      <td>₦{parseFloat(rep.amountPaid) + parseFloat(rep.interestPaid)}</td>
                       <td>
-                        {sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) ? "paid" : (rep.transactions.length > 0)  ? 'Partly paid' :"unpaid"} 
+                        
+                        {/*{sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) ? "paid" : (rep.transactions.length > 0)  ? 'Partly paid' :"unpaid"} 
                           {(rep.dueDate < Date.now() / 1000) && sumRepaymentTransactionsAmount(rep.transactions) < (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) && 
                           <>
                           <br /><span className="status-badge overdue">  Overdue </span>
                           </>
+                          }*/}
+                          {rep.amountIsPaid && rep.interestIsPaid ? "paid" : 
+                          (rep.transactions.length > 0  ? 
+                          'Partly paid' :"unpaid")}
+                          { 
+                            rep.dueDate < Date.now() / 1000 && (!rep.amountIsPaid || !rep.interestIsPaid) && 
+                            <>
+                            <br /><span className="status-badge overdue">  Overdue </span>
+                            </>
+
                           }
+                          
+                          
                       </td>
                       <td>
                         {sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) 
                          ? ngDateFormat(rep.transactions[rep.transactions?.length -1]?.createdAt)  : "—"}</td>
                       <td>
-
-                        {sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) 
+                        {rep.amountIsPaid && rep.interestIsPaid 
                          ? 
-                        <span className="paid-label">Paid</span>  :
+                        <span className="paid-label">Paid</span>  
+                        :
                         
-                        <button 
-                            className="pay-btn"
-                            onClick={() => {
-                                setAmount(toFixedDown((parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) - sumRepaymentTransactionsAmount(rep.transactions)));
-
-                                setExpectedAmount(toFixedDown((parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) - sumRepaymentTransactionsAmount(rep.transactions)));
-
-                                setIsOpen(true);
-                                setLatenessFee(parseFloat(rep.weeklyInterest))
-                                setRepaymentId(rep.id);
-                                setLoanId(rep.loanApplicationId)
-                            }}
-                            >Make Payment</button>}
+                          <PayLoanBtn rep={rep} setAmount={setAmount} setIsOpen={setIsOpen} setLatenessFee={setLatenessFee} setRepaymentId={setRepaymentId} setLoanId={setLoanId} />
+                        }
                        
                        
                       </td>
@@ -367,14 +374,27 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
                       <td>{formatUnixToDateTime(rep.dueDate)}</td>
                       <td>₦{rep.weeklyAmount.toLocaleString()}</td>
                       <td>₦{rep.weeklyInterest.toLocaleString()}</td>
-                      <td>₦{sumRepaymentTransactionsAmount(rep.transactions)}</td>
+                      <td>₦{parseFloat(rep.amountPaid) + parseFloat(rep.interestPaid)}</td>
                       <td>
-                        {sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) ? "paid" : (rep.transactions.length > 0)  ? 'Partly paid' :"unpaid"} 
+                        
+                        {/*{sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) ? "paid" : (rep.transactions.length > 0)  ? 'Partly paid' :"unpaid"} 
                           {(rep.dueDate < Date.now() / 1000) && sumRepaymentTransactionsAmount(rep.transactions) < (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) && 
                           <>
                           <br /><span className="status-badge overdue">  Overdue </span>
                           </>
+                          }*/}
+                          {rep.amountIsPaid && rep.interestIsPaid ? "paid" : 
+                          (rep.transactions.length > 0  ? 
+                          'Partly paid' :"unpaid")}
+                          { 
+                            rep.dueDate < Date.now() / 1000 && (!rep.amountIsPaid || !rep.interestIsPaid) && 
+                            <>
+                            <br /><span className="status-badge overdue">  Overdue </span>
+                            </>
+
                           }
+                          
+                          
                       </td>
                       <td>
                         {sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) 
@@ -385,19 +405,7 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
                          ? 
                         <span className="paid-label">Paid</span>  :
                         
-                        <button 
-                            className="pay-btn"
-                            onClick={() => {
-                                setAmount(toFixedDown((parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) - sumRepaymentTransactionsAmount(rep.transactions)));
-
-                                setExpectedAmount(toFixedDown((parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) - sumRepaymentTransactionsAmount(rep.transactions)));
-
-                                setIsOpen(true);
-                                setLatenessFee(parseFloat(rep.weeklyInterest))
-                                setRepaymentId(rep.id);
-                                setLoanId(rep.loanApplicationId)
-                            }}
-                            >Make Payment</button>}
+                        <PayLoanBtn rep={rep} setAmount={setAmount} setIsOpen={setIsOpen} setLatenessFee={setLatenessFee} />}
                        
                        
                       </td>
@@ -415,7 +423,7 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
       {/* FUND AMOUNT MODAL */}
         <Modal isOpen={isOpen}  onClose={closeModal}>
             <div className="modal__withdraw1">
-            <h3>Enter how much you want to pay</h3>  <small className="text-success">Due amount is <b>{expectedAmount}</b> naira</small>
+            <h3>Enter how much you want to pay</h3>  <small className="text-success">Due amount is <b>{amount}</b> naira</small>
             {latenessFee > 0 && <small className="modal__withdraw1__error">Attention! <br/> You have an interest of {latenessFee} naira for this week's payment</small>}
             
             <Input
@@ -423,7 +431,7 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
                 placeholder="Enter an amount"
                 name="amount"
                 defaultValue={amount}
-                disabled={loading}
+                disabled={true}
                 onChange={(e) => setAmount(e.target.value)}
             />
             {errorMessage && (
@@ -436,19 +444,27 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
         </Modal>
 
         {/* Full repayment MODAL */}
-        {/* <Modal isOpen={repayingFullLoan} onClose={()=>setRepayingFullLoan(false)}>
+        <Modal isOpen={repayingFullLoan} onClose={()=>setRepayingFullLoan(false)}>
             <div className="modal__withdraw1">
             <h3>Loan Repayment</h3>  
-            <h5>Total loan amount</h5>
-          
-              <b>N {amount.toLocaleString}</b>
+            <hr />
+            <div className="flex justify-center flex-col">
+              <h5>Total loan amount</h5>
+              <b>₦{fullAmount.toLocaleString()}</b>
+            </div>
             
-
             <form>
-              <label>Choose Payment Type</label>
+              <label style={{fontSize:"14px"}}>Choose Payment Type</label>
               <div style={{fontSize:"12px"}}>
-                <input type='radio' name='payment_type' value={amount} className='text-sm ' /> Full Payment
-                <input type='radio' name='payment_type' value={amount} className='text-sm ml-5' /> Custom Payment
+
+                <input type='radio' name='payment_type' value={"full_payment"} className='text-sm' checked={!isCustom} 
+                  onChange={(e) => {setIsCustom(false); setAmount(fullAmount); setPaymentDescription("full_payment")}} 
+                /> Full Payment
+
+                <input type='radio' name='payment_type' value={"custom_payment"} className='text-sm ml-5' checked={isCustom}  
+                  onChange={(e) =>{ setIsCustom(true); setPaymentDescription("custom_payment")}}
+                /> Custom Payment
+
               </div>
               
             </form>
@@ -458,9 +474,10 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
                 label={"Payment amount"}
                 placeholder="Enter an amount"
                 name="amount"
-                defaultValue={"4500"}
-                disabled={false}
-                // onChange={(e) => setAmount(e.target.value)}
+                defaultValue={fullAmount}
+                value={amount}
+                disabled={!isCustom}
+                onChange={(e) => setAmount(e.target.value)}
             />
             {errorMessage && (
                 <h5 className="modal__withdraw1__error">{errorMessage}</h5>
@@ -469,7 +486,7 @@ const UserLoans = ({ loans, user, fetchUserLoans }) => {
                 {loading ? <ClipLoader color="#fff" size={20} /> : "Make Payment"}
             </Button>
             </div>
-        </Modal> */}
+        </Modal>
 
       
     </div>
