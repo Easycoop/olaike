@@ -1,6 +1,6 @@
 import { toFixedDown } from "../../../utils/truncate";
 
-const PayLoanBtn = ({rep, setAmount, setIsOpen, setLatenessFee, setRepaymentId, setLoanId}) => {
+const PayLoanBtn = ({rep, setAmount, setIsOpen, setLatenessFee, setRepaymentId, setLoanId, setRepaymentOption}) => {
     return (
     <button 
         className="pay-btn"
@@ -15,6 +15,7 @@ const PayLoanBtn = ({rep, setAmount, setIsOpen, setLatenessFee, setRepaymentId, 
             setLatenessFee(parseFloat(rep.weeklyInterest))
             setRepaymentId(rep.id);
             setLoanId(rep.loanApplicationId)
+            setRepaymentOption("scheduled_payment")
         }}
         >Make Payment
     </button>

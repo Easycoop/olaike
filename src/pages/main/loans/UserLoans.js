@@ -10,7 +10,7 @@ import toastManager from "../../../components/ui/toast/ToasterManager";
 // import { toFixedDown } from "../../../utils/truncate";
 import PayLoanBtn from './PayLoanBtn';
 
-const UserLoans = ({ loans, user, fetchUserLoans, paymentDescription, setPaymentDescription }) => {
+const UserLoans = ({ loans, user, fetchUserLoans}) => {
     const PAYSTACK_KEY = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
 
     // custom hooks
@@ -26,7 +26,7 @@ const UserLoans = ({ loans, user, fetchUserLoans, paymentDescription, setPayment
     const [errorMessage, setErrorMessage] = useState("");
     const [repaymentId, setRepaymentId] = useState(null);
     const [loanId, setLoanId] = useState(null);
-
+    const [repaymentOption, setRepaymentOption] = useState("scheduled_payment");
     const [fullAmount, setFullAmount] = useState(0);
 
     // functions
@@ -52,6 +52,7 @@ const UserLoans = ({ loans, user, fetchUserLoans, paymentDescription, setPayment
       }
       
       setRepayingFullLoan(!repayingFullLoan);
+      setRepaymentOption("full_payment")
       setIsCustom(false);
       setLoanId(loanApplication.id);
     }
@@ -82,12 +83,13 @@ const UserLoans = ({ loans, user, fetchUserLoans, paymentDescription, setPayment
             description: "loan repayment",
             repayment_id : repaymentId,
             loan_id: loanId,
-            repayment_option: paymentDescription
+            repayment_option: repaymentOption
           });
     
           const { reference } = response.payload.data.data;
     
           closeModal();
+          setRepayingFullLoan(false)
     
           // Open Paystack modal to complete payment
           const handler = window.PaystackPop.setup({
@@ -255,7 +257,7 @@ const UserLoans = ({ loans, user, fetchUserLoans, paymentDescription, setPayment
                         {rep.amountIsPaid && rep.interestIsPaid  
                          ? 
                         <span className="paid-label">Paid</span>  :
-                          <PayLoanBtn rep={rep} setAmount={setAmount} setIsOpen={setIsOpen} setLatenessFee={setLatenessFee} setRepaymentId={setRepaymentId} setLoanId={setLoanId} />
+                          <PayLoanBtn rep={rep} setAmount={setAmount} setIsOpen={setIsOpen} setLatenessFee={setLatenessFee} setRepaymentId={setRepaymentId} setLoanId={setLoanId} setRepaymentOption={setRepaymentOption} />
                         }
                        
                        
@@ -303,11 +305,12 @@ const UserLoans = ({ loans, user, fetchUserLoans, paymentDescription, setPayment
                         {sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) 
                          ? ngDateFormat(rep.transactions[rep.transactions?.length -1]?.createdAt)  : "—"}</td>
                       <td>
-                        {rep.amountIsPaid && rep.interestIsPaid}
+                        {rep.amountIsPaid && rep.interestIsPaid
                          ? 
-                        <span className="paid-label">Paid</span>  :
-                        
-                        <PayLoanBtn rep={rep} setAmount={setAmount} setIsOpen={setIsOpen} setLatenessFee={setLatenessFee} setRepaymentId={setRepaymentId} setLoanId={setLoanId} />
+                          <span className="paid-label">Paid</span>  :
+                          
+                          <PayLoanBtn rep={rep} setAmount={setAmount} setIsOpen={setIsOpen} setLatenessFee={setLatenessFee} setRepaymentId={setRepaymentId} setLoanId={setLoanId} setRepaymentOption={setRepaymentOption} />
+                        }
                       </td>
                      
                     </tr>
@@ -359,7 +362,7 @@ const UserLoans = ({ loans, user, fetchUserLoans, paymentDescription, setPayment
                         <span className="paid-label">Paid</span>  
                         :
                         
-                          <PayLoanBtn rep={rep} setAmount={setAmount} setIsOpen={setIsOpen} setLatenessFee={setLatenessFee} setRepaymentId={setRepaymentId} setLoanId={setLoanId} />
+                          <PayLoanBtn rep={rep} setAmount={setAmount} setIsOpen={setIsOpen} setLatenessFee={setLatenessFee} setRepaymentId={setRepaymentId} setLoanId={setLoanId} setRepaymentOption={setRepaymentOption} />
                         }
                        
                        
@@ -405,7 +408,8 @@ const UserLoans = ({ loans, user, fetchUserLoans, paymentDescription, setPayment
                          ? 
                         <span className="paid-label">Paid</span>  :
                         
-                        <PayLoanBtn rep={rep} setAmount={setAmount} setIsOpen={setIsOpen} setLatenessFee={setLatenessFee} />}
+                        <PayLoanBtn rep={rep} setAmount={setAmount} setIsOpen={setIsOpen} setLatenessFee={setLatenessFee} setRepaymentId={setRepaymentId} setLoanId={setLoanId} setRepaymentOption={setRepaymentOption} />
+                        }
                        
                        
                       </td>
@@ -458,11 +462,11 @@ const UserLoans = ({ loans, user, fetchUserLoans, paymentDescription, setPayment
               <div style={{fontSize:"12px"}}>
 
                 <input type='radio' name='payment_type' value={"full_payment"} className='text-sm' checked={!isCustom} 
-                  onChange={(e) => {setIsCustom(false); setAmount(fullAmount); setPaymentDescription("full_payment")}} 
+                  onChange={(e) => {setIsCustom(false); setAmount(fullAmount); setRepaymentOption("full_payment")}} 
                 /> Full Payment
 
                 <input type='radio' name='payment_type' value={"custom_payment"} className='text-sm ml-5' checked={isCustom}  
-                  onChange={(e) =>{ setIsCustom(true); setPaymentDescription("custom_payment")}}
+                  onChange={(e) =>{ setIsCustom(true); setRepaymentOption("custom_payment")}}
                 /> Custom Payment
 
               </div>

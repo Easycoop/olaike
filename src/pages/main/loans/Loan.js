@@ -49,6 +49,7 @@ const Loan = () => {
   const [loanFormAmount, setLoanFormAmount] = useState(0);
   const [unUsedLoanForms, setUnUsedLoanForms] = useState([]);
   const [paymentDescription, setPaymentDescription] = useState("loan_application");
+  
 
   const [paymentCompleted, setPaymentCompleted] = useState(false); // New state for payment
 
@@ -1057,7 +1058,7 @@ const Loan = () => {
           </div>
 
         ) : (
-          <UserLoans loans={loans} user={user} fetchUserLoans={fetchUserLoans} paymentDescription={paymentDescription} setPaymentDescription={setPaymentDescription} />
+          <UserLoans loans={loans} user={user} fetchUserLoans={fetchUserLoans}  />
       )
     }
       
