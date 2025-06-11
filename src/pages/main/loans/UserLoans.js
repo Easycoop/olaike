@@ -46,7 +46,7 @@ const UserLoans = ({ loans, user, fetchUserLoans}) => {
 
     const handleFullLoanModal = (loanApplication) => {
       if(!repayingFullLoan){
-        const paidAmount = (parseFloat(loanApplication.amount) + parseFloat(loanApplication.amount) * 0.02*6 )- calculateTotalPaid(loanApplication.pastPaid, loanApplication.futurePaid)
+        const paidAmount = (parseFloat(loanApplication.amount) + parseFloat(loanApplication.amount) * 0.02*6 )- calculateTotalPaid(loanApplication.pastPaid, loanApplication.futurePaid, loanApplication.pastUnpaid, loanApplication.nextFutureUnpaid);
         setAmount(paidAmount.toFixed(2));
         setFullAmount(paidAmount.toFixed(2));
       }
@@ -154,8 +154,8 @@ const UserLoans = ({ loans, user, fetchUserLoans}) => {
         }
     };
 
-    const calculateTotalPaid = (pastPaid, futurePaid) => {
-      const allPayments = [...pastPaid, ...futurePaid];
+    const calculateTotalPaid = (pastPaid, futurePaid, pastUnpaid, nextFutureUnpaid) => {
+      const allPayments = [...pastPaid, ...futurePaid, ...pastUnpaid, nextFutureUnpaid];
 
       return allPayments.reduce((total, payment) => {
         const amount = parseFloat(payment.amountPaid || '0');
@@ -187,10 +187,10 @@ const UserLoans = ({ loans, user, fetchUserLoans}) => {
                 <div className="loan-title">Payment Summary</div>
                 <div className="loan-subtitle">
                   Gross Repayment: ₦{(parseFloat(app.amount) + parseFloat(app.amount) * 0.02*6).toLocaleString()} | 
-                  Amount Paid: ₦{calculateTotalPaid(app.pastPaid, app.futurePaid).toLocaleString()} | 
+                  Amount Paid: ₦{calculateTotalPaid(app.pastPaid, app.futurePaid, app.pastUnpaid, app.nextFutureUnpaid).toLocaleString()} | 
                   Balance:{" "}
 
-                  ₦{((parseFloat(app.amount) + parseFloat(app.amount) * 0.02*6 )- calculateTotalPaid(app.pastPaid, app.futurePaid)).toLocaleString()}
+                  ₦{((parseFloat(app.amount) + parseFloat(app.amount) * 0.02*6 )- calculateTotalPaid(app.pastPaid, app.futurePaid, app.pastUnpaid, app.nextFutureUnpaid)).toLocaleString()}
                 </div>
               </div>
             </div>
