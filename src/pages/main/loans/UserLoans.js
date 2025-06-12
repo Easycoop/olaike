@@ -7,7 +7,7 @@ import { formatUnixToDate, formatUnixToDateTime, ngDateFormat } from "../../../u
 import { useState } from "react";
 import {useInitializeTransaction, useVerifyTransactionFundLoan} from "../../../redux/actions/transactionAction";
 import toastManager from "../../../components/ui/toast/ToasterManager";
-// import { toFixedDown } from "../../../utils/truncate";
+import { toFixedDown } from "../../../utils/truncate";
 import PayLoanBtn from './PayLoanBtn';
 
 const UserLoans = ({ loans, user, fetchUserLoans}) => {
@@ -198,7 +198,6 @@ const UserLoans = ({ loans, user, fetchUserLoans}) => {
             <span className="loan-toggle-icon">{activeApp === app.id ? "▼" : "▶"}</span>
           </div>
           
-
           {activeApp === app.id && (
             <div className="loan-body">
               <table className="loan-table">
@@ -226,7 +225,7 @@ const UserLoans = ({ loans, user, fetchUserLoans}) => {
                       <td>{formatUnixToDateTime(rep.dueDate)}</td>
                       <td>₦{rep.weeklyAmount.toLocaleString()}</td>
                       <td>₦{rep.weeklyInterest.toLocaleString()}</td>
-                      <td>₦{parseFloat(rep.amountPaid) + parseFloat(rep.interestPaid)}</td>
+                      <td>₦{(parseFloat(rep.amountPaid) + parseFloat(rep.interestPaid)).toFixed(2)}</td>
                       <td>
                         
                         {/*{sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) ? "paid" : (rep.transactions.length > 0)  ? 'Partly paid' :"unpaid"} 
@@ -279,7 +278,7 @@ const UserLoans = ({ loans, user, fetchUserLoans}) => {
                       <td>{formatUnixToDateTime(rep.dueDate)}</td>
                       <td>₦{rep.weeklyAmount.toLocaleString()}</td>
                       <td>₦{rep.weeklyInterest.toLocaleString()}</td>
-                      <td>₦{parseFloat(rep.amountPaid) + parseFloat(rep.interestPaid)}</td>
+                      <td>₦{(parseFloat(rep.amountPaid) + parseFloat(rep.interestPaid)).toFixed(2)}</td>
                       <td>
                         
                         {/*{sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) ? "paid" : (rep.transactions.length > 0)  ? 'Partly paid' :"unpaid"} 
@@ -331,7 +330,7 @@ const UserLoans = ({ loans, user, fetchUserLoans}) => {
                       <td>{formatUnixToDateTime(rep.dueDate)}</td>
                       <td>₦{rep.weeklyAmount.toLocaleString()}</td>
                       <td>₦{rep.weeklyInterest.toLocaleString()}</td>
-                      <td>₦{parseFloat(rep.amountPaid) + parseFloat(rep.interestPaid)}</td>
+                      <td>₦{(parseFloat(rep.amountPaid) + parseFloat(rep.interestPaid)).toFixed(2)}</td>
                       <td>
                         
                         {/*{sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) ? "paid" : (rep.transactions.length > 0)  ? 'Partly paid' :"unpaid"} 
@@ -377,7 +376,7 @@ const UserLoans = ({ loans, user, fetchUserLoans}) => {
                       <td>{formatUnixToDateTime(rep.dueDate)}</td>
                       <td>₦{rep.weeklyAmount.toLocaleString()}</td>
                       <td>₦{rep.weeklyInterest.toLocaleString()}</td>
-                      <td>₦{parseFloat(rep.amountPaid) + parseFloat(rep.interestPaid)}</td>
+                      <td>₦{(parseFloat(rep.amountPaid) + parseFloat(rep.interestPaid)).toFixed(2)}</td>
                       <td>
                         
                         {/*{sumRepaymentTransactionsAmount(rep.transactions) >= (parseFloat(rep.weeklyAmount) + parseFloat(rep.weeklyInterest)) ? "paid" : (rep.transactions.length > 0)  ? 'Partly paid' :"unpaid"} 
