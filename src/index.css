@@ -35,6 +35,8 @@ code {
     monospace;
 }
 
+
+
 /* Root Variables */
 :root {
   /* Colors */
@@ -125,4 +127,33 @@ textarea:focus {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--spacing-medium);
+}
+
+
+/* If your scrollable card has a class like .scrollable-card, target it: */
+.scrollable-card {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #6699FF #E5E7EB; /* thumb tertiary, track light gray */
+}
+
+/* Webkit browsers */
+.scrollable-card::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollable-card::-webkit-scrollbar-track {
+  background: #E5E7EB; /* light gray track */
+  border-radius: 4px;
+}
+
+.scrollable-card::-webkit-scrollbar-thumb {
+  background-color: #6699FF; /* tertiary color */
+  border-radius: 4px;
+  border: 2px solid #E5E7EB; /* gives a bit of padding */
+}
+
+.scrollable-card::-webkit-scrollbar-thumb:hover {
+  background-color: #003399; /* primary color on hover */
 }

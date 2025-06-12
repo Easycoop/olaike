@@ -1,4 +1,5 @@
 import React from "react";
+import "./input.css";
 import { BsAsterisk } from "react-icons/bs";
 
 const Input = ({
@@ -6,18 +7,20 @@ const Input = ({
   label,
   value,
   onChange,
-  placeholder = "",
+  placeholder,
   ref,
   important = false,
   className = "",
   ...rest
 }) => {
+  const inputClass = `inputWrapper ${className}`;
+
   return (
-    <div className={`flex flex-col ${className}`}>
+    <div className={inputClass}>
       {label && (
-        <label className="text-sm font-medium text-gray-700 mb-1 flex items-center">
+        <label className="input__label">
           {label}
-          {important && <BsAsterisk className="text-red-500 text-[8px] ml-1" />}
+          {important && <BsAsterisk className="input__label__icon" />}
         </label>
       )}
       <input
@@ -26,7 +29,7 @@ const Input = ({
         onChange={onChange}
         placeholder={placeholder}
         ref={ref}
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003399] transition-all duration-200"
+        className="input"
         {...rest}
       />
     </div>

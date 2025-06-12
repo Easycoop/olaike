@@ -1,5 +1,4 @@
 import React from "react";
-import "./select.css";
 import { BsAsterisk } from "react-icons/bs";
 
 const Select = ({
@@ -11,30 +10,24 @@ const Select = ({
   className = "",
   ...rest
 }) => {
-  const selectClass = `select ${className}`;
   return (
-    <div className="selectWrapper">
+    <div className={`flex flex-col ${className}`}>
       {label && (
-        <label className="select__label">
+        <label className="text-sm font-medium text-gray-700 mb-1 flex items-center">
           {label}
-          {important && <BsAsterisk className="select__label__icon" />}
+          {important && <BsAsterisk className="text-red-500 text-[8px] ml-1" />}
         </label>
       )}
       <select
         value={value}
         onChange={onChange}
-        className={selectClass}
+        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003399] transition-all duration-200"
         {...rest}
       >
-        {/* {options.map((option, index) => (
-          <option key={index} value={option.value}>
-            {option.label}
-          </option>
-        ))} */}
-        <option value={null}>--</option>
-        {options.map((option, index) => (
-          <option key={index} value={option.id} fee={option.entranceFee}>
-            {option.name}
+        <option value="">-- Select --</option>
+        {options.map((opt, idx) => (
+          <option key={idx} value={opt.id} data-fee={opt.entranceFee}>
+            {opt.name}
           </option>
         ))}
       </select>

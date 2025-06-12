@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-// import "./signup.css";
-// import logo from "../../../assets/icons/logo_text.svg";
+import "./signup.css";
 import Input from "../../../components/ui/form-elements/input";
 import Button from "../../../components/ui/button/Button";
 import { useNavigate } from "react-router-dom";
@@ -210,60 +209,46 @@ function Signup() {
     console.log(config)
   }, [config]);
 
-    return (
-    <div className="h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden">
-      {/* Left Section (light background, fixed height) */}
-      <div className="w-full md:w-[50%] bg-gray-50 relative overflow-hidden">
-        {/* Mobile Top Logo */}
-        <div className="md:hidden w-full bg-[#003399] py-4  flex justify-center">
-          <img
-            src={config?.logos?.text_logo_white}
-            alt="Logo"
-            className="h-8 object-contain"
-          />
-        </div>
-        <hr className="md:hidden border-t border-white w-2/3 mx-auto mt-2" />
-      </div>
-
-      {/* Right Section (blue background, fixed height) */}
-      <div className="hidden md:flex w-[50%] h-screen bg-[#003399] items-center justify-center p-10 overflow-hidden">
-        <div className="w-[34%] ml-[17%] flex justify-center">
-          <img
-            src={config?.logos?.text_logo_white}
-            alt="Logo"
-            className="h-8 object-contain ml-5"
-          />
-        </div>
-        
-      </div>
-
-      {/* Floating Signup Card (fixed height with scrollbar) */}
-      <div className="w-full md:w-[60%] px-4 md:absolute md:left-[8%] md:top-[5%] z-10 scrollable-card">
-        <div className="bg-white rounded-2xl shadow-2xl p-6 md:p-10 h-[90vh] overflow-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-[#003399] mb-6 text-center">
-            Sign Up
-          </h2>
-
-          <form onSubmit={handleFund} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  return (
+    <div className="signup">
+      <div className="signup__start">
+        <div className="signup__start__wrap">
+          <h3>Sign up</h3>
+          <form onSubmit={handleFund}>
             <Input
+              important={true}
               required
-              important
+              className="signup__input"
+              type="text"
               label="First Name"
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
             />
             <Input
+              important={true}
               required
-              important
+              className="signup__input"
+              type="text"
+              label="Middle Name"
+              name="middleName"
+              value={formData.middleName}
+              onChange={handleChange}
+            />
+            <Input
+              important={true}
+              required
+              className="signup__input"
+              type="text"
               label="Last Name"
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
             />
             <Input
+              important={true}
               required
-              important
+              className="signup__input"
               type="email"
               label="Email Address"
               name="email"
@@ -271,33 +256,45 @@ function Signup() {
               onChange={handleChange}
             />
             <Input
+              important={true}
               required
-              important
-              type="tel"
+              className="signup__input"
+              type="number"
               label="Phone Number"
               name="phone"
               value={formData.phone}
               onChange={handleChange}
             />
             <Select
+              important={true}
               required
-              important
               label="Society"
               name="group"
+              className="signup__input"
               options={societies}
               onChange={handleChange}
             />
             <Select
+              important={true}
               required
-              important
               label="Gender"
               name="gender"
+              className="signup__input"
               options={genders}
               onChange={handleChange}
             />
             <Input
+              className="signup__input"
+              type="number"
+              label="Referral code (Optional)"
+              name="referralCode"
+              value={formData.referralCode}
+              onChange={handleChange}
+            />
+            <Input
+              important={true}
               required
-              important
+              className="signup__input"
               type="password"
               label="Password"
               name="password"
@@ -305,49 +302,45 @@ function Signup() {
               onChange={handleChange}
             />
             <Input
+              important={true}
               required
-              important
+              className="signup__input"
               type="password"
               label="Confirm Password"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
             />
+            <p className="signup__error">{errorMessage}</p>
+            <span className="signup__start__switch">
+              <p>
+                Already have an account?
+                <b className="ml-1" onClick={() => navigate("/")}>
+                  Login
+                </b>
+              </p>
+            </span>
 
-            {/* Error Message */}
-            {errorMessage && (
-              <div className="col-span-full">
-                <p className="text-red-600 text-sm mb-2">{errorMessage}</p>
-              </div>
-            )}
-
-            {/* Login Switch */}
-            <div className="col-span-full text-sm mb-4 text-center">
-              Already have an account?{" "}
-              <b
-                className="text-[#003399] cursor-pointer"
-                onClick={() => navigate("/")}
-              >
-                Login
-              </b>
-            </div>
-
-            {/* Submit Button */}
-            <div className="col-span-full">
-              <Button
-                type="submit"
-                className="w-full bg-[#ED6E0A] hover:bg-[#d95c05] text-white py-2 rounded-md transition"
-                disabled={loading}
-              >
-                {loading ? <ClipLoader color="#fff" size={20} /> : "Proceed to Pay"}
-              </Button>
-            </div>
+            <Button
+              type="submit"
+              typeOf="success"
+              className="signup__create__button"
+              disabled={loading}
+            >
+              {loading ? (
+                <ClipLoader color="#fff" size={20} />
+              ) : (
+                "Proceed to pay"
+              )}
+            </Button>
           </form>
         </div>
       </div>
+      <div className="signup__end">
+        <img src={config?.logos?.text_logo_white} alt="logo" height={"300"} />
+      </div>
     </div>
   );
-
 }
 
 export default Signup;
