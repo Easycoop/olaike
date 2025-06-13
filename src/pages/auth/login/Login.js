@@ -69,7 +69,7 @@ export default function Login() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="#4fRF DPPN"
+                placeholder="example@gmail.com"
               />
 
               <Input

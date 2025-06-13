@@ -404,7 +404,7 @@ const Loan = () => {
         //   handleNext("select1");
         // }, 2000)
         
-        // setSelect((prevState) => ({ ...prevState, select0: true }));
+        setSelect((prevState) => ({ ...prevState, select0: true }));
       }
       return response.payload.data;
     }else{
