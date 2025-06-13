@@ -85,7 +85,7 @@ export default function Login() {
                 <p className="text-red-600 text-xs">{errorMessage}</p>
               )}
 
-              <div className="flex justify-between text-sm text-gray-600">
+              <div className="flex flex-col lg:flex-row justify-between text-sm text-gray-600">
                 <span className="whitespace-nowrap">
                   Don’t have an account?{' '}
                   <Link to="/signup" className="text-[#6699FF] hover:underline">
