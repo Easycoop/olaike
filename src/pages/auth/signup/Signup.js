@@ -238,13 +238,13 @@ function Signup() {
       </div>
 
       {/* Floating Signup Card (fixed height with scrollbar) */}
-      <div className="w-full md:w-[60%] px-4 md:absolute md:left-[8%] md:top-[5%] z-10 scrollable-card">
-        <div className="bg-white rounded-2xl shadow-2xl p-6 md:p-10 h-[90vh] overflow-auto">
+      <div className="w-full md:w-[60%] px-4 md:absolute md:left-[8%] md:top-[5%] z-10 scrollable-card" >
+        <div className="bg-white rounded-2xl shadow-2xl p-6 md:p-10 h-[90vh] lg:overflow-hidden overflow-y-scroll">
           <h2 className="text-2xl md:text-3xl font-bold text-[#003399] mb-6 text-center">
             Sign Up
           </h2>
 
-          <form onSubmit={handleFund} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form onSubmit={handleFund} className="grid grid-cols-1 sm:grid-cols-2 gap-4" >
             <Input
               required
               important
