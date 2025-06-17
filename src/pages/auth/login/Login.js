@@ -26,22 +26,36 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!formData.email || !formData.password) {
       setErrorMessage("Email or password cannot be blank");
       return;
     }
-    setLoading(true);
+
     try {
-      const res = await login(formData);
-      if (res?.status === true || res?.status === "success") {
+      setLoading(true);
+      const response = await login({
+        email: formData.email,
+        password: formData.password,
+      });
+      if (response?.status === true || response?.status === "success") {
+        if(response?.status === 'success' && response.action === 'otp'){
+          navigate(`/otp?email=${formData.email}&purpose=login`);
+          return
+        }
         setErrorMessage("");
-        toastManager.addToast({ message: "Successful login", type: "success" });
+
+        toastManager.addToast({
+          message: "Successful login",
+          type: "success",
+        });
         navigate("/main/dashboard");
+        return;
       } else {
-        setErrorMessage(res?.message);
+        setErrorMessage(response?.message);
       }
-    } catch (err) {
-      setErrorMessage(err.response?.message || "Login failed");
+    } catch (error) {
+      setErrorMessage(error.response.message);
     } finally {
       setLoading(false);
     }
