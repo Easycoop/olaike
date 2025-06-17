@@ -146,6 +146,16 @@ const Loan = () => {
       return;
     }
     closeAll();
+    /*let selectClone = {...select}
+    for(let opt in selectClone){
+      if(opt == option){
+        selectClone[option] = true
+      }else{
+        selectClone[option] = false
+      }
+    }
+
+    setSelect(selectClone)*/
     setSelect((prevState) => ({
       ...prevState,
       [option]: true,
@@ -162,6 +172,7 @@ const Loan = () => {
     }
     closeAll();
     setSelect((prevState) => ({ ...prevState, [option]: true }));
+
   };
 
   function isSixMonthsLater(targetDateStr) {
@@ -421,9 +432,6 @@ const Loan = () => {
     getUnUsedLoanForms();
   }, []);
 
-  useEffect(() => {
-    console.log(formDateFormat(formData?.dob));
-  }, [formData.dob]);
 
   useEffect(() => {
     if(loans?.inactive?.length > 0) {
@@ -433,11 +441,11 @@ const Loan = () => {
     }
   }, [loans]);
 
-  useEffect(()=>{
+  /*useEffect(()=>{
     if(paymentCompleted){
-        handleNext("select1");
+        handleSelect("select1")
     }
-  }, [paymentCompleted]);
+  }, [paymentCompleted]);*/
 
   return (
     <>
