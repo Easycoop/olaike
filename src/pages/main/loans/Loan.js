@@ -235,7 +235,7 @@ const Loan = () => {
       } else {
         setErrorMessage(response.payload?.response?.data?.message || 'Something went wrong');
         toastManager.addToast({
-          message:response.payload?.response?.data?.message || 'Something went wrong',
+          message:response.payload?.response?.data?.message || 'Something went wrong. Try again!',
           type: "error",
         });
       }
