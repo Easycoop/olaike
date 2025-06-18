@@ -233,14 +233,16 @@ const Loan = () => {
         });
         navigate("/main/loan-completed");
       } else {
-        setErrorMessage(response.message);
+        setErrorMessage(response.payload?.response?.data?.message || 'Something went wrong');
         toastManager.addToast({
-          message: response?.message,
+          message:response.payload?.response?.data?.message || 'Something went wrong',
           type: "error",
         });
       }
     } catch (error) {
-      setErrorMessage(error?.message);
+      console.log(error);
+      
+      setErrorMessage(error.payload?.response?.data?.message || error.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }
