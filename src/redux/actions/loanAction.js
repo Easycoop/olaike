@@ -27,7 +27,7 @@ export const doSubmitLoan = createAsyncThunk(
       const data = await submitLoan(payload);
       return data;
     } catch (error) {
-      return rejectWithValue(error || "Action failed");
+      return rejectWithValue(error?.payload?.response?.data || "Action failed");
     }
   }
 );

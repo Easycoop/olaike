@@ -233,14 +233,14 @@ const Loan = () => {
         });
         navigate("/main/loan-completed");
       } else {
-        setErrorMessage(response.payload?.message);
+        setErrorMessage(response.message);
         toastManager.addToast({
-          message: response?.payload?.message,
+          message: response?.message,
           type: "error",
         });
       }
     } catch (error) {
-      setErrorMessage(error.response.message);
+      setErrorMessage(error?.message);
     } finally {
       setLoading(false);
     }
