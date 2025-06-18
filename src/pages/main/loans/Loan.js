@@ -191,10 +191,19 @@ const Loan = () => {
   }
 
   const handleSubmit = async () => {
-    if (formData.amount > 3 * wallets.wallet.balance) {
-      setErrorMessage("Amount should not exceed 3 times your wallet balance");
+    if(wallets.wallet.balance == 0){
+      setErrorMessage("You must pay your thrift for six months before applying for a loan");
+
       toastManager.addToast({
-        message: "Loan amount should not exceed 3 times your wallet balance",
+        message: "You must pay your thrift for six months before applying for a loan",
+        type: "warning",
+      });
+      return;
+    }
+    if (formData.amount > 3 * wallets.wallet.balance) {
+      setErrorMessage(`Amount should not exceed ${3 * parseFloat(wallets.wallet.balance)} naira which is 3 times your wallet balance`);
+      toastManager.addToast({
+        message: `Amount should not exceed ${3 * parseFloat(wallets.wallet.balance)} naira which is 3 times your wallet balance`,
         type: "warning",
       });
       return;
@@ -202,11 +211,11 @@ const Loan = () => {
 
     if (!isSixMonthsLater(user.createdAt)) {
       setErrorMessage(
-        "User must be registered for at least 6 months to apply for a loan"
+        "You must be registered for at least 6 months to apply for a loan"
       );
       toastManager.addToast({
         message:
-          "User must be registered for at least 6 months to apply for a loan",
+          "You must be registered for at least 6 months to apply for a loan",
         type: "warning",
       });
       return;
@@ -215,6 +224,7 @@ const Loan = () => {
     setLoading(true);
     try {
       const response = await submitLoan(formData);
+      console.log(response);
       if (response?.payload.status === "success") {
         setErrorMessage("");
         toastManager.addToast({
@@ -223,7 +233,7 @@ const Loan = () => {
         });
         navigate("/main/loan-completed");
       } else {
-        setErrorMessage(response.message);
+        setErrorMessage(response.payload?.message);
         toastManager.addToast({
           message: response?.payload?.message,
           type: "error",
