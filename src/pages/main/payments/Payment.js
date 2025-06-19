@@ -346,11 +346,12 @@ const Payment = ()  => {
                                 <div className="admin-table-cell">{thrift.transaction?.amount ? thrift.transaction?.amount : 0.00}</div>
                                 <div className="admin-table-cell">{thrift.transaction?.createdAt ? ngDateTimeFormat(thrift.transaction?.createdAt) : "N/A"}</div>
                                 <div className="admin-table-cell">{formatUnixToDate(thrift.dueDate)}</div>
-                                <div className="admin-table-cell">{thrift.transaction && thrift.transaction.status == 'success' ? 
+                                <div className="admin-table-cell">
+                                  {thrift.transaction && thrift.transaction.status == 'success' ? 
                                   thrift.fees?.length > 0 && thrift.fees.find((fee) => fee.type === "late_recurrent_payment") ? thrift.fees.find((fee) => fee.type === "late_recurrent_payment").amount : "N/A"
-                                :
-                                thrift.dueDate < Math.floor(Date.now() / 1000) ? getLatenessCharge(thrift.dueDate) :" N/A"
-                              }
+                                  :
+                                  thrift.dueDate < Math.floor(Date.now() / 1000) ? getLatenessCharge(thrift.dueDate) :" N/A"
+                                }
                                 </div>
 
                                 <div className="admin-table-cell">{!(thrift.transaction && thrift.transaction.status == 'success') ?

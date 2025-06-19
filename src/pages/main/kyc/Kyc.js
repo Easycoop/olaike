@@ -112,6 +112,15 @@ const KYC = () => {
     const handleFileChange = (event) => {
         const file = event.target.files[0]; // Get the selected file
         if (file) {
+          // get file size
+          const fileSize = file.size / 1024 / 1024; // in MB
+          if (fileSize > 1) {
+            toastManager.addToast({
+              message: "File size must be less than 1MB",
+              type: "error",
+            });
+            return;
+          }
           const fileURL = URL.createObjectURL(file); // Create a URL for the selected file
           setImagePreview(fileURL); // Set the image preview state
           setNin({
@@ -163,78 +172,77 @@ const KYC = () => {
         }
       }
     
-      const checkExistingNin = async () => {
-          try {
-              const response = await getNin(user.id);
-              if(response?.status === 'success'){
-                 
-                  
-                  setImagePreview(response?.data?.documentFile);
-                  setNin({
-                      number: response?.data?.documentIdentifier,
-                      image: null,
-                      dob: response?.data?.dob,
-                      status: response?.data?.status,
-                      rejectionReason: response?.data?.rejectionReason
-                  })
-                  if(response?.data?.status == "accepted"){
-                        setNinVerified(true);
-                }
-              }
-          } catch (error) {
-             console.log(error);
-          }
-      }
-
-      const generateAccountNumber = async () => {
+    const checkExistingNin = async () => {
         try {
-            setWalletBtnLoading(true);
-            const response = await generateWalletAccount(user.id);
+            const response = await getNin(user.id);
             if(response?.status === 'success'){
-                setWalletBtnLoading(false);
-                toastManager.addToast({
-                    message: `${response?.message}`,
-                    type: "success",
-                });
-                console.log(response);
                 
-                navigate("/main/dashboard");
-            }else{
-                setWalletBtnLoading(false);
-                toastManager.addToast({
-                    message: `${response?.message}`,
-                    type: "error",
-                });
+                
+                setImagePreview(response?.data?.documentFile);
+                setNin({
+                    number: response?.data?.documentIdentifier,
+                    image: null,
+                    dob: response?.data?.dob,
+                    status: response?.data?.status,
+                    rejectionReason: response?.data?.rejectionReason
+                })
+                if(response?.data?.status == "accepted"){
+                    setNinVerified(true);
+            }
             }
         } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const generateAccountNumber = async () => {
+    try {
+        setWalletBtnLoading(true);
+        const response = await generateWalletAccount(user.id);
+        if(response?.status === 'success'){
             setWalletBtnLoading(false);
             toastManager.addToast({
-                message: `${error?.message}`,
+                message: `${response?.message}`,
+                type: "success",
+            });
+            
+            navigate("/main/dashboard");
+        }else{
+            setWalletBtnLoading(false);
+            toastManager.addToast({
+                message: `${response?.message}`,
                 type: "error",
             });
         }
-      }
+    } catch (error) {
+        setWalletBtnLoading(false);
+        toastManager.addToast({
+            message: `${error?.message}`,
+            type: "error",
+        });
+    }
+    }
 
-      const checkPhoneVerification = async () =>{
-        try {
-            const response = await confirmPhoneVerification(user.id);
-            if(response?.status === 'success'){
-                setPhoneVerified(true);
-                
-            }else{
-                console.log("phone number not verified");
-                
-            }
-        } catch (error) {
-            console.log(error?.message);
+    const checkPhoneVerification = async () =>{
+    try {
+        const response = await confirmPhoneVerification(user.id);
+        if(response?.status === 'success'){
+            setPhoneVerified(true);
+            
+        }else{
+            console.log("phone number not verified");
             
         }
-      }
+    } catch (error) {
+        console.log(error?.message);
+        
+    }
+    }
 
-      useEffect(() => {
-        checkExistingNin(); 
-        checkPhoneVerification(); 
-      }, [])
+    useEffect(() => {
+    checkExistingNin(); 
+    checkPhoneVerification(); 
+    }, [])
       
     return (
         <div style={{ paddingTop: "20px" }}>
@@ -296,7 +304,7 @@ const KYC = () => {
                     <div className="d-flex " style={{alignItems: "center", gap: "10px"}} >
                         {!ninVerified && nin?.status !="pending" &&
                         <div className="loan__form__set" >
-                            <label className="loan__label">Nin Slip </label>
+                            <label className="loan__label">Nin Slip <small className="text-danger">Maximum of 1mb</small> </label>
                             <input className="loan__input" type="file" name="file" accept="image/*" onChange={handleFileChange} />
                         
                         </div> 

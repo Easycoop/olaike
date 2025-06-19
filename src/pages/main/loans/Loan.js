@@ -176,6 +176,11 @@ const Loan = () => {
   };
 
   function isSixMonthsLater(targetDateStr) {
+    // const date = new Date(targetDateStr);
+    // const sixMonthsAgo = new Date();
+    // sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+    // return date <= sixMonthsAgo;
     const targetDate = new Date(targetDateStr);
 
     if (isNaN(targetDate)) {
@@ -185,7 +190,7 @@ const Loan = () => {
     const today = new Date();
 
     const sixMonthsLater = new Date(targetDate);
-    sixMonthsLater.setMonth(sixMonthsLater.getMonth());
+    sixMonthsLater.setMonth(sixMonthsLater.getMonth() - 6);
 
     return today >= sixMonthsLater;
   }
@@ -200,10 +205,16 @@ const Loan = () => {
       });
       return;
     }
-    if (formData.amount > 3 * wallets.wallet.balance) {
-      setErrorMessage(`Amount should not exceed ${3 * parseFloat(wallets.wallet.balance)} naira which is 3 times your wallet balance`);
+
+    const pastLoanExists = loans?.inactive?.length > 0
+    const maxAmount =  pastLoanExists ? 3 * wallets.wallet.balance : 2 * wallets.wallet.balance
+    const multiplier = pastLoanExists ? 3 : 2
+
+   
+    if (formData.amount > maxAmount) {
+      setErrorMessage(`Amount should not exceed ${maxAmount} naira which is ${multiplier} times your wallet balance`);
       toastManager.addToast({
-        message: `Amount should not exceed ${3 * parseFloat(wallets.wallet.balance)} naira which is 3 times your wallet balance`,
+        message: `Amount should not exceed ${maxAmount} naira which is ${multiplier} times your wallet balance`,
         type: "warning",
       });
       return;
