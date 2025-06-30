@@ -6,6 +6,7 @@ import {
   saveChanges,
   submitLoan,
   getUserLoans,
+  getUserOngoingLoanApplication
 } from "../../services/loanService";
 
 export const doSaveChanges = createAsyncThunk(
@@ -58,7 +59,20 @@ export const doGetUserLoans = createAsyncThunk(
 );
 
 
+export const doGetUserOngoingLoanApplication = createAsyncThunk(
+  "loan/doGetUserOngoingLoanApplication",
+  async (user_id, { rejectWithValue }) => {
+    try {
+      const data = await getUserOngoingLoanApplication(user_id);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message || "Action failed");
+    }
+  }
+);
+
 export const useSaveChanges = () => useDispatcher(doSaveChanges);
 export const useSubmitLoan = () => useDispatcher(doSubmitLoan);
 export const useGetLoanApplication = () => useDispatcher(doGetLoanApplication);
 export const useGetUserLoans = () => useDispatcher(doGetUserLoans);
+export const useGetUserOngoingLoanApplication = () => useDispatcher(doGetUserOngoingLoanApplication);

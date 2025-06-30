@@ -155,7 +155,7 @@ const UserLoans = ({ loans, user, fetchUserLoans}) => {
     };
 
     const calculateTotalPaid = (pastPaid, futurePaid, pastUnpaid, nextFutureUnpaid) => {
-      const allPayments = [...pastPaid, ...futurePaid, ...pastUnpaid, nextFutureUnpaid];
+      const allPayments = [...pastPaid, ...futurePaid, ...pastUnpaid, ...nextFutureUnpaid];
 
       return allPayments.reduce((total, payment) => {
         const amount = parseFloat(payment.amountPaid || '0');

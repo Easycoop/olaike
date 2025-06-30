@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import "./loan.css";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import {
-  useGetLoanApplication,
+  // useGetLoanApplication,
   useSaveChanges,
   useSubmitLoan,
   useGetUserLoans,
+  useGetUserOngoingLoanApplication
 } from "../../../redux/actions/loanAction";
 import { ClipLoader } from "react-spinners";
 import toastManager from "../../../components/ui/toast/ToasterManager";
@@ -35,10 +36,11 @@ const Loan = () => {
   const initializeTransaction = useInitializeTransaction();
   const verifyTransaction = useVerifyTransaction();
   const getUnUsedLoanFormTransactions = useGetUnUsedLoanFormTransactions();
-  const getLoanApplication = useGetLoanApplication();
+  // const getLoanApplication = useGetLoanApplication();
   const submitLoan = useSubmitLoan();
   const saveChanges = useSaveChanges();
   const getUserLoans = useGetUserLoans();
+  const getUserOngoingLoanApplication = useGetUserOngoingLoanApplication();
 
   // state variables
   const [errorMessage, setErrorMessage] = useState("");
@@ -49,6 +51,7 @@ const Loan = () => {
   const [loanFormAmount, setLoanFormAmount] = useState(0);
   const [unUsedLoanForms, setUnUsedLoanForms] = useState([]);
   const [paymentDescription, setPaymentDescription] = useState("loan_application");
+  const [loanApplicationId, setLoanApplicationId] = useState(user?.loanApplicationId);
   
 
   const [paymentCompleted, setPaymentCompleted] = useState(false); // New state for payment
@@ -286,15 +289,15 @@ const Loan = () => {
   const handleGetLoanApplication = async () => {
     setLoading(true);
     try {
-      const response = await getLoanApplication(user.loanApplicationId);
+      const response = await getUserOngoingLoanApplication(user.id);
       if (response?.payload.status === "success") {
         setErrorMessage("");
-        const application_data = response.payload.data.application;
+        const application_data = response.payload.data;
         delete application_data.verificationDocument;
         delete application_data.transactionId;
         delete application_data.approvalDate;
-        
         setFormData(application_data);
+        setLoanApplicationId(response.payload?.data?.id);
       } else {
         setErrorMessage(response?.message);
       }

@@ -47,7 +47,6 @@ const Dashboard = ()  => {
     setLoading(true);
     try {
       const response = await getDashboardData(user.id);
-      console.log(response);
       if (response?.payload.status === "success") {
         setErrorMessage("");
         setDashboardData(response.payload.data);
