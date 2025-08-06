@@ -64,7 +64,6 @@ export const getLoanApplication = async (payload) => {
 };
 
 
-
 export const getUserOngoingLoanApplication = async (user_id) => {
   try {
     const response = await api.get(`/loan-application/user/${user_id}/ongoing`);
