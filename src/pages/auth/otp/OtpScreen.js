@@ -18,7 +18,7 @@ const OtpScreen = () => {
         <div className="mb-4">
           {/* Replace with your logo image */}
           <div className="w-16 h-16 mx-auto bg-blue-200 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl">
-            <img src={config?.logo?.main_icon} alt="logo" height="120" />
+            <img src={config?.logos?.main_icon} alt="logo" height="120" />
           </div>
         </div>
 

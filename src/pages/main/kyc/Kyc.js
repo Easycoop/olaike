@@ -55,6 +55,7 @@ const KYC = () => {
             }
             setPhoneBtnLoading(true);
             const getOTP = await initiatePhoneVerification(user?.id, phone);
+            
             if(getOTP?.status === 'success'){
                 setOtpSent(true);
                 toastManager.addToast({
@@ -262,11 +263,11 @@ const KYC = () => {
                             onClick={handlePhoneVerification}
                             style={{ height: "50px  "}}
                         >
-                            {phoneBtnLoading ? <ClipLoader color="#fff" size={20} /> : "Update phone number"}   
+                            {phoneBtnLoading ? <ClipLoader color="#fff" size={20} /> : "Verify number"}   
                         </Button>}
                     </div>
 
-                    {/* {otpSent && !otpVerified &&
+                    {otpSent && !otpVerified &&
                     <div className="d-flex " style={{alignItems: "center", gap: "10px"}}>
                         <div className="loan__form__set" >
                             <label className="loan__label">OTP</label>
@@ -280,12 +281,12 @@ const KYC = () => {
                             />
                         </div> 
                         
-                        <Button type="button" typeOf="success" onClick={submitOtp} style={{ height: "50px  "}}>
+                        <Button type="button" typeOf="primary" onClick={submitOtp} style={{ height: "50px  "}}>
                             {otpBtnLoading ? <ClipLoader color="#fff" size={20} /> : "Submit OTP"}   
                         </Button>
                     
                     </div>
-                    } */}
+                    }
                 </div>
                 
                 <div style={{border: "1px solid #ccc", width:"90%", paddingLeft: "20px", paddingTop: "20px", borderRadius: "5px", marginTop : "20px"}}>

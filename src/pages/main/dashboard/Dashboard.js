@@ -9,6 +9,8 @@ import NoResult from "../../../components/splash/no-result/NoResult";
 import { useGetWallets } from "../../../redux/actions/walletAction";
 import Button from "../../../components/ui/button/Button";
 import { useGetDashboardData } from "../../../redux/actions/userAction";
+import {getUserWallet, debitEntranceFee} from "../../../services/walletService";
+import toastManager from "../../../components/ui/toast/ToasterManager";
 
 
 const Dashboard = ()  => {
@@ -25,6 +27,7 @@ const Dashboard = ()  => {
   const [transactions, setTransactions] = useState([]);
   const [page, setPage] = useState(1);
   const [dashboardData, setDashboardData] = useState({});
+  const [kegowWallet, setKegowWallet] = useState(localStorage.getItem('kegowWallet') &&  localStorage.getItem('kegowWallet') != "undefined" ? JSON.parse(localStorage.getItem('kegowWallet')) : null);
 
   const handleGetWallets = async () => {
     setLoading(true);
@@ -88,6 +91,37 @@ const Dashboard = ()  => {
     };
   };
 
+  const userWallet = async() => {
+    try {
+      const response = await getUserWallet(user.id);
+      if(response?.status === 'success'){
+        localStorage.setItem('kegowWallet', JSON.stringify(response?.data?.kegowData));
+        setKegowWallet(response?.data?.kegowData); 
+        return true           
+      }else{
+        setLoading(false);
+        toastManager.addToast({
+          message: `Complete your KYC to proceed`,
+          type: "error",
+        })
+        navigate('/main/kyc')
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error?.response?.data);
+      if((error?.response?.data?.message === "User not found" && error?.response?.data?.status === "fail") || error?.response?.data?.error === "no_kegow_account" ){
+        toastManager.addToast({
+          message: `Complete your KYC to proceed`,
+          type: "error",
+        })
+        navigate('/main/kyc')
+      }
+     
+      
+    }
+    
+  }
+
   useEffect(() => {
     handleGetTransactions();
   }, [page]);
@@ -117,6 +151,8 @@ const Dashboard = ()  => {
   }, [loading]);
 
   useEffect(() => {
+    
+    userWallet();
     handleGetWallets();
     handleGetDashboardData();
   }, []);

@@ -4,7 +4,7 @@ import { useEffect, useState, useContext } from "react";
 import Input from "../../../components/ui/form-elements/input";
 import Button from "../../../components/ui/button/Button";
 import { useNavigate } from "react-router-dom";
-import { useRegister } from "../../../redux/actions/authActions";
+import { useRegister, useSignUp } from "../../../redux/actions/authActions";
 import toastManager from "../../../components/ui/toast/ToasterManager";
 import { ClipLoader } from "react-spinners";
 import Select from "../../../components/ui/form-elements/select";
@@ -22,7 +22,7 @@ const genders = [
 
 function Signup() {
   const getSocieties = useGetSocieties();
-  const register = useRegister();
+  const register = useSignUp();
   const navigate = useNavigate();
   const { config } = useContext(ConfigContext);
   const PAYSTACK_KEY = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
@@ -75,7 +75,8 @@ function Signup() {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       setLoading(true);
       const response = await register(formData);
@@ -86,7 +87,8 @@ function Signup() {
           message: `Succesful registration`,
           type: "success",
         });
-        navigate("/signup-complete");
+        // navigate("/signup-complete");
+        navigate("/");
         return;
       } else {
         setErrorMessage(response.message);
@@ -244,7 +246,7 @@ function Signup() {
             Sign Up
           </h2>
 
-          <form onSubmit={handleFund} className="grid grid-cols-1 sm:grid-cols-2 gap-4" >
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4" >
             <Input
               required
               important
@@ -339,7 +341,7 @@ function Signup() {
                 className="w-full bg-[#ED6E0A] hover:bg-[#d95c05] text-white py-2 rounded-md transition"
                 disabled={loading}
               >
-                {loading ? <ClipLoader color="#fff" size={20} /> : "Proceed to Pay"}
+                {loading ? <ClipLoader color="#fff" size={20} /> : "Register"}
               </Button>
             </div>
           </form>
