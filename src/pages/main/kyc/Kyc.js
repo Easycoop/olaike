@@ -198,11 +198,11 @@ const KYC = () => {
         try {
             setWalletBtnLoading(true);
             const response = await generateWalletAccount(user.id);
-            console.log("response", response);
-            if(response?.status === 'success'){
+            console.log("wallet generating response", response);
+            if(response?.payload?.status === 'success'){
                 setWalletBtnLoading(false);
                 toastManager.addToast({
-                    message: `${response?.message}`,
+                    message: 'COngratulations! you now have a virtual account',
                     type: "success",
                 });
                 navigate("/main/dashboard");
@@ -214,6 +214,7 @@ const KYC = () => {
                 });
             }
         } catch (error) {
+            console.log('wallet generating error', error)
             setWalletBtnLoading(false);
             toastManager.addToast({
                 message: `${error?.payload || error.message}`,

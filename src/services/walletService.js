@@ -33,7 +33,7 @@ export const generateWalletAccount = async (id) => {
     if (error.response) {
       // Add server response details to the error
       error.message = `${
-       error.response?.data.message || error.response?.statusText ||  error.response?.data?.data 
+       error.response?.data.message || error.response?.statusText ||  error.response?.data?.data  || error.message
       }`;
     } 
     throw error;

@@ -85,7 +85,6 @@ const UpdateProfile = () => {
       setValidationErrors();
       const response = await update(formData);
       
-      console.log("update response", response.payload )
       if(response.errors ){
         // console.log();
         setValidationErrors(response.errors)

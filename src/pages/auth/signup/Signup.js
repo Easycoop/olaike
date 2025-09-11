@@ -47,10 +47,10 @@ function Signup() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    email: "xiyev84965@lanipe.com",
-    password: "Buchess#2024",
-    confirmPassword: "Buchess#2024",
-    phone: "09098887747",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    phone: "",
     group: "",
     gender: "",
   });
