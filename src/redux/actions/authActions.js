@@ -90,8 +90,6 @@ export const doLoginAction = (payload) => async (dispatch) => {
 };
 
 export const doVerifyEmailOtpAction = ({email, otp, purpose, password}) => async (dispatch) => {
-  // dispatch(loggingIn());
-
   try {
     const response = await verifyEmailOtp({email, otp, purpose, password});
     if(response?.status === 'success' ){
@@ -114,9 +112,6 @@ export const doVerifyEmailOtpAction = ({email, otp, purpose, password}) => async
     }
     
   } catch (error) {
-    // console.log(error);
-    
-    // dispatch(loginFailure(error.response.data.error || "Login failed"));
     return error;
   }
 };
