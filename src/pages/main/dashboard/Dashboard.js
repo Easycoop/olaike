@@ -185,7 +185,7 @@ const Dashboard = ()  => {
         {/* <h5 >My wallets</h5> */}
         
         <div className="flex justify-start gap-3 flex-wrap">
-          <VirtualAccountCard accountName={process.env.REACT_APP_KEGOW_BANK_NAME} accountNumber={user?.Wallet?.kegow_account} bankName={user?.Wallet?.kegow_account_name} balance={user?.Wallet?.balance} />
+          <VirtualAccountCard accountName={user?.Wallet?.kegow_account_name} accountNumber={user?.Wallet?.kegow_account} bankName={process.env.REACT_APP_KEGOW_BANK_NAME} balance={user?.Wallet?.balance} />
           <div className="dashboard__section__one__block" style={{padding:"10px"}}>
             
             <h5>Entrance Fee</h5>
