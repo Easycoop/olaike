@@ -5,13 +5,15 @@ import { resendOtp } from '../../../services/authServices';
 import { useLocation, useNavigate } from 'react-router-dom';
 import toastManager from '../../../components/ui/toast/ToasterManager';
 import {useVerifyEmailOtp} from '../../../redux/actions/authActions';
+import { ClipLoader } from "react-spinners";
+  
 
 const OtpInput = ({ length = 4, userEmail, actionPurpose, setStep, setVirtualOtp  }) => {
     // state variables
     const [otp, setOtp] = useState(Array(length).fill(''));
     const [timer, setTimer] = useState(10);
     const [resending, setResending] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(false);
 
 //   other react hooks
   const inputRefs = useRef([]);
@@ -27,14 +29,6 @@ const OtpInput = ({ length = 4, userEmail, actionPurpose, setStep, setVirtualOtp
 
 // custom hooks
 const verifyEmailOtp = useVerifyEmailOtp();
-
-  /*useEffect(() => {
-    if (timer > 0) {
-      const interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
-      return () => clearInterval(interval);
-    }
-  }, [timer]);*/
-
   // Timer countdown effect
   useEffect(() => {
     if (timer === 0) return;
@@ -94,12 +88,15 @@ const verifyEmailOtp = useVerifyEmailOtp();
     }
 
     try {
+      
+      setLoading(true);
         if(purpose == "password-reset"){
             setStep(3);
             return;
         }
         const response = await verifyEmailOtp({email, otp:enteredOtp, purpose});
-        console.log(response);
+        
+        setLoading(false);
         if(response?.status === true || response?.status === "success") {
             if(purpose === 'login'){
                 toastManager.addToast({
@@ -118,6 +115,8 @@ const verifyEmailOtp = useVerifyEmailOtp();
             // setErrorMessage(response?.message);
         }
     } catch (error) {
+      
+      setLoading(false);
       alert('OTP verification failed');
     }
   };
@@ -167,7 +166,7 @@ const verifyEmailOtp = useVerifyEmailOtp();
         ))}
       </div>
 
-      <button className="verify-btn" onClick={handleSubmit}>Verify OTP</button>
+      <button className="verify-btn" onClick={handleSubmit}>{loading ? <ClipLoader color="#fff" size={20} /> : "Verify OTP"}</button>
 
       <div className="resend-section">
         {timer > 0 ? (
