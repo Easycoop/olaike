@@ -131,7 +131,7 @@ textarea:focus {
 /* If your scrollable card has a class like .scrollable-card, target it: */
 .scrollable-card {
   /* Firefox */
-  scrollbar-width: thin;
+  scrollbar-width: 12px;
   scrollbar-color: #6699FF #E5E7EB; /* thumb tertiary, track light gray */
 }
 

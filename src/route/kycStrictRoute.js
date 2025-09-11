@@ -5,7 +5,7 @@ import { Outlet, Navigate } from "react-router-dom";
 const KycStrictRoute = () => {
   const { user } = useSelector((state) => state.auth);
 
-  return user?.kycStatus === 'verified' ? <Outlet /> : <Navigate to="/main/kyc" />;
+  return user?.kycStatus === 'verified' ? <Outlet /> : <Navigate to="/main/profile/kyc" />;
 };
 
 export default KycStrictRoute;

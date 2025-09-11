@@ -1,146 +1,121 @@
+/* ========== Base Layout ========== */
 .admin {
   transition: 250ms ease-in-out;
   min-height: 100svh;
 }
+
 .admin__container {
   display: flex;
-  /* height: 100%; */
   min-height: 90vh;
 }
-.admin__outlet {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 80%;
-  margin-left: 20%;
-  /* height: 90vh; */
-  height: 100%;
-  overflow-y: scroll;
-  padding: var(--spacing-medium) var(--spacing-large);
-}
-.admin__outlet.active {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 100%;
-  /* margin-left: 20%; */
-  height: 90vh;
-  padding-left: 75px;
-}
+
+/* ========== Sidebar (expanded by default) ========== */
 .admin__navbar {
   position: fixed;
-  /* height: 90.5vh; */
-  height: 100%;
   top: 0;
   left: 0;
-  width: 20%;
+  height: 100%;
+  width: 240px; /* expanded width */
   background: var(--color-foreground);
   padding: 0 10px;
   display: flex;
   flex-direction: column;
   z-index: 10;
-  overflow-y: scroll;
-  transition: 250ms ease-in-out;
-
+  overflow-y: auto;
+  transition: width 250ms ease-in-out;
 }
+
+/* ========== Sidebar (collapsed) ========== */
 .admin__navbar.active {
-  display: none;
-}
-.admin__navbar.active > .admin__navbar__section__two > div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px 0;
+  width: 75px; /* collapsed width */
 }
 
-.admin__navbar.active > .admin__navbar__section__two > div > h3 {
-  display: none;
-}
-.admin__navbar.active > .admin__navbar__section__three > div > h3 {
-  display: none;
-}
-.admin__navbar.active > .admin__navbar__section__one {
-  display: flex;
-  justify-content: center;
-}
-.admin__navbar__section__two {
-}
 .admin__navbar__section__two > div {
   display: flex;
   align-items: center;
-  padding: 20px 10px;
+  padding: 15px 10px;
   cursor: pointer;
   color: black;
   width: 100%;
+  transition: all 200ms ease-in-out;
 }
+
+.admin__navbar__section__two > div h3 {
+  font-size: var(--font-size-h6);
+  font-weight: 400;
+  margin-left: 12px;
+  color: var(--color-text-quaternary);
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 200ms ease-in-out, margin 200ms ease-in-out;
+}
+
+.admin__navbar.active .admin__navbar__section__two > div h3 {
+  opacity: 0;
+  width: 0;
+  margin: 0;
+}
+
+/* Sidebar icons */
 .admin__navbar__icon {
   font-size: 18px;
   color: var(--color-text-quaternary);
 }
-.admin__navbar h3 {
-  font-size: var(--font-size-h6);
-  font-weight: 400;
-  margin-left: var(--spacing-small);
-  color: var(--color-text-quaternary);
-}
-.admin__navbar__active > h3 {
-  font-size: var(--font-size-h6);
-  font-weight: 400;
-  margin-left: var(--spacing-small);
-  color: var(--color-text-quaternary);
-}
+
 .admin__navbar__active {
   background-color: #1b40c4;
   border-radius: var(--border-radius-small);
   color: white;
 }
+
 .admin__navbar__active > .admin__navbar__icon {
   color: white;
 }
-.admin__navbar__active > .admin__navbar__icon__submenu {
-  color: white;
-}
 
-.admin__navbar__active > span {
-  color: white;
-}
 .admin__navbar__active > h3 {
   color: white;
 }
-.admin__navbar__dropdown {
-  display: flex;
-  align-items: center;
-  padding: 15px 0;
-  cursor: pointer;
-  width: 100%;
-}
-.admin__navbar__dropdown > span {
-  margin-left: auto;
-}
-.admin__navbar__dropdown > span > h3 {
-  font-size: 15px;
-  font-weight: 500;
-  margin-left: 5px;
+
+/* ========== Outlet (main content) ========== */
+.admin__outlet {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: calc(100% - 240px); /* matches expanded sidebar */
+  margin-left: 240px;
+  height: 100%;
+  overflow-y: scroll;
+  padding: var(--spacing-medium) var(--spacing-large);
+  transition: margin-left 250ms ease-in-out, width 250ms ease-in-out;
 }
 
+.admin__outlet.active {
+  width: calc(100% - 75px); /* matches collapsed sidebar */
+  margin-left: 75px;
+  padding-left: 20px;
+}
+
+/* ========== Mobile overrides ========== */
 @media all and (max-width: 768px) {
-  
   .admin__navbar {
     width: 80%;
   }
-  .admin__navbar__section__two > div {
-    padding: 20px 10px;
+
+  .admin__navbar.active {
+    display: none; /* mobile = fully hidden */
   }
 
   .admin__outlet {
     display: none;
     padding: var(--spacing-medium) var(--spacing-medium);
-    width:100%;
-    margin-left: 0px;
+    width: 100%;
+    margin-left: 0;
   }
+
   .admin__outlet.active {
     display: block;
-    padding: 0;
     padding: var(--spacing-medium) var(--spacing-medium);
+    width: 100%;
+    margin-left: 0;
   }
 }

@@ -14,11 +14,13 @@ import {
   useVerifyTransactionEntry,
 } from "../../../redux/actions/transactionAction";
 import { ConfigContext } from "../../../context/ConfigProvider";
+import AccountDetailsModal from "../../../components/ui/modal/AccountDetailsModal";
+import { genders } from "../../../utils/generic";
+import { runValidation } from "../../../utils/buchi";
+import logger from "redux-logger";
 
-const genders = [
-  { id: "Male", name: "Male" },
-  { id: "Female", name: "Female" },
-];
+
+const activePaymentGateWay = process.env.REACT_APP_ACTIVE_PAYMENT_GATEWAY;
 
 function Signup() {
   const getSocieties = useGetSocieties();
@@ -33,17 +35,24 @@ function Signup() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [societies, setSocieties] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [validationErrors, setValidationErrors] = useState();
+  const [accountDetail, setAccountDetail] = useState({
+    accountName: "",
+    accountNumber: "",
+    bankName: "",
+    bankCode: "",
+  });
+
   const [formData, setFormData] = useState({
     firstName: "",
-    middleName: "",
     lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    phone: "",
+    email: "xiyev84965@lanipe.com",
+    password: "Buchess#2024",
+    confirmPassword: "Buchess#2024",
+    phone: "09098887747",
     group: "",
     gender: "",
-    referralCode: "",
   });
 
   const handleGetSocieties = async () => {
@@ -75,12 +84,18 @@ function Signup() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    // e.preventDefault();
     try {
       setLoading(true);
+      setValidationErrors();
       const response = await register(formData);
-
+      console.log(response?.errors);
+      
+      if(response.errors ){
+        // console.log();
+        setValidationErrors(response.errors)
+      }
       if (response?.status === 200 || response?.status === "success") {
         setErrorMessage("");
         toastManager.addToast({
@@ -94,11 +109,61 @@ function Signup() {
         setErrorMessage(response.message);
       }
     } catch (error) {
+      // console.log("error", error);
       setErrorMessage(error.response.message);
     } finally {
+
       setLoading(false);
     }
   };
+
+    const validateRegForm = async () => {
+        
+      const validationData = [
+          {
+              input: { value: formData.firstName, field: "firstName", type: "text" },
+              rules: { required: true },
+          },
+          {
+              input: { value: formData.lastName, field: "lastName", type: "text" },
+              rules: { required: true },
+          },
+          {
+              input: { value: formData.email, field: "email", type: "text" },
+              rules: { required: true, email: true },
+          },
+          {
+              input: { value: formData.phone, field: "phone", type: "text" },
+              rules: { required: true, min_length: 11, max_length: 11 },
+          },
+          {
+              input: { value: formData.group, field: "group", type: "text" },
+              rules: { required: true },
+          },
+          {
+              input: { value: formData.gender, field: "gender", type: "text" },
+              rules: { required: true },
+          },
+          {
+              input: { value: formData.password, field: "password", type: "text" },
+              rules: { required: true, min_length: 8, has_special_character: true, must_have_number:true },
+          },
+          {
+              input: { value: formData.confirmPassword, field: "confirmPassword", type: "text" },
+              rules: { required: true, must_match:'password' },
+          },  
+      ];
+
+    
+      const validate = await runValidation(validationData);
+      // console.log(validate)
+  
+      if (validate?.status === false) {
+        setValidationErrors(validate.errors);
+      } else {
+        handleSubmit()
+      }
+    }
 
  
 
@@ -126,63 +191,61 @@ function Signup() {
         gender:formData.gender,
       });
 
-      // if()
       
-      if(!response.payload?.data?.data){
-        console.log(response);
-        toastManager.addToast({
-          message: response.payload,
-          type: "error",
-        });
-        return
-      }
-      const { reference } = response.payload.data.data;
-      // Open Paystack modal to complete payment
-      const handler = window.PaystackPop.setup({
-        key: PAYSTACK_KEY, // Paystack public key
-        email: formData.email,
-        amount: amount * 100,
-        currency: "NGN",
-        ref: reference, // Reference from backend initialization
-        callback: function (res) {
-          // Payment completed, verify the payment
-          const verifyPayment = async () => {
-            try {
-              const response = await verifyTransaction(res.reference); // Await the verification
-              if (
-                response?.payload.status === 200 ||
-                response?.payload.status === "success"
-              ) {
-                toastManager.addToast({
-                  message: "Payment Successful",
-                  type: "success",
-                });
-                handleSubmit();
-              } else {
-                toastManager.addToast({
-                  message: "Payment failed: Could not verify payment",
-                  type: "error",
-                });
-              }
-            } catch (error) {
-              console.error("Verification error:", error);
+      
+      switch (process.env.REACT_APP_PAYMENT_PROVIDER) {
+        case 'kegow':
+          if(!response?.payload?.data?.requestSuccessful){
+            toastManager.addToast({
+              message: response.payload,
+              type: "error",
+            });
+            return
+          }
+          setIsOpen(true);
+          
+          // console.log(response?.payload?.data?.responseBody?.accountDetails);
+          setAccountDetail({
+            accountName: response?.payload?.data?.responseBody?.accountDetails?.beneficiaryAccountName,
+            accountNumber: response?.payload?.data?.responseBody?.accountDetails?.beneficiaryAccountNumber,
+            bankName: response?.payload?.data?.responseBody?.accountDetails?.bankName,
+            bankCode: response?.payload?.data?.responseBody?.accountDetails?.beneficiaryBankCode,
+          });          
+          break;
+        case 'paystack':
+          if(!response.payload?.data?.data){
+            console.log(response);
+            toastManager.addToast({
+              message: response.payload,
+              type: "error",
+            });
+            return
+          }
+          const { reference } = response.payload.data.data;
+          // Open Paystack modal to complete payment
+          const handler = window.PaystackPop.setup({
+            key: PAYSTACK_KEY, // Paystack public key
+            email: formData.email,
+            amount: amount * 100,
+            currency: "NGN",
+            ref: reference, // Reference from backend initialization
+            callback: function (res) {
+              verifyPayment(res.reference);
+            },
+            onClose: function () {
               toastManager.addToast({
-                message: "Payment failed: Could not verify payment",
+                message: "Payment canceled",
                 type: "error",
               });
-            }
-          };
-          // Call the async function inside the synchronous callback
-          verifyPayment();
-        },
-        onClose: function () {
-          toastManager.addToast({
-            message: "Payment canceled",
-            type: "error",
+            },
           });
-        },
-      });
-      handler.openIframe(); // Open the Paystack modal
+          handler.openIframe(); // Open the Paystack modal
+
+        default:
+          break;
+      }
+      
+      
     } catch (error) {
       console.log(error);
       
@@ -192,6 +255,30 @@ function Signup() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const verifyPayment = async (reference) => {
+    try {
+      const response = await verifyTransaction(reference); // Await the verification
+      if ( response?.payload.status === 200 || response?.payload.status === "success") {
+        toastManager.addToast({
+          message: "Payment Successful",
+          type: "success",
+        });
+        handleSubmit();
+      } else {
+        toastManager.addToast({
+          message: "Payment failed: Could not verify payment",
+          type: "error",
+        });
+      }
+    } catch (error) {
+      console.error("Verification error:", error);
+      toastManager.addToast({
+        message: "Payment failed: Could not verify payment",
+        type: "error",
+      });
     }
   };
 
@@ -208,9 +295,6 @@ function Signup() {
     }
   }, [formData.group]);
 
-  useEffect(() => {
-    console.log(config)
-  }, [config]);
 
     return (
     <div className="h-screen w-full flex flex-col md:flex-row bg-white overflow-hidden">
@@ -246,7 +330,7 @@ function Signup() {
             Sign Up
           </h2>
 
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4" >
+          <form className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
             <Input
               required
               important
@@ -254,6 +338,8 @@ function Signup() {
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
+              validationErrors={validationErrors}
+              fieldName={"firstName"}
             />
             <Input
               required
@@ -262,6 +348,8 @@ function Signup() {
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
+              validationErrors={validationErrors}
+              fieldName={"lastName"}
             />
             <Input
               required
@@ -271,6 +359,8 @@ function Signup() {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              validationErrors={validationErrors}
+              fieldName={"email"}
             />
             <Input
               required
@@ -280,6 +370,8 @@ function Signup() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
+              validationErrors={validationErrors}
+              fieldName={"phone"}
             />
             <Select
               required
@@ -288,6 +380,8 @@ function Signup() {
               name="group"
               options={societies}
               onChange={handleChange}
+              validationErrors={validationErrors}
+              fieldName={"group"}
             />
             <Select
               required
@@ -295,7 +389,10 @@ function Signup() {
               label="Gender"
               name="gender"
               options={genders}
+              value={formData.gender}
               onChange={handleChange}
+              validationErrors={validationErrors}
+              fieldName={"gender"}
             />
             <Input
               required
@@ -305,6 +402,8 @@ function Signup() {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              validationErrors={validationErrors}
+              fieldName={"password"}
             />
             <Input
               required
@@ -314,6 +413,8 @@ function Signup() {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
+              validationErrors={validationErrors}
+              fieldName={"confirmPassword"}
             />
 
             {/* Error Message */}
@@ -337,9 +438,10 @@ function Signup() {
             {/* Submit Button */}
             <div className="col-span-full">
               <Button
-                type="submit"
+                type="button"
                 className="w-full bg-[#ED6E0A] hover:bg-[#d95c05] text-white py-2 rounded-md transition"
                 disabled={loading}
+                onClick={validateRegForm}
               >
                 {loading ? <ClipLoader color="#fff" size={20} /> : "Register"}
               </Button>
@@ -347,7 +449,20 @@ function Signup() {
           </form>
         </div>
       </div>
+
+      <AccountDetailsModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        amount={amount}
+        account={{
+          name: accountDetail.accountName,
+          number: accountDetail.accountNumber,
+          bank: accountDetail.bankName
+        }}
+      />
     </div>
+
+    
   );
 
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import { BsAsterisk } from "react-icons/bs";
+import ValidationError from "../ValidationError";
 
 const Select = ({
   label,
@@ -8,6 +9,8 @@ const Select = ({
   onChange,
   important = false,
   className = "",
+  validationErrors,
+  fieldName,
   ...rest
 }) => {
   return (
@@ -31,6 +34,7 @@ const Select = ({
           </option>
         ))}
       </select>
+    {validationErrors && <ValidationError validationErrors={validationErrors} field={fieldName} />}
     </div>
   );
 };

@@ -11,6 +11,7 @@ import {
   verifyTransactionFundLoan,
   verifyTransactionFundSavings,
   getUnUsedLoanFormTransactions,
+  simulateWebHook,
 } from "../../services/transactionServices";
 
 export const doInitializeTransaction = createAsyncThunk(
@@ -121,6 +122,18 @@ export const doGetUnUsedLoanFormTransactions = createAsyncThunk(
   }
 );
 
+export const doSimulateWebHook = createAsyncThunk(
+  "transactions/doSimulateWebHook",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const data = await simulateWebHook(payload);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message || "Action failed");
+    }
+  }
+);
+
 export const useGetTransactions = () => useDispatcher(doGetTransactions);
 export const useInitializeTransaction = () =>
   useDispatcher(doInitializeTransaction);
@@ -137,3 +150,6 @@ export const useVerifyTransactionEntry = () =>
   useDispatcher(doVerifyTransactionEntry);
 export const useGetUnUsedLoanFormTransactions = () =>
   useDispatcher(doGetUnUsedLoanFormTransactions);
+export const useSimulateWebHook = () => 
+  useDispatcher(doSimulateWebHook);
+

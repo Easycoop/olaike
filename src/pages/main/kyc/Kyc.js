@@ -8,11 +8,12 @@ import {getNin, initiatePhoneVerification, verifyOtp, confirmPhoneVerification} 
 import toastManager from "../../../components/ui/toast/ToasterManager";
 import {verifyNin} from "../../../services/userService";
 import {MdVerifiedUser} from "react-icons/md"
-import {generateWalletAccount} from "../../../services/walletService";
+import {useGenerateWalletAccount} from "../../../redux/actions/walletAction";
 
 const KYC = () => {
     // const misc = useSelector((state) => state.misc);
     const { user } = useSelector((state) => state.auth);
+    const generateWalletAccount = useGenerateWalletAccount();
     
     const [phone, setPhone] = useState(user?.phone);
     const [phoneBtnLoading, setPhoneBtnLoading] = useState(false);
@@ -24,7 +25,7 @@ const KYC = () => {
     const [phoneVerified, setPhoneVerified] = useState(user.phoneVerified);
     const [ninVerified, setNinVerified] = useState(false);
     const [otpSent, setOtpSent] = useState(false);
-     const [kegowWallet, setKegowWallet] = useState(localStorage.getItem('kegowWallet') &&  localStorage.getItem('kegowWallet') != "undefined" ? JSON.parse(localStorage.getItem('kegowWallet')) : null);
+    const [kegowWallet, setKegowWallet] = useState(localStorage.getItem('kegowWallet') &&  localStorage.getItem('kegowWallet') != "undefined" ? JSON.parse(localStorage.getItem('kegowWallet')) : null);
     const [imagePreview, setImagePreview] = useState(null);
 
     const [nin, setNin] = useState({
@@ -34,8 +35,6 @@ const KYC = () => {
         status: "",
         rejectionReason: null
     });
-
-    console.log(user)
     const navigate = useNavigate();
 
     const handlePhoneVerification = async () => {
@@ -68,11 +67,10 @@ const KYC = () => {
             }
         } catch (error) {
             setPhoneBtnLoading(false);
-            console.log(error);
             if(error.message){
                 toastManager.addToast({
-                    message: `${error?.message}`,
-                    type: "success",
+                    message: `${error.response.data.message || error.response.data.error || error.response.statusText}`,
+                    type: "error",
                 });
             }
         }
@@ -197,47 +195,47 @@ const KYC = () => {
     }
 
     const generateAccountNumber = async () => {
-    try {
-        setWalletBtnLoading(true);
-        const response = await generateWalletAccount(user.id);
-        if(response?.status === 'success'){
+        try {
+            setWalletBtnLoading(true);
+            const response = await generateWalletAccount(user.id);
+            console.log("response", response);
+            if(response?.status === 'success'){
+                setWalletBtnLoading(false);
+                toastManager.addToast({
+                    message: `${response?.message}`,
+                    type: "success",
+                });
+                navigate("/main/dashboard");
+            }else{
+                setWalletBtnLoading(false);
+                toastManager.addToast({
+                    message: `${response.payload || response?.message}`,
+                    type: "error",
+                });
+            }
+        } catch (error) {
             setWalletBtnLoading(false);
             toastManager.addToast({
-                message: `${response?.message}`,
-                type: "success",
-            });
-            
-            navigate("/main/dashboard");
-        }else{
-            setWalletBtnLoading(false);
-            toastManager.addToast({
-                message: `${response?.message}`,
+                message: `${error?.payload || error.message}`,
                 type: "error",
             });
         }
-    } catch (error) {
-        setWalletBtnLoading(false);
-        toastManager.addToast({
-            message: `${error?.message}`,
-            type: "error",
-        });
-    }
     }
 
     const checkPhoneVerification = async () =>{
-    try {
-        const response = await confirmPhoneVerification(user.id);
-        if(response?.status === 'success'){
-            setPhoneVerified(true);
-            
-        }else{
-            console.log("phone number not verified");
+        try {
+            const response = await confirmPhoneVerification(user.id);
+            if(response?.status === 'success'){
+                setPhoneVerified(true);
+                
+            }else{
+                console.log("phone number not verified");
+                
+            }
+        } catch (error) {
+            console.log(error?.message);
             
         }
-    } catch (error) {
-        console.log(error?.message);
-        
-    }
     }
 
     useEffect(() => {
@@ -256,7 +254,8 @@ const KYC = () => {
                         />
                         </div> 
                         {phoneVerified ? 
-                        <><MdVerifiedUser  style={{color:"green", fontSize: "40px"}}/> verified</>:
+                        <><MdVerifiedUser  style={{color:"green", fontSize: "40px"}}/> verified</>: 
+                        <>
                         <Button
                             type="button"
                             typeOf="primary"
@@ -264,7 +263,10 @@ const KYC = () => {
                             style={{ height: "50px  "}}
                         >
                             {phoneBtnLoading ? <ClipLoader color="#fff" size={20} /> : "Verify number"}   
-                        </Button>}
+                        </Button>
+                        <MdVerifiedUser  style={{color:"red", fontSize: "40px"}}/> not verified 
+                       </>
+                        }
                     </div>
 
                     {otpSent && !otpVerified &&

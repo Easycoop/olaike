@@ -23,7 +23,7 @@ const NAV__ARRAY = [
     icon: FaSackDollar,
   },
   
-  { id: 9, path: "kyc", name: "KYC", icon: MdVerifiedUser },
+  { id: 9, path: "profile/kyc", name: "KYC", icon: MdVerifiedUser },
   { id: 4, path: "referrals", name: "Referrals", icon: FaLink },
   { id: 5, path: "fees/dues", name: "Fees/Dues", icon: GiMoneyStack },
   { id: 6, path: "withdrawal", name: "Withdrawal", icon: FaCreditCard },
@@ -52,9 +52,6 @@ function Main() {
       if (response.status === true || response.status === "success") {
         setErrorMessage("");
         localStorage.clear();
-        // localStorage.removeItem("kegowWallet");
-        // localStorage.removeItem("persist:olaike");
-        // persistor.purge()
         toastManager.addToast({
           message: "Logout successful",
           type: "success",
@@ -78,7 +75,8 @@ function Main() {
 
   return (
     <div className="admin">
-      <Header handleNav={handleNav} />
+      <Header handleNav={setActive} isSidebarActive={active} />
+
       <div className="admin__container">
         <div className={active ? "admin__navbar active" : "admin__navbar"}>
           <section className="admin__navbar__section__two">

@@ -27,18 +27,15 @@ export const initiatePhoneVerification = async (user_id, phone) => {
     const response = await api.post(`/user/${user_id}/phone-verification/`, {phone});
     return response.data;
   } catch (error) {
+    console.log('request err', error);
+    
     if (error.response) {
       // Add server response details to the error
-      error.message = `${
-        error.response.data.error || error.response.statusText
-      }`;
+      error.message = `${error.response.data.message || error.response.data.error || error.response.statusText}`;
     } else if (error.request) {
       // Add request details to the error
       error.message = "No response received from server.";
-    } else {
-      // Add request setup details to the error
-      error.message = `${error.message}`;
-    }
+    } 
     throw error;
   }
 };
@@ -48,10 +45,11 @@ export const verifyOtp = async (user_id, otp) => {
     const response = await api.post(`/user/${user_id}/verify-phone`, {otp});
     return response.data;
   } catch (error) {
+    console.log(error);
     if (error.response) {
       // Add server response details to the error
       error.message = `${
-        error.response.data.error || error.response.statusText
+        error.response.data.message || error.response.data.error || error.response.statusText
       }`;
     } else if (error.request) {
       // Add request details to the error
@@ -149,3 +147,18 @@ export const getDashboardData = async () => {
     throw error;
   }
 }; 
+
+export const updateUserProfile = async (payload) => {
+  try {
+    const response = await api.post('/user/update', payload)
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      // Add server response details to the error
+      error.message = `${
+       error.response?.data.message || error.response?.statusText ||  error.response?.data?.data 
+      }`;
+    } 
+    throw error;
+  }
+}

@@ -1,5 +1,6 @@
 import React from "react";
 import { BsAsterisk } from "react-icons/bs";
+import ValidationError from "../ValidationError";
 
 const Input = ({
   type = "text",
@@ -10,6 +11,8 @@ const Input = ({
   ref,
   important = false,
   className = "",
+  validationErrors,
+  fieldName,
   ...rest
 }) => {
   return (
@@ -29,6 +32,7 @@ const Input = ({
         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003399] transition-all duration-200"
         {...rest}
       />
+      {validationErrors && <ValidationError validationErrors={validationErrors} field={fieldName} />}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import "./dashboard.css";
-import { FaArrowTrendUp, FaCircle } from "react-icons/fa6";
+import { FaArrowTrendUp } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useGetTransactions } from "../../../redux/actions/transactionAction";
@@ -11,6 +11,7 @@ import Button from "../../../components/ui/button/Button";
 import { useGetDashboardData } from "../../../redux/actions/userAction";
 import {getUserWallet, debitEntranceFee} from "../../../services/walletService";
 import toastManager from "../../../components/ui/toast/ToasterManager";
+import VirtualAccountCard from "../../../components/ui/VirtualAccountCard";
 
 
 const Dashboard = ()  => {
@@ -104,7 +105,7 @@ const Dashboard = ()  => {
           message: `Complete your KYC to proceed`,
           type: "error",
         })
-        navigate('/main/kyc')
+        navigate('/main/profile/kyc')
       }
     } catch (error) {
       setLoading(false);
@@ -114,7 +115,7 @@ const Dashboard = ()  => {
           message: `Complete your KYC to proceed`,
           type: "error",
         })
-        navigate('/main/kyc')
+        navigate('/main/profile/kyc')
       }
      
       
@@ -122,9 +123,18 @@ const Dashboard = ()  => {
     
   }
 
+   const getSocietyFee = async () => {
+    
+  
+  };
+
   useEffect(() => {
     handleGetTransactions();
   }, [page]);
+
+   useEffect(() => {
+    console.log('user', user)
+  }, []);
 
   // Detect when user scrolls to the bottom
   const handleScroll = () => {
@@ -151,10 +161,18 @@ const Dashboard = ()  => {
   }, [loading]);
 
   useEffect(() => {
+    if(!user.address){
+       toastManager.addToast({
+          message: `Complete your profile to proceed`,
+          type: "error",
+        })
+      navigate('/main/profile/edit')
+    }else{
+      userWallet();
+      handleGetWallets();
+      handleGetDashboardData();
+    }
     
-    userWallet();
-    handleGetWallets();
-    handleGetDashboardData();
   }, []);
 
   return (
@@ -164,16 +182,32 @@ const Dashboard = ()  => {
       // style={{ height: "40vh", overflowY: "auto" }}
     >
       <section className="dashboard__section__one">
-        <h5 >My wallets</h5>
-        <div className="dashboard__section__one__block__wrap">
-          <span className="dashboard__section__one__block">
+        {/* <h5 >My wallets</h5> */}
+        
+        <div className="flex justify-start gap-3 flex-wrap">
+          <VirtualAccountCard accountName={process.env.REACT_APP_KEGOW_BANK_NAME} accountNumber={user?.Wallet?.kegow_account} bankName={user?.Wallet?.kegow_account_name} balance={user?.Wallet?.balance} />
+          <div className="dashboard__section__one__block" style={{padding:"10px"}}>
+            
+            <h5>Entrance Fee</h5>
+            <p>You are required to pay your entrance fee to get a membership ID from your Society</p>
+              <Button
+                type="button"
+                typeOf="primary"
+                // className="signup__create__button"
+                onClick={getSocietyFee}
+              >
+                Pay entrance fee
+              </Button>
+            
+          </div>
+          {/* <span className="dashboard__section__one__block">
             <h5>Contribution Funds</h5>
             <h3>{`${wallets?.wallet?.balance} ${wallets?.wallet?.currency}`}</h3>
             <div>
               <FaArrowTrendUp />
             </div>
-          </span>
-          {wallets?.subWallets?.map((wallet, i) => {
+          </span> */}
+          {/* {wallets?.subWallets?.map((wallet, i) => {
             return (
               <span className="dashboard__section__one__block" key={i}>
                 <h5>{wallet?.name}</h5>
@@ -183,7 +217,7 @@ const Dashboard = ()  => {
                 </div>
               </span>
             );
-          })}
+          })} */}
         </div>
       </section>
       <section className="dashboard__section__two">

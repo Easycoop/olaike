@@ -28,6 +28,7 @@ import KYC from "./pages/main/kyc/Kyc";
 import KycStrictRoute from "./route/kycStrictRoute";
 import OtpScreen from "./pages/auth/otp/OtpScreen";
 import ForgotPassword from "./pages/auth/password/ForgotPassword";
+import UpdateProfile from "./pages/main/user/UpdateProfile";
 
 function App() {
   return (
@@ -42,7 +43,6 @@ function App() {
               <Route index element={<Dashboard />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="fund" element={<Payment />} />
-              <Route path="kyc" element={<KYC />} />
               <Route path="loans" element={<KycStrictRoute />}>
                 <Route path="index" element={<Loan />} /> 
               </Route>
@@ -59,6 +59,10 @@ function App() {
               <Route path="donation" element={<Donation />} />
               <Route path="message" element={<SelectChat />} />
               <Route path="message-user/:id" element={<MessagingFeature />} />
+              <Route path="/main/profile">
+                <Route path="edit" element={<UpdateProfile />} />
+                <Route path="kyc" element={<KYC />} />
+              </Route>
             </Route>
           </Route>
 
