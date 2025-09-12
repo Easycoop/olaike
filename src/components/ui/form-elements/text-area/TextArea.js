@@ -1,17 +1,21 @@
 import React from "react";
 import "./text-area.css";
-
-const TextArea = ({ label, value, onChange, className = "", ...rest }) => {
+import ValidationError from "../ValidationError";
+const TextArea = ({ label, value, onChange, className = "", validationErrors, fieldName, ...rest }) => {
+  console.log(value);
+  
   return (
     <div className="textAreaWrapper">
-      {label && <label className="label">{label}</label>}
+      {label && <label className="label text-gray-700">{label}</label>}
       <textarea
         value={value}
         onChange={onChange}
         className={className}
         {...rest}
       />
+      {validationErrors && <ValidationError validationErrors={validationErrors} field={fieldName} />}
     </div>
+    
   );
 };
 

@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 // import "./signup.css";
 // import logo from "../../../assets/icons/logo_text.svg";
 import Input from "../../../components/ui/form-elements/input";
+import TextArea from "../../../components/ui/form-elements/text-area/TextArea";
 import Button from "../../../components/ui/button/Button";
 import { useNavigate } from "react-router-dom";
 import { useRegister, useSignUp } from "../../../redux/actions/authActions";
@@ -53,6 +54,7 @@ function Signup() {
     phone: "",
     group: "",
     gender: "",
+    address: "",
   });
 
   const handleGetSocieties = async () => {
@@ -78,14 +80,16 @@ function Signup() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(value);
+    
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: name === 'email' ? value.toLowerCase():value,
     });
   };
 
   const handleSubmit = async () => {
-    // e.preventDefault();
+    
     try {
       setLoading(true);
       setValidationErrors();
@@ -145,13 +149,14 @@ function Signup() {
               rules: { required: true },
           },
           {
+              input: { value: formData.address, field: "address", type: "text" },
+              rules: { required: true, min_length: 10 },
+          },
+          {
               input: { value: formData.password, field: "password", type: "text" },
               rules: { required: true, min_length: 8, has_special_character: true, must_have_number:true },
           },
-          {
-              input: { value: formData.confirmPassword, field: "confirmPassword", type: "text" },
-              rules: { required: true, must_match:'password' },
-          },  
+           
       ];
 
     
@@ -325,7 +330,7 @@ function Signup() {
 
       {/* Floating Signup Card (fixed height with scrollbar) */}
       <div className="w-full md:w-[60%] px-4 md:absolute md:left-[8%] md:top-[5%] z-10 scrollable-card" >
-        <div className="bg-white rounded-2xl shadow-2xl p-6 md:p-10 h-[90vh] lg:overflow-hidden overflow-y-scroll">
+        <div className="bg-white rounded-2xl shadow-2xl p-6 md:p-10 h-[90vh] overflow-y-scroll">
           <h2 className="text-2xl md:text-3xl font-bold text-[#003399] mb-6 text-center">
             Sign Up
           </h2>
@@ -394,6 +399,16 @@ function Signup() {
               validationErrors={validationErrors}
               fieldName={"gender"}
             />
+            <TextArea
+              required
+              label="Address"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              validationErrors={validationErrors}
+              fieldName={"address"}
+              className={'textArea'}
+            />
             <Input
               required
               important
@@ -405,17 +420,7 @@ function Signup() {
               validationErrors={validationErrors}
               fieldName={"password"}
             />
-            <Input
-              required
-              important
-              type="password"
-              label="Confirm Password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              validationErrors={validationErrors}
-              fieldName={"confirmPassword"}
-            />
+           
 
             {/* Error Message */}
             {errorMessage && (

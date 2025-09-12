@@ -42,6 +42,7 @@ export const logout = async () => {
 };
 
 export const signup = async (userData) => {
+  console.log(userData);
   try {
     const response = await api.post("/auth/signup/", userData);
     return response.data;
