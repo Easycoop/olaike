@@ -8,7 +8,6 @@ import toastManager from "../../../components/ui/toast/ToasterManager";
 import { ConfigContext } from "../../../context/ConfigProvider";
 import loginImage from "../../../assets/images/auth/login-image-1.png";
 import {runValidation} from "../../../utils/buchi";
-import ValidationError from "../../../components/ui/form-elements/ValidationError";
 
 export default function Login() {
   const login = useLogin();
