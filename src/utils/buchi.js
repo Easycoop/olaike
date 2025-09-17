@@ -11,7 +11,9 @@ const validateField = async (input, constraints, alias = null, fields) => {
 
     const matchFinder = fields.find(field => constraints?.must_match === field.input?.field);
 
-    const emailPattern = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+    const emailPattern = /^[a-z0-9]+@[a-z0-9]+\.[a-z]{2,}$/i;
+
+    // const emailPattern = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
     // const specialCharsRegex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
     // const specialCharsRegex = /[ `!@#$%^&*()_+=\[\]{};':"\\|,.<>\/?~]/;
     const specialCharsRegex = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
@@ -29,6 +31,10 @@ const validateField = async (input, constraints, alias = null, fields) => {
         max_length: {
             pass: constraints?.max_length ? (input?.value?.length <= constraints?.max_length) : true,
             message: `${alias ?? getOriginalWordFromCompoundWord(input?.field)} must not exceed ${constraints?.max_length} characters`
+        },
+        char_length: {
+            pass: constraints.char_length ? (input?.value?.length > 0 ? input?.value?.length === constraints?.char_length : true) : true,
+            message: alias === null ? getOriginalWordFromCompoundWord(input?.field) + " must be " + constraints?.char_length + " characters" : alias + " must be " + constraints?.char_length + " characters"
         },
         email: {
             pass: constraints?.email && input?.value?.length ? emailPattern.test(input?.value) : true,

@@ -122,6 +122,7 @@ function Signup() {
   };
 
     const validateRegForm = async () => {
+        console.log(formData.phone);
         
       const validationData = [
           {
@@ -138,7 +139,7 @@ function Signup() {
           },
           {
               input: { value: formData.phone, field: "phone", type: "text" },
-              rules: { required: true, min_length: 11, max_length: 11 },
+              rules: { required: true, char_length:11 },
           },
           {
               input: { value: formData.group, field: "group", type: "text" },

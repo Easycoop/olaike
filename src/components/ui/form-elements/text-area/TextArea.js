@@ -2,7 +2,6 @@ import React from "react";
 import "./text-area.css";
 import ValidationError from "../ValidationError";
 const TextArea = ({ label, value, onChange, className = "", validationErrors, fieldName, ...rest }) => {
-  console.log(value);
   
   return (
     <div className="textAreaWrapper">

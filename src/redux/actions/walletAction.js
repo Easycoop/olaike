@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { useDispatcher } from "../../utils/useDispatcher";
-import { getWallets, generateWalletAccount } from "../../services/walletService";
+import { getWallets, generateWalletAccount, getWalletBalance } from "../../services/walletService";
 import { updateUserAction } from "./userAction";
 import { store } from "../store";
 
@@ -18,7 +18,7 @@ export const doGetWallets = createAsyncThunk(
 );
 
 export const doGenerateWalletAccount =  createAsyncThunk(
-  "users/doGenerateWalletAccount",
+  "wallet/doGenerateWalletAccount",
   async (payload, { dispatch, rejectWithValue }) => {
     try {
       const response = await generateWalletAccount(payload);
@@ -38,5 +38,26 @@ export const doGenerateWalletAccount =  createAsyncThunk(
   }
 );
 
+
+export const doGetWalletBalance = createAsyncThunk("user/doGetWalletBalance", async (payload, {dispatch, rejectWithValue }) => {
+  try {
+    const data = await getWalletBalance(payload);
+    if(data.status === 'success'){
+      const currentUser = store.getState().auth.user;
+      // currentUser.wallet.balance = data.data.availableBalance
+        dispatch(updateUserAction({
+          user: { ...currentUser, wallet: { ...currentUser.wallet, balance: data.data.availableBalance } }
+        }));
+    }
+    // console.log(data);
+    
+    return data;
+  } catch (error) {
+    console.log(error)
+    return rejectWithValue(error.message || "Action failed");
+  }
+})
+
 export const useGetWallets = () => useDispatcher(doGetWallets);
 export const useGenerateWalletAccount = () => useDispatcher(doGenerateWalletAccount);
+export const useGetWalletBalance = () => useDispatcher(doGetWalletBalance);

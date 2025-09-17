@@ -1,24 +1,29 @@
 import "./dashboard.css";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { useGetTransactions } from "../../../redux/actions/transactionAction";
 import { useSelector } from "react-redux";
 import Loading from "../../../components/splash/loading/Loading";
 import NoResult from "../../../components/splash/no-result/NoResult";
-import { useGetWallets } from "../../../redux/actions/walletAction";
+import { useGetWallets, useGetWalletBalance } from "../../../redux/actions/walletAction";
 import Button from "../../../components/ui/button/Button";
 import { useGetDashboardData } from "../../../redux/actions/userAction";
 import {getUserWallet, debitEntranceFee} from "../../../services/walletService";
 import toastManager from "../../../components/ui/toast/ToasterManager";
 import VirtualAccountCard from "../../../components/ui/VirtualAccountCard";
+import GenericCard from "../../../components/ui/GenericCard";
+import { ConfigContext } from "../../../context/ConfigProvider";
+
 
 
 const Dashboard = ()  => {
   const navigate = useNavigate();
+  const { config, fetchConfig } = useContext(ConfigContext);
   const getTransactions = useGetTransactions();
   const getWallets = useGetWallets();
   const getDashboardData = useGetDashboardData();
+  const getWalletBalance = useGetWalletBalance();
 
   const [wallets, setWallets] = useState({});
   const pageRef = useRef(null); // ensure this is null initially
@@ -29,6 +34,8 @@ const Dashboard = ()  => {
   const [page, setPage] = useState(1);
   const [dashboardData, setDashboardData] = useState({});
   const [kegowWallet, setKegowWallet] = useState(localStorage.getItem('kegowWallet') &&  localStorage.getItem('kegowWallet') != "undefined" ? JSON.parse(localStorage.getItem('kegowWallet')) : null);
+  
+  const [entranceFee, setEntranceFee] = useState(config.settings.find((setting) => setting.key === "entrance_fee").value);
 
   const handleGetWallets = async () => {
     setLoading(true);
@@ -123,17 +130,46 @@ const Dashboard = ()  => {
     
   }
 
-   const getSocietyFee = async () => {
-    
-  
+  const payEntranceFee = async () => {
+    setLoading(true);
+    const user_wallet_data = await userWallet();
+    if(user_wallet_data){
+      if(user.wallet.balance < entranceFee){
+        toastManager.addToast({
+          message: `Insufficient balance`,
+          type: "error",
+        })
+        setLoading(false);
+      }else{
+        handleEntranceFeeDebit()
+      }
+    }
+    // setOpenModal(true);
   };
+
+  const handleEntranceFeeDebit = async () => {
+    setLoading(true);
+    const response = await debitEntranceFee(user.id);
+    if(response?.status === "success"){
+      setLoading(false)
+      toastManager.addToast({
+        message: response?.message,
+        type: "success",
+      });
+      setLoading(false);
+    }else{
+      setLoading(false);
+      console.log(response);
+      
+    }
+  }
 
   useEffect(() => {
     handleGetTransactions();
   }, [page]);
 
-   useEffect(() => {
-    console.log('user', user)
+  useEffect(() => {
+    getWalletBalance();
   }, []);
 
   // Detect when user scrolls to the bottom
@@ -185,21 +221,14 @@ const Dashboard = ()  => {
         {/* <h5 >My wallets</h5> */}
         
         <div className="flex justify-start gap-3 flex-wrap">
-          <VirtualAccountCard accountName={user?.Wallet?.kegow_account_name} accountNumber={user?.Wallet?.kegow_account} bankName={process.env.REACT_APP_KEGOW_BANK_NAME} balance={user?.Wallet?.balance} />
-          <div className="dashboard__section__one__block" style={{padding:"10px"}}>
-            
-            <h5>Entrance Fee</h5>
-            <p>You are required to pay your entrance fee to get a membership ID from your Society</p>
-              <Button
-                type="button"
-                typeOf="primary"
-                // className="signup__create__button"
-                onClick={getSocietyFee}
-              >
-                Pay entrance fee
-              </Button>
-            
-          </div>
+          <VirtualAccountCard 
+            accountName={user?.Wallet?.kegow_account_name} 
+            accountNumber={user?.Wallet?.kegow_account} 
+            bankName={process.env.REACT_APP_KEGOW_BANK_NAME} 
+            balance={user?.Wallet?.balance} 
+          />
+          <GenericCard title="Entrance Fee" description={`You are required to pay your entrance fee of ₦${entranceFee} to get a membership ID from your Society.`} buttonText="Pay entrance fee" buttonAction={payEntranceFee} amount={config.settings.find((setting) => setting.key === "entrance_fee").value} />
+          
           {/* <span className="dashboard__section__one__block">
             <h5>Contribution Funds</h5>
             <h3>{`${wallets?.wallet?.balance} ${wallets?.wallet?.currency}`}</h3>

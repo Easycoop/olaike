@@ -7,6 +7,8 @@ import { useLogin } from "../../../redux/actions/authActions";
 import toastManager from "../../../components/ui/toast/ToasterManager";
 import { ConfigContext } from "../../../context/ConfigProvider";
 import loginImage from "../../../assets/images/auth/login-image-1.png";
+import {runValidation} from "../../../utils/buchi";
+import ValidationError from "../../../components/ui/form-elements/ValidationError";
 
 export default function Login() {
   const login = useLogin();
@@ -15,7 +17,10 @@ export default function Login() {
 
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
+  const [validationErrors, setValidationErrors] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const alphaStart = /^[A-Za-z]/;
 
   useEffect(() => {
     fetchConfig();
@@ -26,9 +31,33 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const emailFieldRules = {required: true}
+    let emailFieldAlias;
 
-    if (!formData.email || !formData.password) {
-      setErrorMessage("Email or password cannot be blank");
+    if(alphaStart.test(formData.email[0])){
+      emailFieldRules.email = true
+      emailFieldAlias = "Email"
+    }else{
+      emailFieldRules.char_length = 11;
+      emailFieldAlias = "Phone"
+    }
+
+    
+
+    const validate = await runValidation([
+      {
+        input: { value: formData.email, field: "email", type: "text" },
+        rules: emailFieldRules,
+        alias: emailFieldAlias
+      },
+      {
+        input: { value: formData.password, field: "password", type: "text" },
+        rules: { required: true },
+      },
+    ]);
+
+    if(validate?.status === false){
+      setValidationErrors(validate.errors);
       return;
     }
 
@@ -77,22 +106,25 @@ export default function Login() {
 
             <form onSubmit={handleSubmit} className="space-y-3">
               <Input
-                required
                 type="text"
-                label="Email *"
+                label="Phone or Email *"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="example@gmail.com"
+                placeholder="Enter your 11 digit phone number or email"
+                validationErrors={validationErrors}
+                fieldName="email"
               />
+              
 
               <Input
-                required
                 type="password"
                 label="Password *"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
+                validationErrors={validationErrors}
+                fieldName="password"
               />
 
               {errorMessage && (

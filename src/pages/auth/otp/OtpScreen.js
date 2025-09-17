@@ -24,7 +24,7 @@ const OtpScreen = () => {
 
         {/* Heading */}
         <h3 className=" font-semibold text-gray-800 mb-6" style={{fontSize:"20px", color:"#0a0a0a", marginBottom:"20px"}}>
-          Enter OTP sent to your email to proceed
+          Enter OTP we sent you to proceed
         </h3>
 
         {/* OTP Input */}
