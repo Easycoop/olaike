@@ -35,7 +35,7 @@ const Dashboard = ()  => {
   const [dashboardData, setDashboardData] = useState({});
   const [kegowWallet, setKegowWallet] = useState(localStorage.getItem('kegowWallet') &&  localStorage.getItem('kegowWallet') != "undefined" ? JSON.parse(localStorage.getItem('kegowWallet')) : null);
   
-  const [entranceFee, setEntranceFee] = useState(config.settings.find((setting) => setting.key === "entrance_fee").value);
+  const [entranceFee, setEntranceFee] = useState(config.settings.find((setting) => setting.key === "entrance_fee")?.value ?? 0);
 
   const handleGetWallets = async () => {
     setLoading(true);
@@ -131,6 +131,13 @@ const Dashboard = ()  => {
   }
 
   const payEntranceFee = async () => {
+    if(!entranceFee){
+      toastManager.addToast({
+        message: `Entrance fee not set`,
+        type: "error",
+      })
+      return;
+    }
     setLoading(true);
     const user_wallet_data = await userWallet();
     if(user_wallet_data){
