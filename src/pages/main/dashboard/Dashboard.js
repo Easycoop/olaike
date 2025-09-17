@@ -234,7 +234,7 @@ const Dashboard = ()  => {
             bankName={process.env.REACT_APP_KEGOW_BANK_NAME} 
             balance={user?.Wallet?.balance} 
           />
-          <GenericCard title="Entrance Fee" description={`You are required to pay your entrance fee of ₦${entranceFee} to get a membership ID from your Society.`} buttonText="Pay entrance fee" buttonAction={payEntranceFee} amount={config.settings.find((setting) => setting.key === "entrance_fee")?.value ?? 0} />
+          <GenericCard title="Entrance Fee" description={`You are required to pay your entrance fee of ₦${entranceFee} to get a membership ID from your Society.`} buttonText="Pay entrance fee" buttonAction={payEntranceFee} amount={entranceFee} />
           
           {/* <span className="dashboard__section__one__block">
             <h5>Contribution Funds</h5>
