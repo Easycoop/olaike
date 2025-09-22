@@ -92,6 +92,7 @@ export const doLoginAction = (payload) => async (dispatch) => {
 export const doVerifyEmailOtpAction = ({email, otp, purpose, password}) => async (dispatch) => {
   try {
     const response = await verifyEmailOtp({email, otp, purpose, password});
+    console.log(response)
     if(response?.status === 'success' ){
       if(purpose === 'login'){
           dispatch(

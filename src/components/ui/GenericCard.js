@@ -1,4 +1,6 @@
-const GenericCard = ({ title, description, buttonText, buttonAction, amount }) => {
+import { FaSpinner } from "react-icons/fa6";
+
+const GenericCard = ({ title, description, buttonText, buttonAction, amount, loading }) => {
   return (
     <div className="w-full sm:w-5/12 lg:w-4/12 bg-white shadow-md rounded-2xl border border-gray-100 p-3" style={{height:"200px"}}>
       {/* Header */}
@@ -21,9 +23,10 @@ const GenericCard = ({ title, description, buttonText, buttonAction, amount }) =
       
       <button
         onClick={buttonAction}
-        className="w-full bg-[#003399] hover:bg-[#002080] text-white text-xs sm:text-sm font-medium py-2 rounded-lg transition-colors"
+        className="w-full bg-[#003399] hover:bg-[#002080] text-white text-xs sm:text-sm font-medium py-2 rounded-lg transition-colors flex items-center justify-center"
+        disabled={loading}
       >
-        {buttonText}
+        {loading ? <FaSpinner className="animate-spin" />  : buttonText}
       </button>
     </div>
   );

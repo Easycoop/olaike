@@ -8,12 +8,13 @@ import Loading from "../../../components/splash/loading/Loading";
 import NoResult from "../../../components/splash/no-result/NoResult";
 import { useGetWallets, useGetWalletBalance } from "../../../redux/actions/walletAction";
 import Button from "../../../components/ui/button/Button";
-import { useGetDashboardData } from "../../../redux/actions/userAction";
-import {getUserWallet, debitEntranceFee} from "../../../services/walletService";
+import { useGetDashboardData, useDebitEntranceFee } from "../../../redux/actions/userAction";
+import {getUserWallet} from "../../../services/walletService";
 import toastManager from "../../../components/ui/toast/ToasterManager";
 import VirtualAccountCard from "../../../components/ui/VirtualAccountCard";
 import GenericCard from "../../../components/ui/GenericCard";
 import { ConfigContext } from "../../../context/ConfigProvider";
+import Modal from "../../../components/ui/modal/Modal";
 
 
 
@@ -33,9 +34,14 @@ const Dashboard = ()  => {
   const [transactions, setTransactions] = useState([]);
   const [page, setPage] = useState(1);
   const [dashboardData, setDashboardData] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
+
   const [kegowWallet, setKegowWallet] = useState(localStorage.getItem('kegowWallet') &&  localStorage.getItem('kegowWallet') != "undefined" ? JSON.parse(localStorage.getItem('kegowWallet')) : null);
+
+  const debitEntranceFee = useDebitEntranceFee();
   
-  const [entranceFee, setEntranceFee] = useState(config.settings.find((setting) => setting.key === "entrance_fee")?.value ?? 0);
+  const [entranceFee, setEntranceFee] = useState();
+
 
   const handleGetWallets = async () => {
     setLoading(true);
@@ -53,6 +59,8 @@ const Dashboard = ()  => {
       setLoading(false);
     }
   };
+
+
 
   const handleGetDashboardData = async () => {
     setLoading(true);
@@ -75,6 +83,8 @@ const Dashboard = ()  => {
     setLoading(true);
     try {
       const response = await getTransactions({ userId: user.id, page: page });
+      console.log('transactions response');
+      console.log(response);
       if (response?.payload.status === "success") {
         setErrorMessage("");
         const newData = response.payload.data.result;
@@ -131,44 +141,64 @@ const Dashboard = ()  => {
   }
 
   const payEntranceFee = async () => {
-    if(!entranceFee){
-      toastManager.addToast({
-        message: `Entrance fee not set`,
-        type: "error",
-      })
-      return;
-    }
-    setLoading(true);
-    const user_wallet_data = await userWallet();
-    if(user_wallet_data){
-      if(user.wallet.balance < entranceFee){
+    try {
+        if(!entranceFee){
         toastManager.addToast({
-          message: `Insufficient balance`,
+          message: `Entrance fee not set`,
           type: "error",
         })
-        setLoading(false);
-      }else{
-        handleEntranceFeeDebit()
+        return;
       }
+      setLoading(true);
+      const user_wallet_data = await userWallet();
+     
+      if(user_wallet_data){
+        if(user.Wallet?.balance < entranceFee){
+          toastManager.addToast({
+            message: `Insufficient balance`,
+            type: "error",
+          })
+           setLoading(false);
+        }else{
+          handleEntranceFeeDebit()
+        }
+      }
+    } catch (error) {
+      console.log(error)
+      setLoading(false);
     }
+    
     // setOpenModal(true);
   };
 
   const handleEntranceFeeDebit = async () => {
-    setLoading(true);
-    const response = await debitEntranceFee(user.id);
-    if(response?.status === "success"){
-      setLoading(false)
-      toastManager.addToast({
-        message: response?.message,
-        type: "success",
-      });
-      setLoading(false);
-    }else{
-      setLoading(false);
-      console.log(response);
+    try { 
+      const response = await debitEntranceFee(user.id);
+      console.log('entrance fee resp')
+      console.log(response)
+      if(response?.payload?.status === "success"){
+        setLoading(false)
+        toastManager.addToast({
+          message: response?.payload.data.transfer.message,
+          type: "success",
+        });
+        setLoading(false);
+        setIsOpen(false);
+      }else{
+        setLoading(false);
+        
+      }
       
+    } catch (error) {
+       console.log('entrance fee error')
+      console.log(error)
+      setLoading(false);
+      toastManager.addToast({
+        message: error?.message,
+        type: "error",
+      })
     }
+   
   }
 
   useEffect(() => {
@@ -177,6 +207,7 @@ const Dashboard = ()  => {
 
   useEffect(() => {
     getWalletBalance();
+    console.log('user',user)
   }, []);
 
   // Detect when user scrolls to the bottom
@@ -218,6 +249,16 @@ const Dashboard = ()  => {
     
   }, []);
 
+   useEffect(() => {
+    if (config.settings?.loanSettingsControl === "Society") {
+      setEntranceFee(user.Group.entrance_fee ?? "");
+      
+    }
+    if (config.settings?.loanSettingsControl === "Union") {
+      setEntranceFee(config.settings.union.entranceFee ?? "");
+    }
+  }, []);
+// config.settings?.loanSettingsControl === 'Union' ? config.settings.union.entranceFee : user.Group.entranceFee
   return (
     <div
       className="dashboard"
@@ -234,7 +275,22 @@ const Dashboard = ()  => {
             bankName={process.env.REACT_APP_KEGOW_BANK_NAME} 
             balance={user?.Wallet?.balance} 
           />
-          <GenericCard title="Entrance Fee" description={`You are required to pay your entrance fee of ₦${entranceFee} to get a membership ID from your Society.`} buttonText="Pay entrance fee" buttonAction={payEntranceFee} amount={entranceFee} />
+          {
+            user.GroupMembership ? 
+              wallets?.subWallets?.map((wallet, i) => {
+                return (
+                  <span className="dashboard__section__one__block" key={i}>
+                    <h5>{wallet?.name}</h5>
+                    <h3>{`${wallet?.balance} ${wallet?.currency}`}</h3>
+                    <div>
+                      <FaArrowTrendUp />
+                    </div>
+                  </span>
+                );
+              })
+            :
+            <GenericCard title="Entrance Fee" description={`You are required to pay your entrance fee of ₦${entranceFee} to get a membership ID from your Society.`} buttonText="Pay entrance fee" buttonAction={()=>setIsOpen(true)} amount={entranceFee} loading={loading} />
+          }
           
           {/* <span className="dashboard__section__one__block">
             <h5>Contribution Funds</h5>
@@ -243,7 +299,7 @@ const Dashboard = ()  => {
               <FaArrowTrendUp />
             </div>
           </span> */}
-          {/* {wallets?.subWallets?.map((wallet, i) => {
+           {/* {wallets?.subWallets?.map((wallet, i) => {
             return (
               <span className="dashboard__section__one__block" key={i}>
                 <h5>{wallet?.name}</h5>
@@ -253,7 +309,7 @@ const Dashboard = ()  => {
                 </div>
               </span>
             );
-          })} */}
+          })}  */}
         </div>
       </section>
       <section className="dashboard__section__two">
@@ -353,6 +409,32 @@ const Dashboard = ()  => {
           {loading && <Loading />}
         </div>
       </section>
+
+      
+      <Modal isOpen={isOpen} onClose={()=>setIsOpen(false)} children={
+        <div>
+          <p>To Pay entrance fee, the sum of {entranceFee} naira will be deducted from your wallet</p>
+          <div className="flex justify-between gap-3 mt-3">
+            <Button
+                type="button"
+                typeOf="danger"
+                // className="signup__create__button"
+                onClick={()=>setIsOpen(false)}
+              >
+                Cancel
+            </Button>
+            <Button
+                type="button"
+                typeOf="primary"
+                // className="signup__create__button"
+                onClick={payEntranceFee}
+                disabled={loading}
+              >
+                {loading ? 'processing...' : 'proceed to pay'}
+              </Button>
+          </div>
+      </div>
+      } />
     </div>
   );
 }

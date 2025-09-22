@@ -66,10 +66,13 @@ export const debitEntranceFee = async (user_id) =>{
     const response = await api.get(`/wallet/${user_id}/debit-entrance-fee`);
     return response.data;
   } catch (error) {
+    console.log('action error')
+    console.log(error)
     if (error.response) {
+      console.log('error has response')
       // Add server response details to the error
       error.message = `${
-        error.response.data.error || error.response.statusText
+        error.response.data?.error?.responseMessage || error.response.data?.message || error.response.statusText
       }`;
     } else if (error.request) {
       // Add request details to the error

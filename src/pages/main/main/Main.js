@@ -66,8 +66,10 @@ function Main() {
         });
       }
     } catch (error) {
+      localStorage.clear();
       setErrorMessage(error.response.message);
     } finally {
+      localStorage.clear();
       setLoading(false);
       navigate("/");
     }

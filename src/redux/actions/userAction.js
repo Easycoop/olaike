@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { useDispatcher } from "../../utils/useDispatcher";
 import { getUsers, getDashboardData, updateUserProfile } from "../../services/userService";
+import { debitEntranceFee } from "../../services/walletService";
 import {UPDATE_USER } from "../types/authTypes";
 import { store } from "../store";
 
@@ -53,9 +54,34 @@ export const doUpdateUserProfile =  createAsyncThunk(
   }
 );
 
+export const doDebitEntranceFee =  createAsyncThunk(
+  "users/doDebitEntranceFee",
+  async (payload, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await debitEntranceFee(payload);
+      console.log('entrance fee response');
+      console.log(response);
+      if (response?.status === "success") {
 
+        const currentUser = store.getState().auth.user;
+        const { id, groupId, userId, status } = response.data.memberShipInstance;
 
+        dispatch(updateUserAction({
+          user: {
+            ...currentUser,
+            GroupMembership: { id, groupId, userId, status }
+          }
+        }));
+      }
+
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message || "Action failed");
+    }
+  }
+);
 
 export const useGetUsers = () => useDispatcher(doGetUsers);
 export const useGetDashboardData = () => useDispatcher(doGetDashboardData);
 export const useUpdateUserProfile = () => useDispatcher(doUpdateUserProfile);
+export const useDebitEntranceFee = () => useDispatcher(doDebitEntranceFee);
