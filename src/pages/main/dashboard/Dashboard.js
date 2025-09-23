@@ -15,6 +15,7 @@ import VirtualAccountCard from "../../../components/ui/VirtualAccountCard";
 import GenericCard from "../../../components/ui/GenericCard";
 import { ConfigContext } from "../../../context/ConfigProvider";
 import Modal from "../../../components/ui/modal/Modal";
+import WalletCard from "../../../components/ui/WalletCard";
 
 
 
@@ -184,6 +185,7 @@ const Dashboard = ()  => {
         });
         setLoading(false);
         setIsOpen(false);
+        getWalletBalance();
       }else{
         setLoading(false);
         
@@ -268,7 +270,7 @@ const Dashboard = ()  => {
       <section className="dashboard__section__one">
         {/* <h5 >My wallets</h5> */}
         
-        <div className="flex justify-start gap-3 flex-wrap">
+        <div className="flex justify-between gap-2 flex-wrap">
           <VirtualAccountCard 
             accountName={user?.Wallet?.kegow_account_name} 
             accountNumber={user?.Wallet?.kegow_account} 
@@ -277,17 +279,27 @@ const Dashboard = ()  => {
           />
           {
             user.GroupMembership ? 
-              wallets?.subWallets?.map((wallet, i) => {
+            <div className="flex gap-2 flex-wrap w-full sm:w-6/12 lg:w-7.5/12">
+              {wallets?.subWallets?.map((wallet, i) => {
                 return (
-                  <span className="dashboard__section__one__block" key={i}>
-                    <h5>{wallet?.name}</h5>
-                    <h3>{`${wallet?.balance} ${wallet?.currency}`}</h3>
-                    <div>
-                      <FaArrowTrendUp />
-                    </div>
-                  </span>
+                  <WalletCard 
+                    key={i} 
+                    WalletTitle={wallet?.name} 
+                    balance={wallet?.balance} 
+                    description={wallet?.name ==="Loan" ? "Your loan balance" :(wallet?.name === "Savings Wallet"?"Your savings balance":"Your thrift balance") } 
+                    actionLink={wallet?.name ==="Loan" ? "/main/loans/index" :(wallet?.name === "Savings Wallet"?"/main/fund":"/main/fund")} 
+                    actionTitle={wallet?.name ==="Loan" ? "Manage" :(wallet?.name === "Savings Wallet"?"See savings":"Manage thrift")} 
+                  />
+                  // <span className="dashboard__section__one__block" key={i}>
+                  //   <h5>{wallet?.name}</h5>
+                  //   <h3>{`${wallet?.balance} ${wallet?.currency}`}</h3>
+                  //   <div>
+                  //     <FaArrowTrendUp />
+                  //   </div>
+                  // </span>
                 );
-              })
+              })}
+              </div>
             :
             <GenericCard title="Entrance Fee" description={`You are required to pay your entrance fee of ₦${entranceFee} to get a membership ID from your Society.`} buttonText="Pay entrance fee" buttonAction={()=>setIsOpen(true)} amount={entranceFee} loading={loading} />
           }
@@ -312,7 +324,7 @@ const Dashboard = ()  => {
           })}  */}
         </div>
       </section>
-      <section className="dashboard__section__two">
+      {/* <section className="dashboard__section__two">
         <h5>Money highlights</h5>
         <div className="dashboard__section__two__wrap">
           <div className="dashboard__section__two__wrap__start">
@@ -334,7 +346,6 @@ const Dashboard = ()  => {
             </div>
             <div className="dashboard__section__two__wrap__start__block">
               <h3>Manage Loan </h3>
-              {/* <Link to="/main/loans/index">Apply now</Link> */}
               <Button
                 type="submit"
                 typeOf="primary"
@@ -345,11 +356,9 @@ const Dashboard = ()  => {
               </Button>
             </div>
           </div>
-          {/* <div className="dashboard__section__two__wrap__end">
-            <img src={chart} alt="" />
-          </div> */}
+          
         </div>
-      </section>
+      </section> */}
       <section className="dashboard__section__one">
         <h5>Transaction history</h5>
         <div className="dashboard__section__two">

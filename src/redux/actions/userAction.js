@@ -69,9 +69,10 @@ export const doDebitEntranceFee =  createAsyncThunk(
         dispatch(updateUserAction({
           user: {
             ...currentUser,
-            GroupMembership: { id, groupId, userId, status }
+            GroupMembership: { id, groupId, userId, status },
           }
         }));
+      
       }
 
       return response;

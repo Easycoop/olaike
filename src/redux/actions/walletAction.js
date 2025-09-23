@@ -42,11 +42,13 @@ export const doGenerateWalletAccount =  createAsyncThunk(
 export const doGetWalletBalance = createAsyncThunk("user/doGetWalletBalance", async (payload, {dispatch, rejectWithValue }) => {
   try {
     const data = await getWalletBalance(payload);
+    console.log('waalet balance');
+    console.log(data);
     if(data.status === 'success'){
       const currentUser = store.getState().auth.user;
       // currentUser.wallet.balance = data.data.availableBalance
         dispatch(updateUserAction({
-          user: { ...currentUser, wallet: { ...currentUser.wallet, balance: data.data.availableBalance } }
+          user: { ...currentUser, Wallet: { ...currentUser.Wallet, balance: data.data.availableBalance } }
         }));
     }
     // console.log(data);
