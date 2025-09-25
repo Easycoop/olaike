@@ -4,7 +4,7 @@ import "../../../components/ui/modal/modal-children-styles/modal-withdraw1.css";
 import Button from "../../../components/ui/button/Button";
 import payment from "../../../assets/images/main/payment.png";
 import Modal from "../../../components/ui/modal/Modal";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Input from "../../../components/ui/form-elements/input";
 import { useSelector } from "react-redux";
 import {
@@ -12,26 +12,35 @@ import {
   useVerifyTransactionFund,
   useVerifyTransactionFundLoan,
   useVerifyTransactionFundSavings,
+  usePayThrift
 } from "../../../redux/actions/transactionAction";
 import { ClipLoader } from "react-spinners";
 import toastManager from "../../../components/ui/toast/ToasterManager";
-import image1 from "../../../assets/images/main/rb_1985.png";
-import image2 from "../../../assets/images/main/rb_12830.png";
 import { FaCircle } from "react-icons/fa6";
 import Loading from "../../../components/splash/loading/Loading";
 import { useGetActiveProgram } from "../../../redux/actions/societyAction";
 import { formatUnixToDate, ngDateTimeFormat } from "../../../utils/time";
 import { useGetWallets } from "../../../redux/actions/walletAction";
+import {ConfigContext} from "../../../context/ConfigProvider";
+
 
 const Payment = ()  => {
+  const paymentProcessor = process.env.REACT_APP_PAYMENT_PROVIDER
+;
   const PAYSTACK_KEY = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
+  // custom hooks
   const initializeTransaction = useInitializeTransaction();
   const verifyTransactionFund = useVerifyTransactionFund();
   const verifyTransactionFundSavings = useVerifyTransactionFundSavings();
   const verifyTransactionFundLoan = useVerifyTransactionFundLoan();
   const getActiveProgram = useGetActiveProgram();
   const getWallets = useGetWallets();
+  const payThrift = usePayThrift();
 
+  // contexts
+  const { config } = useContext(ConfigContext);
+
+  // states
   const { user } = useSelector((state) => state.auth);
  
   // const latenessCharge = user.loanStatus == "active" ? 500 : 100;
@@ -67,10 +76,24 @@ const Payment = ()  => {
   };
 
   const getLatenessCharge = (thriftDueDate) => {
+    
     if(thriftDueDate > activeLoan?.approvalDate){
-      return 500
+      if (config.settings?.thriftControl === "Society") {
+        return parseFloat(user.Group.loanee_thrift_lateness_fee) ?? 0;
+        
+      }
+      if (config.settings?.thriftControl === "Union") {
+        return parseFloat(config.settings.union.thriftLatenessFee) ?? 0;
+      }
+      // return 500
     }else{
-      return 100
+      if (config.settings?.thriftControl === "Society") {
+        return parseFloat(user.Group.thrift_lateness_fee) ?? 0;
+        
+      }
+      if (config.settings?.thriftControl === "Union") {
+        return parseFloat(config.settings.union.thriftLatenessFee) ?? 0;
+      }
     }
   };
 
@@ -100,91 +123,139 @@ const Payment = ()  => {
       return;
     }
     // Initialize transaction from backend
-    try {
-      setLoading(true);
-      const response = await initializeTransaction({
-        email: user.email,
-        amount: amount,
-        description: "fund wallet",
-        thrift_id: thriftId,
-        lateness_fee:latenessFee,
-      });
+    if(paymentProcessor === "paystack"){
+      return await initalisePaystack();
+    }
 
-      const { reference } = response.payload.data.data;
+    if(paymentProcessor === "kegow"){
+      return payWithKegow();
+    }
+    
+  };
 
-      closeModal();
+  const initalisePaystack = async()=>{
+      try {
+        setLoading(true);
+        const response = await initializeTransaction({
+          email: user.email,
+          amount: amount,
+          description: "thrift",
+          thrift_id: thriftId,
+          lateness_fee:latenessFee,
+        });
 
-      // Open Paystack modal to complete payment
-      const handler = window.PaystackPop.setup({
-        key: PAYSTACK_KEY, // Paystack public key
-        email: user.email,
-        amount: amount * 100,
-        currency: "NGN",
-        ref: reference, // Reference from backend initialization
-        callback: function (res) {
-          // Payment completed, verify the payment
-          const verifyPayment = async () => {
-            try {
-              let response;
+        const { reference } = response.payload.data.data;
 
-              if (type == "fund") {
-                response = await verifyTransactionFund(res.reference); // Await the verification
-              }
-              if (type == "savings") {
-                response = await verifyTransactionFundSavings(res.reference); // Await the verification
-              }
-              if (type == "loan") {
-                response = await verifyTransactionFundLoan(res.reference); // Await the verification
-              }
+        closeModal();
 
-              if (
-                response?.payload.status === 200 ||
-                response?.payload.status === "success"
-              ) {
-                toastManager.addToast({
-                  message: "Payment Successful",
-                  type: "success",
-                });
-                fetchActivePrograms();
-                // handleModalClick("done");
-              } else {
+        // Open Paystack modal to complete payment
+        const handler = window.PaystackPop.setup({
+          key: PAYSTACK_KEY, // Paystack public key
+          email: user.email,
+          amount: amount * 100,
+          currency: "NGN",
+          ref: reference, // Reference from backend initialization
+          callback: function (res) {
+            // Payment completed, verify the payment
+            const verifyPayment = async () => {
+              try {
+                let response;
+
+                if (type == "fund") {
+                  response = await verifyTransactionFund(res.reference); // Await the verification
+                }
+                if (type == "savings") {
+                  response = await verifyTransactionFundSavings(res.reference); // Await the verification
+                }
+                if (type == "loan") {
+                  response = await verifyTransactionFundLoan(res.reference); // Await the verification
+                }
+
+                if (
+                  response?.payload.status === 200 ||
+                  response?.payload.status === "success"
+                ) {
+                  toastManager.addToast({
+                    message: "Payment Successful",
+                    type: "success",
+                  });
+                  fetchActivePrograms();
+                  // handleModalClick("done");
+                } else {
+                  toastManager.addToast({
+                    message: "Payment failed: Could not verify payment",
+                    type: "error",
+                  });
+                }
+              } catch (error) {
+                console.error("Verification error:", error);
                 toastManager.addToast({
                   message: "Payment failed: Could not verify payment",
                   type: "error",
                 });
               }
-            } catch (error) {
-              console.error("Verification error:", error);
-              toastManager.addToast({
-                message: "Payment failed: Could not verify payment",
-                type: "error",
-              });
-            }
-          };
+            };
 
-          // Call the async function inside the synchronous callback
-          verifyPayment();
-        },
+            // Call the async function inside the synchronous callback
+            verifyPayment();
+          },
 
-        onClose: function () {
+          onClose: function () {
+            toastManager.addToast({
+              message: "Payment canceled",
+              type: "error",
+            });
+          },
+        });
+
+        handler.openIframe(); // Open the Paystack modal
+      } catch (error) {
+        console.error("Payment initialization failed:", error);
+        toastManager.addToast({
+          message: "Payment initialization failed",
+          type: "error",
+        });
+      } finally {
+        setLoading(false);
+      }
+  }
+
+  const payWithKegow = async () => {
+    try {
+        setLoading(true);
+        const response = await payThrift({
+          description: "thrift",
+          amount: amount,
+          thrift_id: thriftId,
+          lateness_fee:latenessFee
+        });
+
+        setLoading(false);
+        console.log(response);
+        if (response?.payload.status === "success") {
           toastManager.addToast({
-            message: "Payment canceled",
+            message: "Payment Successful",
+            type: "success",
+          });
+          fetchActivePrograms();
+          closeModal()
+        } else {
+          toastManager.addToast({
+            message: "Payment failed: Could not verify payment",
             type: "error",
           });
-        },
-      });
-
-      handler.openIframe(); // Open the Paystack modal
+        }
     } catch (error) {
-      console.error("Payment initialization failed:", error);
+      setLoading(false);
+      console.error("Payment  failed: ");
+      console.log(error);
       toastManager.addToast({
-        message: "Payment initialization failed",
+        message: "Payment  failed",
         type: "error",
       });
-    } finally {
-      setLoading(false);
     }
-  };
+   
+  }
 
   const fetchActivePrograms = async () =>{
     setLoading(true);
@@ -225,19 +296,32 @@ const Payment = ()  => {
   };
   
   useEffect(()=>{
+    
     handleGetWallets();
     fetchActivePrograms()
   }, []);
 
   useEffect(() => {
+    let minThrift;
+    if (config.settings?.thriftControl === "Society") {
+       minThrift =  parseFloat(user.Group.minimum_thrift_amount) ?? 0;
+      
+    }
+    if (config.settings?.thriftControl === "Union") {
+      minThrift =  parseFloat(config.settings.union.minimumThriftAmount) ?? 0;
+    }
     
-    setMinValue(650+latenessFee);
+    setMinValue(minThrift+latenessFee);
+
+    
   }, [latenessFee]);
 
   useEffect(() => {
     const sWallet = wallets?.subWallets?.find(wallet => wallet?.name === "Savings Wallet");
     setSavingsWallet(sWallet);
   }, [wallets])
+
+  
   return (
     <div className="withdraw">
      
@@ -265,7 +349,7 @@ const Payment = ()  => {
             <div style={{display:"flex", alignItems:"center", justifyContent:"space-around"}}>
               <h3>Contibution Programs</h3>
 
-              <div className="balance"> Thrift Balance: ₦{`${wallets?.wallet?.balance.toLocaleString()} `}  </div>
+              <div className="balance"> Thrift Balance: ₦{`${wallets?.subWallets?.find(wallet => wallet?.name === "Thrift")?.balance.toLocaleString()} `}  </div>
             </div>
 
             <section className="ad__novel__sc__three"> 

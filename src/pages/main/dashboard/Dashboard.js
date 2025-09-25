@@ -21,7 +21,7 @@ import WalletCard from "../../../components/ui/WalletCard";
 
 const Dashboard = ()  => {
   const navigate = useNavigate();
-  const { config, fetchConfig } = useContext(ConfigContext);
+  const { config } = useContext(ConfigContext);
   const getTransactions = useGetTransactions();
   const getWallets = useGetWallets();
   const getDashboardData = useGetDashboardData();
@@ -259,7 +259,7 @@ const Dashboard = ()  => {
     if (config.settings?.loanSettingsControl === "Union") {
       setEntranceFee(config.settings.union.entranceFee ?? "");
     }
-  }, []);
+  }, [config]);
 // config.settings?.loanSettingsControl === 'Union' ? config.settings.union.entranceFee : user.Group.entranceFee
   return (
     <div
@@ -270,7 +270,7 @@ const Dashboard = ()  => {
       <section className="dashboard__section__one">
         {/* <h5 >My wallets</h5> */}
         
-        <div className="flex justify-between gap-2 flex-wrap">
+        <div className="flex justify-between gap-1 ">
           <VirtualAccountCard 
             accountName={user?.Wallet?.kegow_account_name} 
             accountNumber={user?.Wallet?.kegow_account} 
@@ -279,7 +279,7 @@ const Dashboard = ()  => {
           />
           {
             user.GroupMembership ? 
-            <div className="flex gap-2 flex-wrap w-full sm:w-6/12 lg:w-7.5/12">
+            <div className="flex gap-2 flex-wrap w-full sm:w-6/12 lg:w-9/12 justify-end">
               {wallets?.subWallets?.map((wallet, i) => {
                 return (
                   <WalletCard 
