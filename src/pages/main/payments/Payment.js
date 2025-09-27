@@ -20,8 +20,9 @@ import { FaCircle } from "react-icons/fa6";
 import Loading from "../../../components/splash/loading/Loading";
 import { useGetActiveProgram } from "../../../redux/actions/societyAction";
 import { formatUnixToDate, ngDateTimeFormat } from "../../../utils/time";
-import { useGetWallets } from "../../../redux/actions/walletAction";
+import { useGetWallets, useGetWalletBalance } from "../../../redux/actions/walletAction";
 import {ConfigContext} from "../../../context/ConfigProvider";
+ 
 
 
 const Payment = ()  => {
@@ -36,6 +37,7 @@ const Payment = ()  => {
   const getActiveProgram = useGetActiveProgram();
   const getWallets = useGetWallets();
   const payThrift = usePayThrift();
+  const getWalletBalance = useGetWalletBalance();
 
   // contexts
   const { config } = useContext(ConfigContext);
@@ -238,6 +240,8 @@ const Payment = ()  => {
             type: "success",
           });
           fetchActivePrograms();
+          // getWalletBalance();
+          handleGetWallets();
           closeModal()
         } else {
           toastManager.addToast({
@@ -298,7 +302,8 @@ const Payment = ()  => {
   useEffect(()=>{
     
     handleGetWallets();
-    fetchActivePrograms()
+    fetchActivePrograms();
+    getWalletBalance();
   }, []);
 
   useEffect(() => {
@@ -495,7 +500,7 @@ const Payment = ()  => {
             <h5 className="modal__withdraw1__error">{errorMessage}</h5>
           )}
           <Button className="modal__withdraw1__button" onClick={handleFund}>
-            {loading ? <ClipLoader color="#fff" size={20} /> : "Fund wallet"}
+            {loading ? <ClipLoader color="#fff" size={20} /> : "Pay now"}
           </Button>
         </div>
       </Modal>

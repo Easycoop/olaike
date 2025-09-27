@@ -209,7 +209,7 @@ const Dashboard = ()  => {
 
   useEffect(() => {
     getWalletBalance();
-    console.log('user',user)
+    // console.log('user',user)
   }, []);
 
   // Detect when user scrolls to the bottom

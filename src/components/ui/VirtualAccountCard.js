@@ -3,7 +3,7 @@ import { FaCopy } from "react-icons/fa6";
 
 const VirtualAccountCard = ({ accountName, accountNumber, bankName, balance, onFundWallet }) => {
   return (
-    <div className="w-full sm:w-6/12 lg:w-4/12  bg-white shadow-md rounded-2xl border border-gray-100 p-3">
+    <div className="w-full sm:w-6/12 lg:w-4/12 bg-white shadow-md rounded-2xl border border-gray-100 p-3">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xs sm:text-sm font-semibold text-[#003399]">
