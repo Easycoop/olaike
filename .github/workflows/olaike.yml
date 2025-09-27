@@ -15,7 +15,7 @@ jobs:
       REACT_APP_BASE_URL_SOCKET: ${{ secrets.OLAIKE_REACT_APP_BASE_URL_SOCKET }}
       REACT_APP_WEB_URL: ${{ secrets.OLAIKE_REACT_APP_WEB_URL }}
       REACT_APP_PAYSTACK_PUBLIC_KEY: "secrets.OLAIKE_PAYSTACK_PUBLIC_KEY"
-      REACT_ACTIVE_PAYMENT_GATEWAY: "kegow" # kegow or paystack
+      REACT_APP_PAYMENT_PROVIDER: "kegow" # kegow or paystack
 
     steps:
       - name: Checkout Repository

@@ -130,7 +130,7 @@ const Payment = ()  => {
     }
 
     if(paymentProcessor === "kegow"){
-      return payWithKegow();
+      return await payWithKegow();
     }
     
   };

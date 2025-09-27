@@ -15,8 +15,7 @@ jobs:
       REACT_APP_BASE_URL_SOCKET: ${{ secrets.REACT_APP_BASE_URL_SOCKET }}
       REACT_APP_WEB_URL: ${{ secrets.REACT_APP_WEB_URL }}
       REACT_APP_PAYSTACK_PUBLIC_KEY: "pk_test_abea14b8413cb3f06f2d652fced67a2d1a29ede7"
-      REACT_ACTIVE_PAYMENT_GATEWAY: "kegow" # kegow or paystack
-
+      REACT_APP_PAYMENT_PROVIDER: "kegow" # kegow or paystack
 
     steps:
       - name: Checkout Repository
