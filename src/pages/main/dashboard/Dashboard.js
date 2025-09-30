@@ -16,6 +16,7 @@ import GenericCard from "../../../components/ui/GenericCard";
 import { ConfigContext } from "../../../context/ConfigProvider";
 import Modal from "../../../components/ui/modal/Modal";
 import WalletCard from "../../../components/ui/WalletCard";
+import { ngDateTimeFormat } from "../../../utils/time";
 
 
 
@@ -89,7 +90,7 @@ const Dashboard = ()  => {
       if (response?.payload.status === "success") {
         setErrorMessage("");
         const newData = response.payload.data.result;
-        setTransactions((prevData) => [...prevData, ...newData]);
+        setTransactions(newData);
       } else {
         setErrorMessage(response.message);
       }
@@ -390,7 +391,7 @@ const Dashboard = ()  => {
               return (
                 <div className="dashboard__section__two__entry">
                   <div className="dashboard__section__two__entry__date">
-                    {transaction.createdAt}
+                    {ngDateTimeFormat(transaction.createdAt)}
                   </div>
                   <div className="dashboard__section__two__entry__amount">
                     {transaction.amount}
@@ -402,7 +403,7 @@ const Dashboard = ()  => {
                     {transaction.currency}
                   </div>
                   <div className="dashboard__section__two__entry__type">
-                    {/* <FaCircle style={{ color: "#32C398" }} /> */}
+                    
                     {transaction.type}
                   </div>
                   <div className="dashboard__section__two__entry__transid">

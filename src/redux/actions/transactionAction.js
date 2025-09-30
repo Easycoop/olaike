@@ -12,7 +12,8 @@ import {
   verifyTransactionFundSavings,
   getUnUsedLoanFormTransactions,
   simulateWebHook,
-  payThrift
+  processKegowPayment,
+  contributeSpecialSaving,
 } from "../../services/transactionServices";
 
 export const doInitializeTransaction = createAsyncThunk(
@@ -135,17 +136,32 @@ export const doSimulateWebHook = createAsyncThunk(
   }
 );
 
-export const doPayThrift = createAsyncThunk(
-  "transactions/doPayThrift",
+export const doProcessKegowPayment = createAsyncThunk(
+  "transactions/doProcessKegowPayment",
   async (payload, { rejectWithValue }) => {
     try {
-      const data = await payThrift(payload);
+      const data = await processKegowPayment(payload);
+      return data;
+    } catch (error) {
+      // return error
+      // console.log(error.response?.data?.message)
+      return rejectWithValue(error.response?.data?.message || error.message || "Action failed");
+      
+    }
+  }
+);
+
+export const doContributeSpecialSaving = createAsyncThunk(
+  "transactions/doContributeSpecialSaving",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const data = await contributeSpecialSaving(payload);
       return data;
     } catch (error) {
       return rejectWithValue(error.message || "Action failed");
     }
   }
-);
+)
 
 export const useGetTransactions = () => useDispatcher(doGetTransactions);
 export const useInitializeTransaction = () =>
@@ -165,6 +181,8 @@ export const useGetUnUsedLoanFormTransactions = () =>
   useDispatcher(doGetUnUsedLoanFormTransactions);
 export const useSimulateWebHook = () => 
   useDispatcher(doSimulateWebHook);
-export const usePayThrift = () => 
-  useDispatcher(doPayThrift);
+export const useProcessKegowPayment = () => 
+  useDispatcher(doProcessKegowPayment);
+export const useContributeSpecialSaving = () => 
+  useDispatcher(doContributeSpecialSaving);
 

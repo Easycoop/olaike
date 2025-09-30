@@ -215,9 +215,40 @@ export const simulateWebHook = async (payload) => {
 };
 
 
-export const payThrift = async (payload) => {
+export const processKegowPayment = async (payload) => {
   try {
-    const response = await api.post("/transaction/pay-thrift", payload);
+    let url;
+    if(payload.description === 'thrift'){
+      url = '/transaction/pay-thrift';
+    }
+    if(payload.description === 'savings'){
+      url = '/transaction/pay-special-savings';
+    }
+    const response = await api.post(url, payload);
+    return response.data;
+  } catch (error) {
+    
+    if (error.response) {
+      
+      // Add server response details to the error
+      error.message = `${
+        error.response.data.error || error.response.statusText
+      }`;
+    } else if (error.request) {
+      // Add request details to the error
+      error.message = "No response received from server.";
+    } else {
+      // Add request setup details to the error
+      error.message = `${error.message}`;
+    }
+    throw error;
+  }
+};
+
+
+export const contributeSpecialSaving = async (payload) => {
+  try {
+    const response  = await api.post(`/transaction/debit-special-savings`);
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -234,4 +265,4 @@ export const payThrift = async (payload) => {
     }
     throw error;
   }
-};
+}

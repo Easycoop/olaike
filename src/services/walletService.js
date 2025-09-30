@@ -105,3 +105,5 @@ export const getWalletBalance = async () => {
       throw error;
     }
 }
+
+

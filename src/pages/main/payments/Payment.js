@@ -12,7 +12,7 @@ import {
   useVerifyTransactionFund,
   useVerifyTransactionFundLoan,
   useVerifyTransactionFundSavings,
-  usePayThrift
+  useProcessKegowPayment
 } from "../../../redux/actions/transactionAction";
 import { ClipLoader } from "react-spinners";
 import toastManager from "../../../components/ui/toast/ToasterManager";
@@ -36,7 +36,7 @@ const Payment = ()  => {
   const verifyTransactionFundLoan = useVerifyTransactionFundLoan();
   const getActiveProgram = useGetActiveProgram();
   const getWallets = useGetWallets();
-  const payThrift = usePayThrift();
+  const processKegowPayment = useProcessKegowPayment();
   const getWalletBalance = useGetWalletBalance();
 
   // contexts
@@ -110,7 +110,7 @@ const Payment = ()  => {
     } else return;
   };
 
-  const handleFund = async () => {
+  const handleFund = async (description, metaData) => {
     if (!amount) {
       setErrorMessage("Please enter amount you want to fund");
       return;
@@ -130,7 +130,7 @@ const Payment = ()  => {
     }
 
     if(paymentProcessor === "kegow"){
-      return await payWithKegow();
+      return await payWithKegow(description, metaData);
     }
     
   };
@@ -222,14 +222,12 @@ const Payment = ()  => {
       }
   }
 
-  const payWithKegow = async () => {
+  const payWithKegow = async (description, metaData) => {
     try {
         setLoading(true);
-        const response = await payThrift({
-          description: "thrift",
-          amount: amount,
-          thrift_id: thriftId,
-          lateness_fee:latenessFee
+        const response = await processKegowPayment({
+          description,
+          metaData
         });
 
         setLoading(false);
@@ -245,7 +243,7 @@ const Payment = ()  => {
           closeModal()
         } else {
           toastManager.addToast({
-            message: "Payment failed: Could not verify payment",
+            message: response.payload?.response?.data?.message || "Payment failed: Could not verify payment",
             type: "error",
           });
         }
@@ -484,7 +482,7 @@ const Payment = ()  => {
       {/* FUND AMOUNT MODAL */}
       <Modal isOpen={isOpen.fund} onClose={closeModal}>
         <div className="modal__withdraw1">
-          <h3>Enter how much you want to fund</h3>
+          <h3>Enter how much you want to contribute</h3>
           {latenessFee > 0 && <small className="modal__withdraw1__error">Attention! <br/> You have a lateness fee of {latenessFee} naira for this week's thrift</small>}
           
           <small className="text-danger">Minimum of {minValue} naira {latenessFee > 0 && "(Lateness fee inclusive)"}</small>
@@ -499,7 +497,7 @@ const Payment = ()  => {
           {errorMessage && (
             <h5 className="modal__withdraw1__error">{errorMessage}</h5>
           )}
-          <Button className="modal__withdraw1__button" onClick={handleFund}>
+          <Button className="modal__withdraw1__button" onClick={() => handleFund('thrift', {amount: amount, thrift_id: thriftId, lateness_fee:latenessFee})}>
             {loading ? <ClipLoader color="#fff" size={20} /> : "Pay now"}
           </Button>
         </div>
@@ -519,13 +517,13 @@ const Payment = ()  => {
           {errorMessage && (
             <h5 className="modal__withdraw1__error">{errorMessage}</h5>
           )}
-          <Button className="modal__withdraw1__button" onClick={handleFund}>
+          <Button className="modal__withdraw1__button" onClick={() => handleFund('savings', {amount: amount})}>
             {loading ? <ClipLoader color="#fff" size={20} /> : "Save"}
           </Button>
         </div>
       </Modal>
 
-      <Modal isOpen={isOpen.loan} onClose={closeModal}>
+      {/* <Modal isOpen={isOpen.loan} onClose={closeModal}>
         <div className="modal__withdraw1">
           <h3>Enter how much you want to repay from loan</h3>
           <Input
@@ -543,7 +541,7 @@ const Payment = ()  => {
             {loading ? <ClipLoader color="#fff" size={20} /> : "Repay loan"}
           </Button>
         </div>
-      </Modal>
+      </Modal> */}
     </div>
   );
 }
