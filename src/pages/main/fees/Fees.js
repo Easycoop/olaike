@@ -9,6 +9,7 @@ import { FaCircle } from "react-icons/fa6";
 import { useGetFees } from "../../../redux/actions/miscAction";
 import Loading from "../../../components/splash/loading/Loading";
 import NoResult from "../../../components/splash/no-result/NoResult";
+import { ngDateFormat } from "../../../utils/time";
 
 function Fees() {
   const navigate = useNavigate();
@@ -40,9 +41,9 @@ function Fees() {
 
   return (
     <div className="ad__novel">
-      <section className="ad__novel__sc__one">
+      {/* <section className="ad__novel__sc__one">
         <input type="text" placeholder="Search" className="" />
-      </section>
+      </section> */}
 
       <section className="ad__novel__sc__three">
         <div className="admin-table">
@@ -69,7 +70,7 @@ function Fees() {
               {fees.map((fee, i) => (
                 <div key={i} className="admin-table-row">
                   <div className="admin-table-cell">{`${fee.currency} ${fee.amount}`}</div>
-                  <div className="admin-table-cell">{fee.createdAt}</div>
+                  <div className="admin-table-cell">{ngDateFormat(fee.createdAt)}</div>
                   <div className="admin-table-cell">{fee.type}</div>
                   <div className="admin-table-cell">
                     <span
