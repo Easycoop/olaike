@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import { ClipLoader } from "react-spinners";
 import Button from "../../../components/ui/button/Button";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {getNin, initiatePhoneVerification, verifyOtp, confirmPhoneVerification} from "../../../services/userService";
 import toastManager from "../../../components/ui/toast/ToasterManager";
 import {verifyNin} from "../../../services/userService";
@@ -11,7 +10,6 @@ import {MdVerifiedUser} from "react-icons/md"
 import {useGenerateWalletAccount} from "../../../redux/actions/walletAction";
 
 const KYC = () => {
-    // const misc = useSelector((state) => state.misc);
     const { user } = useSelector((state) => state.auth);
     const generateWalletAccount = useGenerateWalletAccount();
     
@@ -305,12 +303,12 @@ const KYC = () => {
                             <input className="loan__input" type="date" name="dob" disabled={ninVerified} onChange={(e)=>setNin({...nin, dob: e.target.value})}/>
                         </div> 
                     </div>
+
                     <div className="d-flex " style={{alignItems: "center", gap: "10px"}} >
                         {!ninVerified && nin?.status !="pending" &&
                         <div className="loan__form__set" >
                             <label className="loan__label">Nin Slip <small className="text-danger">Maximum of 1mb</small> </label>
                             <input className="loan__input" type="file" name="file" accept="image/*" onChange={handleFileChange} />
-                        
                         </div> 
                         }
 
@@ -325,6 +323,7 @@ const KYC = () => {
                             {nin.rejectionReason && nin.status === "rejected" && <p className="text-danger">{nin.rejectionReason}</p>}
                         </div>
                     </div>
+
                     {!ninVerified && nin?.status !="pending" &&
                     <Button type="button" typeOf="primary" onClick={handleNinVerification} style={{ height: "50px  "}}>
                         {ninBtnLoading ? <ClipLoader color="#fff" size={20} /> : "Submit  NIN"}   
