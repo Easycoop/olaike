@@ -1,7 +1,20 @@
 import { copyToClipBoard } from "../../utils/generic";
 import { FaCopy } from "react-icons/fa6";
+import { useState } from "react";
 
 const VirtualAccountCard = ({ accountName, accountNumber, bankName, balance, onFundWallet }) => {
+
+  const [fundBtnText, setFundBtnText] = useState('I just funded my wallet');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleWalletUpdate = async () => {
+    setIsLoading(true);
+    setFundBtnText('Checking transaction ...');
+    await onFundWallet();
+    setFundBtnText('I just funded my wallet');
+    setIsLoading(false);
+  }
+
   return (
     <div className="w-full sm:w-6/12 lg:w-4/12 bg-white shadow-md rounded-2xl border border-gray-100 p-3">
       {/* Header */}
@@ -58,10 +71,11 @@ const VirtualAccountCard = ({ accountName, accountNumber, bankName, balance, onF
 
       {/* Fund Wallet Button */}
       <button
-        onClick={onFundWallet}
+        disabled={isLoading}
+        onClick={handleWalletUpdate}
         className="w-full bg-[#003399] hover:bg-[#002080] text-white text-xs sm:text-sm font-medium py-2 rounded-lg transition-colors"
       >
-        I just funded my wallet
+        {fundBtnText}
       </button>
     </div>
   );

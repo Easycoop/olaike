@@ -74,3 +74,28 @@ export const formatUnixToHtmlDate = (unixTimestamp) => {
       hour12: true  // Use 12-hour format
     });
   }
+
+
+
+  /**
+ * Checks if a date (from <input type="date">) is at least a given age.
+ * @param {string} birthDateString - Date string from the HTML input (e.g. "2008-05-10")
+ * @param {number} minAge - Minimum required age (default is 16)
+ * @returns {boolean} true if the person is at least minAge years old, false otherwise
+ */
+export const isAtLeastAge = (birthDateString, minAge ) => {
+  if (!birthDateString || !minAge) throw new Error("Both Date of birth and min Age are required");
+
+  const birthDate = new Date(birthDateString);
+  const today = new Date();
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  // Adjust if birthday hasn't occurred yet this year
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
+  return age >= minAge;
+};

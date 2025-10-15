@@ -277,6 +277,7 @@ const Dashboard = ()  => {
             accountNumber={user?.Wallet?.kegow_account} 
             bankName={process.env.REACT_APP_KEGOW_BANK_NAME} 
             balance={user?.Wallet?.balance} 
+            onFundWallet={getWalletBalance}
           />
           {
             user.GroupMembership ? 

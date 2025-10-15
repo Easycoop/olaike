@@ -217,8 +217,7 @@ export const resendOtp = async (email, purpose='login') => {
   }
 };
 
-export const verifyEmailOtp = async ({email, otp, purpose='login', password}) => {
-  
+export const verifyEmailOtp = async ({email, otp, purpose='login', password}) => { 
   try {
     const response = await api.post("/auth/verify-email-otp/", {
       email,

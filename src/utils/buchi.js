@@ -3,9 +3,46 @@ const getOriginalWordFromCompoundWord = (compoundWord) => {
     return compoundWord?.replace('_', ' ');
 };
 
+const isAtLeastAge = (birthDateString, minAge ) => {
+  if (!birthDateString || !minAge) throw new Error("Both Date of birth and min Age are required");
+
+  const birthDate = new Date(birthDateString);
+  const today = new Date();
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  // Adjust if birthday hasn't occurred yet this year
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
+  return age >= minAge;
+};
+
+const isAtMostAge = (birthDateString, maxAge ) => {
+  if (!birthDateString || !maxAge) throw new Error("Both Date of birth and min Age are required");
+
+  const birthDate = new Date(birthDateString);
+  const today = new Date();
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  // Adjust if birthday hasn't occurred yet this year
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
+  return age < maxAge;
+};
+
 // Validation function
 const validateField = async (input, constraints, alias = null, fields) => {
+    console.log('input', input);
+    // console.log()
     if (input == null) {
+    
         return { status: "fail", error: `${input} cannot be null` };
     }
 
@@ -20,9 +57,25 @@ const validateField = async (input, constraints, alias = null, fields) => {
     const numberPattern = /[0-9]/g;
 
     const rules = {
+        // required: {
+        //     pass: constraints?.required ? (input?.type !== 'file' ? (input?.type === 'number' ? !!input?.value : !!input?.value?.length) : !!input?.files?.length) : true,
+        //     message: `${alias ?? getOriginalWordFromCompoundWord(input?.field)} is required`
+        // },
         required: {
-            pass: constraints?.required ? (input?.type !== 'file' ? (input?.type === 'number' ? !!input?.value : !!input?.value?.length) : !!input?.files?.length) : true,
-            message: `${alias ?? getOriginalWordFromCompoundWord(input?.field)} is required`
+            pass:
+            constraints?.required === true
+                ? input?.type === "file"
+                ? input.value instanceof File && input.value.size // Check if it's a valid MultipartFile
+                : input?.type === "number"
+                ? typeof input?.value === "number"
+                : input?.type === "boolean"
+                ? typeof input?.value === "boolean"
+                : input?.value?.length > 0
+                : true,
+            message:
+            alias === null
+                ? getOriginalWordFromCompoundWord(input?.field) + " is required"
+                : alias + " is required",
         },
         min_length: {
             pass: constraints?.min_length ? (input?.value?.length >= constraints?.min_length) : true,
@@ -55,7 +108,15 @@ const validateField = async (input, constraints, alias = null, fields) => {
         array: {
             pass: constraints?.array ? Array.isArray(input) : true,
             message: `${alias ?? getOriginalWordFromCompoundWord(input?.field)} must be an array`
-        }
+        },
+        min_age: {
+            pass: constraints?.min_age && input?.value?.length ? isAtLeastAge(input?.value, constraints?.min_age) : true,
+            message: `${alias ?? getOriginalWordFromCompoundWord(input?.field)} must be at least ${constraints?.min_age} years old`
+        },
+        max_age: {
+            pass: constraints?.max_age && input?.value?.length ? isAtMostAge(input?.value, constraints?.max_age) : true,
+            message: `${alias ?? getOriginalWordFromCompoundWord(input?.field)} must be at most ${constraints?.max_age} years old`
+        },
     };
 
     const feedback = Object.keys(constraints)

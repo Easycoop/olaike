@@ -8,6 +8,8 @@ import toastManager from "../../../components/ui/toast/ToasterManager";
 import {verifyNin} from "../../../services/userService";
 import {MdVerifiedUser} from "react-icons/md"
 import {useGenerateWalletAccount} from "../../../redux/actions/walletAction";
+import {runValidation} from "../../../utils/buchi";
+import ValidationError from "../../../components/ui/form-elements/ValidationError";
 
 const KYC = () => {
     const { user } = useSelector((state) => state.auth);
@@ -25,6 +27,7 @@ const KYC = () => {
     const [otpSent, setOtpSent] = useState(false);
     const [kegowWallet, setKegowWallet] = useState(localStorage.getItem('kegowWallet') &&  localStorage.getItem('kegowWallet') != "undefined" ? JSON.parse(localStorage.getItem('kegowWallet')) : null);
     const [imagePreview, setImagePreview] = useState(null);
+  const [validationErrors, setValidationErrors] = useState();
 
     const [nin, setNin] = useState({
         number: "",
@@ -127,7 +130,38 @@ const KYC = () => {
         }
       };
 
+    const validateNinData = async () => {
+        const validationData = [
+            {
+                input: { value: nin.number, field: "nin", type: "text" },
+                rules: {required:true, char_length: 11}
+            },
+            {
+                input: { value: nin.dob, field: "dob", type: "text" },
+                rules: { required: true, min_age: 16},
+                alias:  "Date of Birth"
+            },
+            
+            // {
+            //     input: { value: nin.image, field: "image", type: "file" },
+            //     rules: { required: true },
+            //     alias:  "Nin Slip"
+            // },
+
+        ]
+       
+        const validate = await runValidation(validationData);
+        if(validate?.status === false){
+            setValidationErrors(validate.errors);
+            return;
+        }
+
+        handleNinVerification();
+        
+    }
+
     const handleNinVerification = async () => {
+        console.log("ijkjk")
         try {   
             setNinBtnLoading(true);
             const formData = new FormData();
@@ -172,6 +206,8 @@ const KYC = () => {
     const checkExistingNin = async () => {
         try {
             const response = await getNin(user.id);
+             console.log("existing nin")
+            console.log(response)
             if(response?.status === 'success'){
                 
                 
@@ -296,21 +332,28 @@ const KYC = () => {
                             <label className="loan__label">NIN</label>
                             <input className="loan__input" placeholder="National Identification Number" name="nin" value={nin.number} disabled={ninVerified} onChange={(e) => setNin({...nin, number: e.target.value})}
                             />
+                            <ValidationError validationErrors={validationErrors} style={{marginTop:"-40px"}} field={"nin"} />
                         </div> 
 
                         <div className="loan__form__set" >
                             <label className="loan__label">Date of Birth</label>
-                            <input className="loan__input" type="date" name="dob" disabled={ninVerified} onChange={(e)=>setNin({...nin, dob: e.target.value})}/>
+                            <input className="loan__input" type="date" name="dob" value={nin.dob} disabled={ninVerified} onChange={(e)=>setNin({...nin, dob: e.target.value})}/>
+                            <ValidationError validationErrors={validationErrors} style={{marginTop:"-40px"}} field={"dob"} />
                         </div> 
                     </div>
 
-                    <div className="d-flex " style={{alignItems: "center", gap: "10px"}} >
-                        {!ninVerified && nin?.status !="pending" &&
-                        <div className="loan__form__set" >
-                            <label className="loan__label">Nin Slip <small className="text-danger">Maximum of 1mb</small> </label>
-                            <input className="loan__input" type="file" name="file" accept="image/*" onChange={handleFileChange} />
-                        </div> 
+                    <div className="d-flex " style={{alignItems: "center", gap: "10px", display:"flex"}} >
+                        {
+                            !ninVerified && nin?.status !="pending" &&
+                            <div className="loan__form__set" >
+                                <label className="loan__label">Nin Slip <small className="text-danger">Maximum of 1mb</small> </label>
+                                <input className="loan__input" type="file" name="file" accept="image/*" onChange={handleFileChange} />
+                                <ValidationError validationErrors={validationErrors} style={{marginTop:"-40px"}} field={"image"} />
+                            </div> 
+                            
                         }
+
+                        
 
                         <div className="d-flex" style={{alignItems: "center", gap: "10px", marginTop:"-40px"}} >
                             {imagePreview ? (
@@ -322,13 +365,16 @@ const KYC = () => {
                             {ninVerified ? <><MdVerifiedUser  style={{color:"green", fontSize: "40px"}}/> verified</> : nin?.status === "pending" ? <><MdVerifiedUser  style={{color:"gold", fontSize: "40px"}}/> pending</> :<><MdVerifiedUser  style={{color:"red", fontSize: "40px"}}/> not verified </>}
                             {nin.rejectionReason && nin.status === "rejected" && <p className="text-danger">{nin.rejectionReason}</p>}
                         </div>
+                        {!ninVerified && 
+                            
+                            <Button type="button" typeOf="primary" onClick={validateNinData} style={{ height: "50px  "}}>
+                                {ninBtnLoading ? <ClipLoader color="#fff" size={20} /> : nin?.status ==="pending" ? "Update  NIN":"Submit  NIN"}   
+                            </Button>
+                        }
                     </div>
+                    
 
-                    {!ninVerified && nin?.status !="pending" &&
-                    <Button type="button" typeOf="primary" onClick={handleNinVerification} style={{ height: "50px  "}}>
-                        {ninBtnLoading ? <ClipLoader color="#fff" size={20} /> : "Submit  NIN"}   
-                    </Button>
-                    }
+                    
                 </div>
                 {/* <div className="d-flex " style={{alignItems: "center", gap: "10px"}}>
                     <div className="loan__form__set" >
