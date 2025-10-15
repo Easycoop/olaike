@@ -29,8 +29,27 @@ import KycStrictRoute from "./route/kycStrictRoute";
 import OtpScreen from "./pages/auth/otp/OtpScreen";
 import ForgotPassword from "./pages/auth/password/ForgotPassword";
 import UpdateProfile from "./pages/main/user/UpdateProfile";
+import {setFavicon, setSiteTitle} from "./utils/setConfigMetadata";
+import { useEffect, useContext } from "react";
+import {ConfigContext} from "./context/ConfigProvider";
 
 function App() {
+  
+    const { config, fetchConfig } = useContext(ConfigContext);
+
+  useEffect(() => {
+    // Change favicon dynamically
+    if(config.logos?.fav_icon){
+      setFavicon(config.logos.fav_icon);
+      setSiteTitle(config.app_data.app_name);
+    }else{
+      fetchConfig();
+    }
+    console.log("config retreived", config)
+    // setFavicon("/icons/dark-favicon.ico");\
+  }, []);
+
+
   return (
     <div className="app">
       <Router>
