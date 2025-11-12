@@ -346,7 +346,7 @@ const KYC = () => {
                         {
                             !ninVerified && nin?.status !="pending" &&
                             <div className="loan__form__set" >
-                                <label className="loan__label">Nin Slip <small className="text-danger">Maximum of 1mb</small> </label>
+                                <label className="loan__label">Passport Photo <small className="text-danger">Maximum of 1mb</small> </label>
                                 <input className="loan__input" type="file" name="file" accept="image/*" onChange={handleFileChange} />
                                 <ValidationError validationErrors={validationErrors} style={{marginTop:"-40px"}} field={"image"} />
                             </div> 
