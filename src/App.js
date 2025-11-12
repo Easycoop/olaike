@@ -35,7 +35,7 @@ import {ConfigContext} from "./context/ConfigProvider";
 
 function App() {
   
-    const { config, fetchConfig } = useContext(ConfigContext);
+  const { config, fetchConfig } = useContext(ConfigContext);
 
   useEffect(() => {
     // Change favicon dynamically
