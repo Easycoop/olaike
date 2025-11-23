@@ -107,3 +107,28 @@ export const getWalletBalance = async () => {
 }
 
 
+export const payWithKegow = async (data) =>{
+  try {
+    const response = await api.post(`/transaction/pay-with-kegow`, data);
+    return response.data;
+  } catch (error) {
+    console.log('action error')
+    console.log(error)
+    if (error.response) {
+      console.log('error has response')
+      // Add server response details to the error
+      error.message = `${
+        error.response.data?.error?.responseMessage || error.response.data?.message || error.response.statusText
+      }`;
+    } else if (error.request) {
+      // Add request details to the error
+      error.message = "No response received from server.";
+    } else {
+      // Add request setup details to the error
+      error.message = `${error.message}`;
+    }
+    throw error;
+  }
+}
+
+

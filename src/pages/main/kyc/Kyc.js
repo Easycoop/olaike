@@ -353,8 +353,6 @@ const KYC = () => {
                             
                         }
 
-                        
-
                         <div className="d-flex" style={{alignItems: "center", gap: "10px", marginTop:"-40px"}} >
                             {imagePreview ? (
                             <img src={imagePreview} alt="NIN slip" style={{ width: "150px", height: "150px", objectFit: "contain" }} />

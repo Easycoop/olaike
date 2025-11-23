@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { useDispatcher } from "../../utils/useDispatcher";
 import { getUsers, getDashboardData, updateUserProfile } from "../../services/userService";
-import { debitEntranceFee } from "../../services/walletService";
+import { debitEntranceFee, payWithKegow } from "../../services/walletService";
 import {UPDATE_USER } from "../types/authTypes";
 import { store } from "../store";
 
@@ -82,7 +82,21 @@ export const doDebitEntranceFee =  createAsyncThunk(
   }
 );
 
+export const doPayWithKegow =  createAsyncThunk(
+  "users/doPayWithKegow",
+  async (payload, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await payWithKegow(payload);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.message || "Action failed");
+    }
+  }
+);
+
+
 export const useGetUsers = () => useDispatcher(doGetUsers);
 export const useGetDashboardData = () => useDispatcher(doGetDashboardData);
 export const useUpdateUserProfile = () => useDispatcher(doUpdateUserProfile);
 export const useDebitEntranceFee = () => useDispatcher(doDebitEntranceFee);
+export const usePayWithKegow = () => useDispatcher(doPayWithKegow);

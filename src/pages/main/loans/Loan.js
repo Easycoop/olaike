@@ -1,5 +1,3 @@
-import Switch from "react-switch";
-import image1 from "../../../assets/images/main/profile-image.jpg";
 import { useNavigate } from "react-router-dom";
 import "./loan.css";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
@@ -18,18 +16,21 @@ import { runValidation } from '../../../utils/buchi';
 import ValidationError from "../../../components/ui/form-elements/ValidationError";
 import { formDateFormat } from "../../../utils/time";
 import UserLoans from "./UserLoans";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useInitializeTransaction, useVerifyTransaction, useGetUnUsedLoanFormTransactions } from "../../../redux/actions/transactionAction";
-
+import {ConfigContext} from "../../../context/ConfigProvider";
+import {usePayWithKegow} from "../../../redux/actions/userAction";
 
 const Loan = () => {
-
+  
+  const { config } = useContext(ConfigContext);
   const PAYSTACK_KEY = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY;
 
-  const getWallets = useGetWallets();
+  
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+  const payWithKegow = usePayWithKegow();
 
   const { user } = useSelector((state) => state.auth);
   // custom hooks
@@ -41,6 +42,7 @@ const Loan = () => {
   const saveChanges = useSaveChanges();
   const getUserLoans = useGetUserLoans();
   const getUserOngoingLoanApplication = useGetUserOngoingLoanApplication();
+  const getWallets = useGetWallets();
 
   // state variables
   const [errorMessage, setErrorMessage] = useState("");
@@ -50,7 +52,7 @@ const Loan = () => {
   const [loans, setLoans] = useState({});
   const [loanFormAmount, setLoanFormAmount] = useState(0);
   const [unUsedLoanForms, setUnUsedLoanForms] = useState([]);
-  const [paymentDescription, setPaymentDescription] = useState("loan_application");
+ 
   const [loanApplicationId, setLoanApplicationId] = useState(user?.loanApplicationId);
   
 
@@ -85,6 +87,10 @@ const Loan = () => {
     guarantorHomeAddress: null,
     userId: user.id,
   });
+
+  const paymentGateway = process.env.REACT_APP_PAYMENT_PROVIDER;
+
+  const paymentDescription = "loan_application";
 
   const validateLoanForm = async () => {
     const validationData = [];
@@ -430,6 +436,50 @@ const Loan = () => {
     
   };
 
+  const handleKegowPayment = async () => {
+    setLoading(true);
+    // Simulate a payment process
+    if (loanFormAmount === 0) {
+        setErrorMessage("Payment amount not set");
+        return;
+    }
+    try {
+        setLoading(true);
+        const response = await payWithKegow({
+          amount: loanFormAmount,
+          description: paymentDescription,
+        });
+
+        console.log('Loan application  fee resp')
+        console.log(response)
+        if(response?.payload?.status === "success"){
+          setLoading(false)
+          toastManager.addToast({
+            message: response?.payload.data.transfer.message,
+            type: "success",
+          });
+          setLoading(false);
+          setPaymentCompleted(true);
+          setLoading(false);
+          toastManager.addToast({
+            message: "Payment successful! You can now proceed with your application.",
+            type: "success",
+          });
+        }else{
+          setLoading(false);
+          
+        }
+    }catch(error){
+      console.log('Loan application  fee error')
+      console.log(error)
+      setLoading(false);
+      toastManager.addToast({
+        message: error?.message,
+        type: "error",
+      })
+    }
+  }
+
   const getUnUsedLoanForms = async () => {
     const response = await getUnUsedLoanFormTransactions();
     if (response?.payload.status === "success") {
@@ -460,11 +510,15 @@ const Loan = () => {
 
 
   useEffect(() => {
-    if(loans?.inactive?.length > 0) {
-      setLoanFormAmount(4500)
-    }else{
-      setLoanFormAmount(2500)
+
+     if (config.settings?.loanSettingsControl === "Society") {
+      setLoanFormAmount(loans?.inactive?.length > 0 ? user.Group.returneeLoanApplicationFee : user.Group.loanApplicationFee);
+      
     }
+    if (config.settings?.loanSettingsControl === "Union") {
+      setLoanFormAmount(loans?.inactive?.length > 0 ? config.settings.union.returneeLoanApplicationFee : config.settings.union.loanApplicationFee);
+    }
+    
   }, [loans]);
 
   /*useEffect(()=>{
@@ -610,7 +664,7 @@ const Loan = () => {
 
                           <button 
                             className="pay-button" 
-                            onClick={handlePayment}
+                            onClick={() => {paymentGateway === 'paystack' ? handlePayment() : handleKegowPayment()}}
                             disabled={loading || paymentCompleted}
                           >
                             {loading ? (

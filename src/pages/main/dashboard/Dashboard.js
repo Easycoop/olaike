@@ -1,5 +1,4 @@
 import "./dashboard.css";
-import { FaArrowTrendUp } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState, useContext } from "react";
 import { useGetTransactions } from "../../../redux/actions/transactionAction";
@@ -32,13 +31,13 @@ const Dashboard = ()  => {
   const pageRef = useRef(null); // ensure this is null initially
   const { user } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  // const [errorMessage, setErrorMessage] = useState("");
   const [transactions, setTransactions] = useState([]);
   const [page, setPage] = useState(1);
-  const [dashboardData, setDashboardData] = useState({});
+  // const [dashboardData, setDashboardData] = useState({});
   const [isOpen, setIsOpen] = useState(false);
 
-  const [kegowWallet, setKegowWallet] = useState(localStorage.getItem('kegowWallet') &&  localStorage.getItem('kegowWallet') != "undefined" ? JSON.parse(localStorage.getItem('kegowWallet')) : null);
+  // const [kegowWallet, setKegowWallet] = useState(localStorage.getItem('kegowWallet') &&  localStorage.getItem('kegowWallet') != "undefined" ? JSON.parse(localStorage.getItem('kegowWallet')) : null);
 
   const debitEntranceFee = useDebitEntranceFee();
   
@@ -50,13 +49,13 @@ const Dashboard = ()  => {
     try {
       const response = await getWallets(user.id);
       if (response?.payload.status === "success") {
-        setErrorMessage("");
+        
         setWallets(response.payload.data);
       } else {
-        setErrorMessage(response.message);
+        console.error(response.message);
       }
     } catch (error) {
-      setErrorMessage(error.response.message);
+      console.error(error.response.message);
     } finally {
       setLoading(false);
     }
@@ -69,13 +68,13 @@ const Dashboard = ()  => {
     try {
       const response = await getDashboardData(user.id);
       if (response?.payload.status === "success") {
-        setErrorMessage("");
-        setDashboardData(response.payload.data);
+        
+        // setDashboardData(response.payload.data);
       } else {
-        setErrorMessage(response.message);
+        console.error(response.message);
       }
     } catch (error) {
-      setErrorMessage(error.response.message);
+      console.error(error.response.message);
     } finally {
       setLoading(false);
     }
@@ -88,14 +87,14 @@ const Dashboard = ()  => {
       console.log('transactions response');
       console.log(response);
       if (response?.payload.status === "success") {
-        setErrorMessage("");
+        
         const newData = response.payload.data.result;
         setTransactions(newData);
       } else {
-        setErrorMessage(response.message);
+        console.error(response.message);
       }
     } catch (error) {
-      setErrorMessage(error.response.message);
+      console.error(error.response.message);
     } finally {
       setLoading(false);
     }
@@ -116,7 +115,7 @@ const Dashboard = ()  => {
       const response = await getUserWallet(user.id);
       if(response?.status === 'success'){
         localStorage.setItem('kegowWallet', JSON.stringify(response?.data?.kegowData));
-        setKegowWallet(response?.data?.kegowData); 
+        // setKegowWallet(response?.data?.kegowData); 
         return true           
       }else{
         setLoading(false);
@@ -253,11 +252,11 @@ const Dashboard = ()  => {
   }, []);
 
    useEffect(() => {
-    if (config.settings?.loanSettingsControl === "Society") {
+    if (config.settings?.entranceFeeControl === "Society") {
       setEntranceFee(user.Group.entrance_fee ?? "");
       
     }
-    if (config.settings?.loanSettingsControl === "Union") {
+    if (config.settings?.entranceFeeControl === "Union") {
       setEntranceFee(config.settings.union.entranceFee ?? "");
     }
   }, [config]);
@@ -292,13 +291,7 @@ const Dashboard = ()  => {
                     actionLink={wallet?.name ==="Loan" ? "/main/loans/index" :(wallet?.name === "Savings Wallet"?"/main/fund":"/main/fund")} 
                     actionTitle={wallet?.name ==="Loan" ? "Manage" :(wallet?.name === "Savings Wallet"?"See savings":"Manage thrift")} 
                   />
-                  // <span className="dashboard__section__one__block" key={i}>
-                  //   <h5>{wallet?.name}</h5>
-                  //   <h3>{`${wallet?.balance} ${wallet?.currency}`}</h3>
-                  //   <div>
-                  //     <FaArrowTrendUp />
-                  //   </div>
-                  // </span>
+                 
                 );
               })}
               </div>
@@ -306,61 +299,10 @@ const Dashboard = ()  => {
             <GenericCard title="Entrance Fee" description={`You are required to pay your entrance fee of ₦${entranceFee} to get a membership ID from your Society.`} buttonText="Pay entrance fee" buttonAction={()=>setIsOpen(true)} amount={entranceFee} loading={loading} />
           }
           
-          {/* <span className="dashboard__section__one__block">
-            <h5>Contribution Funds</h5>
-            <h3>{`${wallets?.wallet?.balance} ${wallets?.wallet?.currency}`}</h3>
-            <div>
-              <FaArrowTrendUp />
-            </div>
-          </span> */}
-           {/* {wallets?.subWallets?.map((wallet, i) => {
-            return (
-              <span className="dashboard__section__one__block" key={i}>
-                <h5>{wallet?.name}</h5>
-                <h3>{`${wallet?.balance} ${wallet?.currency}`}</h3>
-                <div>
-                  <FaArrowTrendUp />
-                </div>
-              </span>
-            );
-          })}  */}
+         
         </div>
       </section>
-      {/* <section className="dashboard__section__two">
-        <h5>Money highlights</h5>
-        <div className="dashboard__section__two__wrap">
-          <div className="dashboard__section__two__wrap__start">
-            <div className="dashboard__section__two__wrap__start__block">
-              <h3>Outstanding loan </h3>
-              <h4>{`${dashboardData.loan_bal || 0} ${wallets?.wallet?.currency}`}</h4>
-            </div>
-
-            <div className="dashboard__section__two__wrap__start__block">
-              <h3>Start saving your money</h3>
-              <Button
-                type="submit"
-                typeOf="primary"
-                // className="signup__create__button"
-                onClick={() => navigate("/main/fund")}
-              >
-                Save now
-              </Button>
-            </div>
-            <div className="dashboard__section__two__wrap__start__block">
-              <h3>Manage Loan </h3>
-              <Button
-                type="submit"
-                typeOf="primary"
-                // className="signup__create__button"
-                onClick={() => navigate("/main/loans/index")}
-              >
-                Apply
-              </Button>
-            </div>
-          </div>
-          
-        </div>
-      </section> */}
+      
       <section className="dashboard__section__one">
         <h5>Transaction history</h5>
         <div className="dashboard__section__two">
